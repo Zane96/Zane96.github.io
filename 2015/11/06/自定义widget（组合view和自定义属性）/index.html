@@ -8,10 +8,12 @@
   <meta name="description" content="前言
 在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
 
+
 继承view
+
 组合view
-自己画的view（用paint和canvas）
-自定义v">
+
+自己画的view（用paint和canvas）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义widget（组合view和自定义属性）">
 <meta property="og:url" content="http://yoursite.com/2015/11/06/自定义widget（组合view和自定义属性）/index.html">
@@ -19,23 +21,27 @@
 <meta property="og:description" content="前言
 在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
 
+
 继承view
+
 组合view
-自己画的view（用paint和canvas）
-自定义v">
-<meta property="og:image" content="http://yoursite.com/Users/Zane/Zane96/source/_posts/1.1.png">
-<meta property="og:image" content="http://yoursite.com/Users/Zane/Zane96/source/_posts/2.2.png">
-<meta property="og:image" content="http://yoursite.com/Users/Zane/Zane96/source/_posts/3.3.png">
-<meta property="og:updated_time" content="2015-11-06T14:03:18.000Z">
+
+自己画的view（用paint和canvas）">
+<meta property="og:image" content="http://yoursite.com/img/1.1.png">
+<meta property="og:image" content="http://yoursite.com/img/2.2.png">
+<meta property="og:image" content="http://yoursite.com/img/3.3.png">
+<meta property="og:updated_time" content="2015-11-06T14:10:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义widget（组合view和自定义属性）">
 <meta name="twitter:description" content="前言
 在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
 
+
 继承view
+
 组合view
-自己画的view（用paint和canvas）
-自定义v">
+
+自己画的view（用paint和canvas）">
   
     <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
@@ -253,24 +259,31 @@
       
         <h1 id="前言">前言</h1><blockquote>
 <p>在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（<a href="http://blog.csdn.net/aigestudio/article/category/2397181" target="_blank" rel="external">爱哥的csdn</a>），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成</p>
-<ul>
-<li><em>继承view</em></li>
-<li><em>组合view</em></li>
-<li><em>自己画的view（用paint和canvas）</em></li>
-<li><em>自定义viewgroup（widget）</em><br>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</li>
-</ul>
 </blockquote>
+<ul>
+<li><p><em>继承view</em></p>
+</li>
+<li><p><em>组合view</em></p>
+</li>
+<li><p><em>自己画的view（用paint和canvas）</em></p>
+</li>
+<li><p><em>自定义viewgroup（widget）</em></p>
+<p>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</p>
+</li>
+</ul>
 <h2 id="ImageButton">ImageButton</h2><blockquote>
 <p>要实现ImageButton最容易想到的不就是把button和imageview合在一起么。嗯，人容易就想到这是一个组合自定义view。可是如何把一个image放到button上呢，自然就是用一个FrameLayout把button和imageview包裹起来，然后将这个layout当作一个weidgt。把一个layout当成一个控件我开始不太理解。后来了解到一些东西。</p>
 </blockquote>
 <h3 id="补充知识点（安卓的顶层视图）">补充知识点（安卓的顶层视图）</h3><blockquote>
 <p>在android里面，你的app界面的活动的视图并非是最顶级的视图。大家应该都知道viewtree。在安卓里面，最顶级的视图是一个叫DecorView的东西。它包括你的状态栏，标题栏，以及你的活动界面。而且这个活动界面，安卓会自动帮你提前弄进去一个FrameLayout。可以这么理解吧，在安卓这个上帝的面前，你的activity就是放在他的framelayout的一个个view。上一张图～</p>
 </blockquote>
-<p><img src="/Users/Zane/Zane96/source/_posts/1.1.png" alt=""><br>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
+<p><img src="/img/1.1.png" alt=""></p>
+<p>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
 <blockquote>
 <p>好啦，回归正题。我上代码了。</p>
 </blockquote>
-<p>_myimagebutton<em>layout.xml</em><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">FrameLayout</span></span><br><span class="line">  <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">  <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">  <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">Button</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/button_imagebutton"</span>        /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ImageView</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/imageview_button"</span>        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">FrameLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>_myimagebutton<em>layout.xml</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">FrameLayout</span></span><br><span class="line">  <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">  <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">  <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">Button</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/button_imagebutton"</span>        /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ImageView</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/imageview_button"</span>        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">FrameLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>用一个framelayout把两个控件装起来，然后组合。组合了之后我们就去自定义我们这个控件的属性。button不用变对吧，用原生的就好了，就是需要有一个图片的src这个属性就好了。</p>
 </blockquote>
@@ -289,11 +302,11 @@
 <blockquote>
 <p>看到我们使用了自定义控件。如果用过github上面别人写的控件库的同学应该知道这种方法引入控件。<em>xmlns:pt = “<a href="http://schemas.android.com/apk/res/com.example.think.testview”" target="_blank" rel="external">http://schemas.android.com/apk/res/com.example.think.testview”</a></em> 这个申明时必须的。pt是自己任意命名的，后面跟的是<em>“<a href="http://schemas.android.com/apk/res/" target="_blank" rel="external">http://schemas.android.com/apk/res/</a>“</em>加上你的包名。后面直接使用我们的自定义属性久ok了。</p>
 </blockquote>
-<h3 id="效果图">效果图</h3><p><img src="/Users/Zane/Zane96/source/_posts/2.2.png" alt="haha.png"></p>
+<h3 id="效果图">效果图</h3><p><img src="/img/2.2.png" alt="haha.png"></p>
 <h2 id="结束语">结束语</h2><blockquote>
 <p>说来也巧，刚会这个就有一个机会可以让我实战一下了。其实也就比这个复杂一点点，在做一个项目的时候，遇到这样的效果需求。</p>
 </blockquote>
-<p><img src="/Users/Zane/Zane96/source/_posts/3.3.png" alt="hehe.png"></p>
+<p><img src="/img/3.3.png" alt="hehe.png"></p>
 <blockquote>
 <p>每一个结果后面都有一个imageview。如果要写的话，也很简单对吧，就是一个imageview加一个text。可是你如果自己写一个控件出来呢，它本身就实现了imageview和textview的结合。那岂不是两个控件变一个？并且这种形式用的太多了，各种地方都要用到，索性我就自己写了一个CombineImageViewTextView出来了。当然这个自定义属性就会多一点了，比如两个东西之间的间隔，字体大小，颜色等等。好了这也是我第一次用markdown写博客，感觉还不错哈哈～</p>
 </blockquote>

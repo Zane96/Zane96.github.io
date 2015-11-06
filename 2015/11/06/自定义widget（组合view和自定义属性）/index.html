@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义widget（组合view和自定义属性） | 徐志的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#前言
+
+在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
+
+继承view
+组合view
+自己画的view（用paint和canvas）
+自定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义widget（组合view和自定义属性）">
+<meta property="og:url" content="http://yoursite.com/2015/11/06/自定义widget（组合view和自定义属性）/index.html">
+<meta property="og:site_name" content="徐志的博客">
+<meta property="og:description" content="#前言
+
+在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
+
+继承view
+组合view
+自己画的view（用paint和canvas）
+自定">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/411509-65de3524428e7928.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/411509-9035394f9aef0ef1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/411509-b2c5ce1f08bb0e83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2015-11-06T13:52:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义widget（组合view和自定义属性）">
+<meta name="twitter:description" content="#前言
+
+在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
+
+继承view
+组合view
+自己画的view（用paint和canvas）
+自定">
+  
+    <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane-cqupt" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">Android</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane-cqupt" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/android/" style="font-size: 10px;">android</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane-cqupt" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">Android</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane-cqupt" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-自定义widget（组合view和自定义属性）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/06/自定义widget（组合view和自定义属性）/" class="article-date">
+  	<time datetime="2015-11-06T13:50:50.000Z" itemprop="datePublished">2015-11-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义widget（组合view和自定义属性）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#前言</p>
+<blockquote>
+<p>在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（<a href="http://blog.csdn.net/aigestudio/article/category/2397181" target="_blank" rel="external">爱哥的csdn</a>），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成</p>
+<ul>
+<li><em>继承view</em></li>
+<li><em>组合view</em></li>
+<li><em>自己画的view（用paint和canvas）</em></li>
+<li><em>自定义viewgroup（widget）</em><br>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</li>
+</ul>
+</blockquote>
+<p>##ImageButton</p>
+<blockquote>
+<p>要实现ImageButton最容易想到的不就是把button和imageview合在一起么。嗯，人容易就想到这是一个组合自定义view。可是如何把一个image放到button上呢，自然就是用一个FrameLayout把button和imageview包裹起来，然后将这个layout当作一个weidgt。把一个layout当成一个控件我开始不太理解。后来了解到一些东西。</p>
+</blockquote>
+<p>###补充知识点（安卓的顶层视图）</p>
+<blockquote>
+<p>在android里面，你的app界面的活动的视图并非是最顶级的视图。大家应该都知道viewtree。在安卓里面，最顶级的视图是一个叫DecorView的东西。它包括你的状态栏，标题栏，以及你的活动界面。而且这个活动界面，安卓会自动帮你提前弄进去一个FrameLayout。可以这么理解吧，在安卓这个上帝的面前，你的activity就是放在他的framelayout的一个个view。上一张图～</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/411509-65de3524428e7928.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
+<blockquote>
+<p>好啦，回归正题。我上代码了。</p>
+</blockquote>
+<p>_myimagebutton<em>layout.xml</em><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">FrameLayout</span></span><br><span class="line">  <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">  <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">  <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">Button</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/button_imagebutton"</span>        /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ImageView</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:id</span>=<span class="value">"@+id/imageview_button"</span>        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">FrameLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>用一个framelayout把两个控件装起来，然后组合。组合了之后我们就去自定义我们这个控件的属性。button不用变对吧，用原生的就好了，就是需要有一个图片的src这个属性就好了。</p>
+</blockquote>
+<p>在values目录下的attrs.xml文件_</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">resources</span>&gt;</span>在</span><br><span class="line">    <span class="tag">&lt;<span class="title">declare-styleable</span> <span class="attribute">name</span>=<span class="value">"MyImageButton"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"Imagesrc"</span> <span class="attribute">format</span>=<span class="value">"reference"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一般来说，declare-styleable标签的名字都是你的自定义控件的名字。attr就是你的自定义控件属性。format是这个属性的值的数据类型。这里的reference表示引用。dimension表示的是dp或者sp的大小。还有一些可以自己去看看。定义好属性，我们就开始写控件了。</p>
+</blockquote>
+<p><em>MyImageButton.java</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Created by Zane on 15/10/27.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyImageButton2</span> <span class="keyword">extends</span> <span class="title">FrameLayout</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    ImageView mImageView;</span><br><span class="line">    Button mButton;</span><br><span class="line">    <span class="keyword">int</span> resId;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyImageButton2</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyImageButton2</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        <span class="comment">//导入布局</span></span><br><span class="line">        LayoutInflater.from(context).inflate(R.layout.myimagebutton_layout, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">      mImageView＝(ImageView)findViewById(R.id.imageview_button);</span><br><span class="line"></span><br><span class="line">      mButton = (Button) findViewById(R.id.button_imagebutton);</span><br><span class="line">        <span class="comment">//获得这个控件对应的属性。</span></span><br><span class="line">      TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MyImageButton);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">          <span class="comment">//获得属性值</span></span><br><span class="line">            resId = a.getResourceId(R.styleable.MyImageButton_Imagesrc, <span class="number">0</span>);</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">          <span class="comment">//回收这个对象</span></span><br><span class="line">            a.recycle();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(resId != <span class="number">0</span>)&#123;</span><br><span class="line">            mImageView.setImageResource(resId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setImage</span><span class="params">(<span class="keyword">int</span> resId)</span></span>&#123;</span><br><span class="line">        mImageView.setImageResource(resId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一般来说，继承view（就这么说吧，反正都是都是继承view的），实现两三个构造函数就可以了。在第二个里面有一个attr，这就是传进来的属性。如果resId不为默认值，就表示用户在xml里面传入了这个属性值，你也必须要写一个set方法，让用户可以在java代码中去改变属性值。</p>
+</blockquote>
+<p>test.myimagebutton.layout.xml_</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">LinearLayout</span> <span class="attribute">xmlns:android</span>=<span class="value">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    <span class="attribute">android:orientation</span>=<span class="value">"vertical"</span></span><br><span class="line">    <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">    <span class="attribute">android:layout_height</span>=<span class="value">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">com.example.think.testview.customview.MyImageButton2</span></span><br><span class="line">        <span class="attribute">xmlns:pt</span> = "<span class="attribute">http:</span>//<span class="attribute">schemas.android.com</span>/<span class="attribute">apk</span>/<span class="attribute">res</span>/<span class="attribute">com.example.think.testview</span>"</span><br><span class="line">        <span class="attribute">android:layout_height</span>=<span class="value">"100dp"</span></span><br><span class="line">        <span class="attribute">android:layout_width</span>=<span class="value">"match_parent"</span></span><br><span class="line">        <span class="attribute">pt:Imagesrc</span> = "@<span class="attribute">drawable</span>/<span class="attribute">ic_launcher</span>"</span><br><span class="line">        /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>看到我们使用了自定义控件。如果用过github上面别人写的控件库的同学应该知道这种方法引入控件。<em>xmlns:pt = “<a href="http://schemas.android.com/apk/res/com.example.think.testview”" target="_blank" rel="external">http://schemas.android.com/apk/res/com.example.think.testview”</a></em> 这个申明时必须的。pt是自己任意命名的，后面跟的是<em>“<a href="http://schemas.android.com/apk/res/" target="_blank" rel="external">http://schemas.android.com/apk/res/</a>“</em>加上你的包名。后面直接使用我们的自定义属性久ok了。</p>
+</blockquote>
+<h3 id="效果图">效果图</h3><p><img src="http://upload-images.jianshu.io/upload_images/411509-9035394f9aef0ef1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="haha.png"></p>
+<h2 id="结束语">结束语</h2><blockquote>
+<p>说来也巧，刚会这个就有一个机会可以让我实战一下了。其实也就比这个复杂一点点，在做一个项目的时候，遇到这样的效果需求。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/411509-b2c5ce1f08bb0e83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hehe.png"></p>
+<blockquote>
+<p>每一个结果后面都有一个imageview。如果要写的话，也很简单对吧，就是一个imageview加一个text。可是你如果自己写一个控件出来呢，它本身就实现了imageview和textview的结合。那岂不是两个控件变一个？并且这种形式用的太多了，各种地方都要用到，索性我就自己写了一个CombineImageViewTextView出来了。当然这个自定义属性就会多一点了，比如两个东西之间的间隔，字体大小，颜色等等。好了这也是我第一次用markdown写博客，感觉还不错哈哈～</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="自定义widget（组合view和自定义属性）" data-title="自定义widget（组合view和自定义属性）" data-url="http://yoursite.com/2015/11/06/自定义widget（组合view和自定义属性）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -98,6 +98,8 @@
 				        
 							<li><a href="/tags/android">android</a></li>
 				        
+							<li><a href="/tags/java">java</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -118,7 +120,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/android/" style="font-size: 10px;">android</a>
+						<a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/java/" style="font-size: 10px;">java</a>
 					</div>
 				</section>
 				
@@ -173,6 +175,8 @@
 		        
 					<li><a href="/tags/android">android</a></li>
 		        
+					<li><a href="/tags/java">java</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -193,6 +197,124 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-java集合框架总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/06/java集合框架总结/" class="article-date">
+  	<time datetime="2015-11-06T14:16:37.000Z" itemprop="datePublished">2015-11-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/06/java集合框架总结/">java集合框架总结</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言">前言</h1><blockquote>
+<p>java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉有些知识不用再去单纯的去背了。</p>
+</blockquote>
+<h2 id="图列">图列</h2><p>Collection</p>
+<p>├List</p>
+<p>│├LinkedList</p>
+<p>│├ArrayList</p>
+<p>│└Vector</p>
+<p>│　└Stack</p>
+<p>└Set</p>
+<p>Map</p>
+<p>├Hashtable</p>
+<p>├HashMap</p>
+<p>└WeakHashMap</p>
+<h3 id="Interface_Collection">Interface Collection</h3><blockquote>
+<p>第一个就要提到<strong>Collection</strong>接口。java sdk不提供这个最基本的集合接口，而是只提供实现了Collection接口的set和list接口。所有实现Collection接口的类都必须提供两个标准的构造函数：无参数的构造函数用于创建一个空的Collection，有一个 Collection参数的构造函数用于创建一个新的Collection，这个新的Collection与传入的Collection有相同的元素。后 一个构造函数允许用户复制一个Collection。实现Collection里面接口的实现需要使用一种叫迭代器的东西（Iterator)，方法：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子</span></span><br><span class="line">　　　　<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">　　　　　　Object obj = it.next(); <span class="comment">// 得到下一个元素</span></span><br><span class="line">　　　　&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Interface_Set">Interface Set</h3><blockquote>
+<p>set是一个不包含重复元素的实现了Collection接口的接口（e1.equals(e2) == false)，最多含有一个Null元素。</p>
+</blockquote>
+<hr>
+<h3 id="Interface_List">Interface List</h3><blockquote>
+<p>List接口是实现了Collection接口的一个接口，叫列表。它是一个有序的Collection，它可以准确的记录下每个元素在列表中的位置，并且可以通过索引（相当于数组的下标）来对元素进行操作。这个接口比较类似数组，可以有重复的元素存在。除了具有Collection接口必备的iterator()方法外，List还提供一个listIterator()方法，返回一个 ListIterator接口，和标准的Iterator接口相比，ListIterator多了一些add()之类的方法，允许添加，删除，设定元素， 还能向前或向后遍历。</p>
+</blockquote>
+<h3 id="Class_ArrayList(非同步类，无同步方法）">Class ArrayList(非同步类，无同步方法）</h3><blockquote>
+<p>我觉得应该是我们现在最常用的一个集合类，泛型数组，特点就是可以自动扩充大小，当元素数目大于当前数组大小的时候进行扩充，arraylist增长率为目前数组长度的50%。这个集合类实现了List接口，因为继承了List接口的一些特点，不用再多说了。当需要插入大量元素时，在插入前可以调用ensureCapacity方法(自己百度）来增加ArrayList的容量以提高插入效率。</p>
+</blockquote>
+<h3 id="Class_LinkList（非同步类，无同步方法）">Class LinkList（非同步类，无同步方法）</h3><blockquote>
+<p>与Arraylist差别用法差别其实并不大，此外LinkedList提供额外的get，remove，insert方法在 LinkedList的首部或尾部。它与ArrayList的差别我们在总结里面提。</p>
+</blockquote>
+<hr>
+<h3 id="Class_Vector（线程安全，同步）">Class Vector（线程安全，同步）</h3><blockquote>
+<p>Vector非常类似ArrayList，但是Vector是同步的。由Vector创建的Iterator，虽然和 ArrayList创建的Iterator是同一接口，但是，因为Vector是同步的，当一个Iterator被创建而且正在被使用，另一个线程改变了 Vector的状态（例如，添加或删除了一些元素），这时调用Iterator的方法时将抛出ConcurrentModificationException，因此必须捕获该异常。当元素数目大于当前数组大小的时候进行扩充，Vector增长率为目前数组长度的100%。</p>
+</blockquote>
+<h3 id="Class_Stack">Class Stack</h3><blockquote>
+<p>Stack继承自Vector，实现一个栈（先进后出）。Stack提供5个额外的方法使得Vector得以被当作堆栈使用。基本的push和pop 方法，还有peek方法得到栈顶的元素，empty方法测试堆栈是否为空，search方法检测一个元素在堆栈中的位置。Stack刚创建后是空栈。</p>
+</blockquote>
+<hr>
+<h3 id="Interface_Map(映射)">Interface Map(映射)</h3><blockquote>
+<p>Map这个接口你可以从最开始的那个图中看出来，她是没有实现Collection这个接口的，它是一种“键值对”的形式来存储元素。（key-value)Map接口实现的就是形成key到value的映射。不许有重复的key，因为它是一一对应的关系，value可以重复。Map的内容可以被当作一组key集合，一组value集合，或者一组key-value映射。</p>
+</blockquote>
+<h3 id="Class_HashMap(同步)">Class HashMap(同步)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">　　　　Hashtable numbers = <span class="keyword">new</span> Hashtable();</span><br><span class="line">　　　　numbers.put(“one”, <span class="keyword">new</span> Integer(<span class="number">1</span>));</span><br><span class="line">　　　　numbers.put(“two”, <span class="keyword">new</span> Integer(<span class="number">2</span>));</span><br><span class="line">　　　　numbers.put(“three”, <span class="keyword">new</span> Integer(<span class="number">3</span>));</span><br><span class="line">　　<span class="comment">//要取出一个数，比如2，用相应的key：</span></span><br><span class="line">　　　　Integer n = (Integer)numbers.get(“two”);</span><br><span class="line">　　　　System.out.println(“two = ” + n);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>HashMap里面元素的key和value都分别算作是一个个的对象，然后key对象不重复是通过它的hashcode不同，equals结果返回false来实现的，两者不可或缺，缺一不可。如图，String类是SDK提供的类，所以不用管它的hashcode(),equals()函数，<em>但是如果这里是个Person类，Student类，你就需要重写它的hashcode()和equals()类，因为不同的对象的hashcode值可能是相同的！然后不同对象equals结果肯定是false，多以容易引起冲突，所以两个函数必须全部重写。</em></p>
+</blockquote>
+<h3 id="Class_TreeMap（二叉树结构）">Class TreeMap（二叉树结构）</h3><blockquote>
+<p>（实现SortMap接口)里面的元素也是不重复，并且是按照一种自然顺序或者是特定的自定义顺序来排序的映射类，并且顺序固定不变</p>
+</blockquote>
+<h3 id="Class_WeakHashMap">Class WeakHashMap</h3><blockquote>
+<p>WeakHashMap是一种改进的HashMap，它对key实行“弱引用”，如果一个key不再被外部所引用，那么该key可以被GC回收。</p>
+<p><strong>弱引用（WeakReference）和强引用(StrongReference)以及软引用(SoftReference)和虚引用(PhantomReference)的用法以及区别以后再谈吧</strong></p>
+</blockquote>
+<hr>
+<h1 id="总结">总结</h1><blockquote>
+<p><strong>1.</strong>如果需要快速插入，删除元素，应该使用LinkedList（链式存储结构），如 果需要快速随机访问元素，应该使用ArrayList（顺序存储结构）。至于原因，大家学了数据结构就会很清楚了。</p>
+<p><strong>2.</strong>如果程序在单线程环境中，或者访问仅仅在一个线程中进行，考虑非同步的类，其效率较高，如果多个线程可能同时操作一个类，应该使用同步的类。</p>
+<p><strong>3.</strong>要特别注意对哈希表的操作，作为key的对象要正确复写equals和hashCode方法。</p>
+<p><strong>4.</strong>尽量返回接口而非实际的类型，如返回List而非ArrayList，这样如果以后需要将ArrayList换成LinkedList时，客户端代码 不用改变。这就是针对抽象编程。</p>
+<p><strong>5.</strong>同步性：以Vector和ArrayList为列子，前者是同步的而后者是非同步的。浅而言之就是同步的集合类在多线程程序里面会很安全，然而如果在单线程程序里面我们自然就应该调用非同步的集合类，效率应该更高。</p>
+<p><strong>6.</strong>扩增性：Vector的扩增是每次100%，而ArrayList是每次50%，因此每次都扩增自己的这么多倍，所以到最后列表的大小永远都要比本身的元素大小要大。在这里我们处理大数据的时候用Vector比较合理。</p>
+<p><strong>7.</strong>ArrayList,LinkList,Vector：Vetcor和ArrayList采用的是数组数据结构在add和remove的时候都是把数组里面的元素分别按照索引往后移动一个位置，效率不高，然而LinkList则是采用的双链表数据结构，它在add的时候只需要用指针标记要插入位置的前后索引号就行了，效率高。因此，我们在进行大量数据的插入删除的时候就应该使用LinkList。然后ArrayList在get的时候却要比LinkList效率高。因为Arrayist在get的时候是通过索引来获取，但是LinkList则需要移动指针来实现。</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-自定义widget（组合view和自定义属性）" class="article article-type-post" itemscope itemprop="blogPost">
   

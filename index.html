@@ -238,74 +238,11 @@
 <li>npm</li>
 </ul>
 <p>如果git还不了解，并且还没有自己的github。赶紧去学一下吧！如果程序员连这个都不知道，转行吧。我推荐的当然是廖雪峰的系列教程（python的也不错！）</p>
-<p><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001373962845513aefd77a99f4145f0a2c7a7ca057e7570000" target="_blank" rel="external">廖雪峰的官方网站</a></p>
+<p><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001373962845513aefd77a99f4145f0a2c7a7ca057e7570000">廖雪峰的官方网站</a></p>
 <blockquote>
-<p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html" target="_blank" rel="external">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
+<p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
 </blockquote>
-<h3 id="安装Node-js">安装Node.js</h3><blockquote>
-<p>因为hexo是基于node.js开发的，所以，必须先下载这个。第一步安装homebrew，如果没有这个的话，去官网下载吧，终端输入一个命令行就ok了！<a href="http://brew.sh/" target="_blank" rel="external">HomeBrew</a> (osX的版本管理神器)。下载好了之后，建立一个文件夹，终端进入之后，输入：</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#23433;&#35013;&#21629;&#20196;&#10;brew install node&#10;&#20351;&#29992;&#20197;&#19979;&#21629;&#20196;&#39564;&#35777;&#26159;&#21542;&#23433;&#35013;&#25104;&#21151;&#10;node -v&#10;npm -v</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>npm在现在版本的node里面寂静集成了。</p>
-</blockquote>
-<h3 id="安装和配置Hexo">安装和配置Hexo</h3><blockquote>
-<p>前面git, node.js, npm都已经安装好了。然后来搞hexo。介绍一下，hexo是一个基于node.js，用于搭建静态博客的框架。接着我们在终端输入:</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo -g</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>安装好了之后，第一步初始化</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init &#60;folder&#62; #&#25191;&#34892;init&#21629;&#20196;&#21021;&#22987;&#21270;hexo&#21040;&#20320;&#25351;&#23450;&#30340;&#30446;&#24405;&#10;hexo generate       #&#33258;&#21160;&#26681;&#25454;&#24403;&#21069;&#30446;&#24405;&#19979;&#25991;&#20214;,&#29983;&#25104;&#38745;&#24577;&#32593;&#39029;&#10;hexo server         #&#36816;&#34892;&#26412;&#22320;&#26381;&#21153;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>其中 hexo generate用的很多。下面两个可以简化为</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g&#10;hexo s</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后就浏览器输入<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到你的默认主题（star）的网页了（hello world）</p>
-</blockquote>
-<h4 id="更改主题">更改主题</h4><blockquote>
-<p>更改主题就是我最喜欢的地方了，有无数的主题在github上面任你选。当然，最好选个比较靠谱的开发者开发的主题,<a href="https://github.com/hexojs/hexo/wiki/Themes" target="_blank" rel="external">主题选择</a> 。然后选好了之后，star一下你选的主题，以便以后学习怎么使用你的这个主题。以我的博客主题为例，在终端输入：</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>下载完了在根目录的 ./_config.yml文件（可以用sublime打开）修改主题为writing</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: yilia</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这个文件就是你的hexo的配置文件</p>
-</blockquote>
-<h4 id="部署到github，使用username-github-io">部署到github，使用username.github.io</h4><blockquote>
-<p>你需要在你的hexo的配置文件进行修改。</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Deployment&#10;## Docs: http://hexo.io/docs/deployment.html&#10;deploy:&#10;  type: git&#10;  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io&#10;  branch: master</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>前提是你要在你的github上面建立一个username.github.io的远程库！然后再在你的终端输入：</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy  #&#21487;&#20197;&#31616;&#20889;&#25104;hexo d,&#29992;&#30340;&#29305;&#21035;&#22810;&#12290;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果部署成功，那么就可以直接用你的github用户名.github.io来访问你的博客了！（注册github账号时候一定记得起好记美观一点的名字，忌讳中文。像我起的酒太丑了，Zane-cqupt。。。并且github还不能修改用户名！fuck，以前太年轻 ，too simple）。然后再把你的hexo配置修改一下吧～我上我的配置文件，我的是属于特别简单的。</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Hexo Configuration&#10;## Docs: http://hexo.io/docs/configuration.html&#10;## Source: https://github.com/hexojs/hexo/&#10;&#10;# Site&#10;title: &#24464;&#24535;&#30340;&#21338;&#23458;&#10;subtitle: &#29233;&#32534;&#31243;&#65292;&#29233;&#29983;&#27963;&#65292;&#19981;&#32641;&#25918;&#32437;&#29233;&#33258;&#30001;&#10;description: &#23398;&#20064;&#24635;&#32467; &#24605;&#32771;&#24863;&#24735; &#30693;&#35782;&#31649;&#29702;&#10;author: Zane Xu&#10;language: zh-CN&#10;email: wo1996zhi@vip.qq.com&#10;&#10;&#10;# URL&#10;## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39;&#10;url: http://yoursite.com&#10;root: /&#10;permalink: :year/:month/:day/:title/&#10;permalink_defaults:&#10;&#10;# Directory&#10;source_dir: source&#10;public_dir: public&#10;tag_dir: tags&#10;archive_dir: archives&#10;category_dir: categories&#10;code_dir: downloads/code&#10;i18n_dir: :lang&#10;skip_render:&#10;&#10;# Writing&#10;new_post_name: :title.md # File name of new posts&#10;default_layout: post&#10;titlecase: false # Transform title into titlecase&#10;external_link: true # Open external links in new tab&#10;filename_case: 0&#10;render_drafts: false&#10;post_asset_folder: false&#10;relative_link: false&#10;future: true&#10;highlight:&#10;  enable: true&#10;  line_number: true&#10;  auto_detect: true&#10;  tab_replace:&#10;&#10;# Category &#38; Tag&#10;default_category: uncategorized&#10;category_map:&#10;tag_map:&#10;&#10;# Date / Time format&#10;## Hexo uses Moment.js to parse and display date&#10;## You can customize the date format as defined in&#10;## http://momentjs.com/docs/#/displaying/format/&#10;date_format: YYYY-MM-DD&#10;time_format: HH:mm:ss&#10;&#10;# Pagination&#10;## Set per_page to 0 to disable pagination&#10;per_page: 10&#10;pagination_dir: page&#10;&#10;# Extensions&#10;## Plugins: http://hexo.io/plugins/&#10;## Themes: http://hexo.io/themes/&#10;theme: yilia&#10;&#10;# Deployment&#10;## Docs: http://hexo.io/docs/deployment.html&#10;deploy:&#10;  type: git&#10;  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io&#10;  branch: master&#10;&#10;# Markdown&#10;## https://github.com/chjj/marked&#10;markdown:&#10;  gfm: true&#10;  pedantic: false&#10;  sanitize: false&#10;  tables: true&#10;  breaks: true&#10;  smartLists: true&#10;  smartypants: true</span><br></pre></td></tr></table></figure>
-<h3 id="你的第一篇文章">你的第一篇文章</h3><blockquote>
-<p>输入命令行：</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &#34;&#20320;&#30340;&#25991;&#31456;&#21517;&#34;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>然后在你的存储hexo的文件下的source/_post文件夹里面就有会你的文章的初始化代码，你用sublime打开</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title: Github+node.js+hexo&#25645;&#24314;&#25105;&#30340;&#20010;&#20154;&#21338;&#23458;&#10;date: 2015-11-12 20:22:53&#10;tags:&#10;---</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>会看到这些，tag是你的标签，这个你慢慢去倒腾吧，就是你文章的分类，具体的使用方法，在你选择的主题的github上面应该会有讲解。分割线下面就可以加入你用markdown写的文章了，然后保存。再在命令行输入：</p>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g&#10;hexo d</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>可能会有几分钟延时，然后你的博客上面就有你的文章了！搞定。</p>
-</blockquote>
-<h1 id="总结">总结</h1><blockquote>
-<p>我觉得程序员是需要一个个人博客的。不说是为了装逼，起码可以记录你的程序人生。可以记录你的一步一步的成长。程序员当然不能用qq空间去写技术博客，不然要被喷死。其实还是可以自己去买一个域名然后和github的域名绑定的。其实我觉得没太大的必要了。由于也是刚买mac，之前也用的是windows，没用过linux，对于shell确实不太熟悉。然而用了它之后就想让windows有多远滚多远了。好了，开启自己的博客吧！</p>
-</blockquote>
-
+<h3 id="安装Node-js">安装Node.js</h3>
       
     </div>
     
@@ -314,6 +251,10 @@
       
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

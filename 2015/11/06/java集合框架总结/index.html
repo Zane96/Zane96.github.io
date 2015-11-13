@@ -13,7 +13,7 @@ java的集合框架基本上是必备的知识，也感觉是面试的重灾区�
 <meta property="og:site_name" content="徐志的博客">
 <meta property="og:description" content="前言
 java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
-<meta property="og:updated_time" content="2015-11-06T14:28:05.000Z">
+<meta property="og:updated_time" content="2015-11-13T16:38:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java集合框架总结">
 <meta name="twitter:description" content="前言
@@ -300,6 +300,7 @@ java的集合框架基本上是必备的知识，也感觉是面试的重灾区�
 <p><strong>6.</strong>扩增性：Vector的扩增是每次100%，而ArrayList是每次50%，因此每次都扩增自己的这么多倍，所以到最后列表的大小永远都要比本身的元素大小要大。在这里我们处理大数据的时候用Vector比较合理。</p>
 <p><strong>7.</strong>ArrayList,LinkList,Vector：Vetcor和ArrayList采用的是数组数据结构在add和remove的时候都是把数组里面的元素分别按照索引往后移动一个位置，效率不高，然而LinkList则是采用的双链表数据结构，它在add的时候只需要用指针标记要插入位置的前后索引号就行了，效率高。因此，我们在进行大量数据的插入删除的时候就应该使用LinkList。然后ArrayList在get的时候却要比LinkList效率高。因为Arrayist在get的时候是通过索引来获取，但是LinkList则需要移动指针来实现。</p>
 </blockquote>
+<p><strong>版权声明：本文为博主原创文章，未经博主允许不得转载。</strong></p>
 
       
     </div>

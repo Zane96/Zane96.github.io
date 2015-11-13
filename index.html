@@ -244,47 +244,7 @@
 <h4 id="Android的事件分发机制">Android的事件分发机制</h4><blockquote>
 <p>首先，清楚一点，你的activity优先于所有你的activity里面的view获得触摸事件。因为他是你的可视图的顶层。然后这个事件流会被activity的<strong>dispatchTouchEvent()</strong> 方法分发给自己的子view。这是系统框架自己做的事情。我们知道就好。如果子view里面又有viewgroup，那么这个viewgroup又会把事件流拿到分发给自己的子view。这就是一个视图结构树。</p>
 </blockquote>
-<p><img src="/img/touch event.png" alt=""></p>
-<blockquote>
-<p>事件流会呈现一种从上到下，再从下到上的传递形式。我们讲到事件流会从activity由dispatchtouchevent向下传递。如果在传递在最底部的view的过程中还没有一个view宣布对这个事件感兴趣，那么事件将会从下到上又把这个事件传递给activity。但是如果这个过程中，某个view比如button宣布对这个action_down这个事件感兴趣了，那么这个事件流将不会再往下传递。这个时候如果你的手指拿开，就产生了一个action_up的事件。这个流就会直接传到当初你对action_down感兴趣的view去。这样极大的提高了安卓的效率。</p>
-</blockquote>
-<hr>
-<h4 id="Android的事件消费">Android的事件消费</h4><blockquote>
-<p>这里说的事件消费也就是上面提到的view对某个事件是否感兴趣。实现机制就是在view里面调用onTouchEvent()方法，这个方法我相信很多人都遇到过的，它其实是对整个手势的事件流的监听。如果你想让一个view对某个事件感兴趣，那么判断如果遇到了这个事件，return true。表示你对这个事件感兴趣，那么事件的传递将会停止。并且需要记住的一点是<strong>activity的onTouchEvent()</strong> 方法是最后调用的。并不是第一个。</p>
-<p><strong>ViewGroup</strong> 对于事件分发给子view要复杂一点。如果你写过自定义view group，那你知道view group会对子view进行位置安排（on layout()）。而当事件传到某个view group的时候，他会根据子view的位置来确定哪些子view对这个事件感兴趣。如果多个子view重叠，那viewgroup会根据子view加入view group的逆序来分发事件。</p>
-</blockquote>
-<h4 id="Android事件的窃取与反窃取">Android事件的窃取与反窃取</h4><blockquote>
-<p>这里说的窃取是定义在viewgroup和他的子view之间的。举个例子</p>
-</blockquote>
-<p><img src="/img/test.png" alt=""></p>
-<blockquote>
-<p>这里有一个srcollview作为view group，里面有个button作为子view。</p>
-</blockquote>
-<ol>
-<li>用手指去按下button。这里button宣布对这个事件感兴趣了。嗯，好的，button儿子准备接受up事件，然后顺利产生一次点击事件了</li>
-<li>滑动手指。卧槽，什么，怎么又滑动手指了,产生了一个move事件。我们都知道，这样做了之后，button将不会在被点击，也就是说他接收不到up的事件了，为什么呢，因为他的爸爸scrollview把这个事件给窃取了。坑儿子哈哈</li>
-<li>儿子不听话，非要完成这次点击。于是儿子来了一次反窃取，阻止爸爸偷本属于自己的up事件。于是采取了反窃取手段达成目的。</li>
-</ol>
-<blockquote>
-<p>很容易理解了吧。窃取就是在viewgroup里面调用onInteceptTouchEvent()。还记得前面讲的那个action_cancel吧，如果move事件被窃取，那么button酒会收到一个cancel的事件，告诉button你不会再收到接下来的其他事件了。反窃取就是在button里面调用requestDisallowTouchIntercept(Boolean boolean)如果传true，那么就阻止了view group去窃取这个手势。</p>
-</blockquote>
-<p>来看一下源码吧。</p>
-<p><strong>onInterceptTouchEvent(Motion m)</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ViewGroup中</span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onInterceptTouchEvent(ev);</span><br><span class="line">    &#125;</span><br><span class="line">源码中：</span><br><span class="line">  * <span class="annotation">@param</span> ev The motion event being dispatched down the hierarchy.</span><br><span class="line">     * <span class="annotation">@return</span> Return <span class="keyword">true</span> to steal motion events from the children and have</span><br><span class="line">     * <span class="function">them dispatched to <span class="keyword">this</span> ViewGroup through <span class="title">onTouchEvent</span><span class="params">()</span>.</span><br><span class="line">     * The current target will receive an ACTION_CANCEL event, and no further</span><br><span class="line">     * messages will be delivered here.</span><br><span class="line">     */</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>很清楚了吧。大家可以再看一遍源码的注视！一目了然。默认是false，如果重写return true就可以窃取了。</p>
-</blockquote>
-<p><strong>requestDisallowIntercept(Boolean is)</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Called when a child does not want this parent and its ancestors to</span><br><span class="line">     * intercept touch events with</span><br><span class="line">     * &#123;<span class="doctag">@link</span> ViewGroup#onInterceptTouchEvent(MotionEvent)&#125;.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This parent should pass this call onto its parents. This parent must obey</span><br><span class="line">     * this request for the duration of the touch (that is, only clear the flag</span><br><span class="line">     * after this parent has received an up or a cancel.&lt;/p&gt;</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> disallowIntercept True if the child does not want the parent to</span><br><span class="line">     *            intercept touch events.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDisallowInterceptTouchEvent</span><span class="params">(<span class="keyword">boolean</span> disallowIntercept)</span></span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>在源码中可以看到，一旦对一个事件表示了不允许parent窃取（注意我说的是一个事件，而不是事件流），那么会设置一个flag，标志知识这个事件不允许parent窃取。但是这个flag会在parent收到这个事件的up活着cancel的时候，就会重置flag。onInterceptTouchEvent()是一样的道理，不同的是这个方法是需要传入一个具体的MotionEvent的。还有一点值得提的是，如果你的viewgroup里面的所有子view都对down这个事件不感兴趣，但是某个view却对up感兴趣。那么你一定要在viewgroup的onTouchEvent()方法里面返回true。不然viewgroup的parent不会再把之后的事件传给viewgroup了哦！！</p>
-</blockquote>
-<hr>
-<h1 id="总结">总结</h1><blockquote>
-<p>好啦，对于android触摸事件的基础知识也了解的差不多可以了。未完待续！～</p>
-</blockquote>
-<p>**版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
-
+<p><img src="/img/touch event.png" alt=""><br>
       
     </div>
     
@@ -297,6 +257,10 @@
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/13/Android-Touch-System/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

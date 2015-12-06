@@ -13,7 +13,7 @@
 <meta property="og:description" content="前言  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完">
 <meta property="og:image" content="http://yoursite.com/img/mvp1.png">
 <meta property="og:image" content="http://yoursite.com/img/mvp2.png">
-<meta property="og:updated_time" content="2015-12-06T13:01:26.000Z">
+<meta property="og:updated_time" content="2015-12-06T13:02:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MVP模式的一种新尝试">
 <meta name="twitter:description" content="前言  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完">
@@ -251,7 +251,7 @@
 <h3 id="一种新思想">一种新思想</h3><blockquote>
 <p>  这个思想也是通过github上面一个翻译的文章看来的。因为activity中包含着context， intent，获得系统服务等等，如果把activity作为视图层就应该避免这些业务逻辑。所以将activity仅仅作为视图层有点发挥不出他的真正价值。所以我们考虑把activity，fragment，adapter来作为presenter处理逻辑，用java类文件来作为视图层。并且这样做了之后，我感觉代码的清晰度是有提升的。这是我写的demo源码：<a href="https://github.com/Zane96/MVPLogin" target="_blank" rel="external">新mvp demo</a> 。</p>
 </blockquote>
-<p><img src="/img/mvp2.png" alt=""></p>
+<p><img src="/img/mvp2.png" alt=""><br><a id="more"></a></p>
 <blockquote>
 <p>  大概思路是用一个抽象类来抽出activity中必不可少的ui代码（比如setContentView()以及初始化各种控件）。然后每一个view类文件实现扩展了view层基接口的接口，这样做的目的是为了实现view和baseacitivty之间的解耦。（这个确实倒腾了很久，因为我感觉原文章的代码有问题）。之后在抽象类里面去通过presenter返回的view文件类型，用反射获得对象并进行view的渲染。然后再在presenter中去处理逻辑。看代码吧！</p>
 </blockquote>

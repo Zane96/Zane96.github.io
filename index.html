@@ -198,6 +198,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Context学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/15/Context学习笔记/" class="article-date">
+  	<time datetime="2015-12-15T12:30:43.000Z" itemprop="datePublished">2015-12-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/15/Context学习笔记/">Context学习笔记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Context—上下文环境。">Context—上下文环境。</h1><blockquote>
+<p>android代码与java代码的最大差别就是，android的组件必须通过context来创建实例。context是安卓的一个类，四大组件包括application类的最终父类都是context类。它是维持安卓各种组件能够正常工作的一个核心类。</p>
+</blockquote>
+<p><strong>context有两个子类一个是ContextWrapper：上下文功能封装类,ContextImpl：上下文功能的实现类。</strong></p>
+<blockquote>
+<p>context可以用来启动新的ativity， 弹出toast， 启动service， 发送广播， 操作数据库等等。不同的context的能力是不同的。比如弹出一个Dialog必须依赖在一个activity上面，所以必须通过activity的context才能来弹出一个Dialog。</p>
+</blockquote>
+<p><strong>一个application类或者他的子类对象本身就是一个context。</strong></p>
+<blockquote>
+<p>getApplication()；获得application对象实例。getApplicationContext();同样也是返回application实例，但是这个返回的实例作用域更大。getBaseApplication()；用于返回ContextImpl类的对象（实现类）。activity, application, service都是做了一层接口封装，所有的实现都是在ContextImpl中。</p>
+</blockquote>
+<p><strong>application（或者其他），ContextWrapper与ContextImpl三者实际上是有一种类适配器的设计模式联系在一起的。application是调用适配器，ContextWrapper是适配器，ContextImpl是被转换者。application调用getResource(), registerBroadcast()等等方法，实际上在适配器里面转换成了调用ContextImpl中对应的方法。application并不知道他的实现，也不用知道，做到了解耦。</strong></p>
+<p>自定义application类的最佳实践：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;  </span><br><span class="line"><span class="number">2</span>.       </span><br><span class="line"><span class="number">3</span>.     <span class="keyword">private</span> <span class="keyword">static</span> MyApplication app;  </span><br><span class="line"><span class="number">4</span>.       </span><br><span class="line"><span class="number">5</span>.     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MyApplication <span class="title">getInstance</span><span class="params">()</span> </span>&#123;  </span><br><span class="line"><span class="number">6</span>.         <span class="keyword">return</span> app;  </span><br><span class="line"><span class="number">7</span>.     &#125;  </span><br><span class="line"><span class="number">8</span>.       </span><br><span class="line"><span class="number">9</span>.     <span class="annotation">@Override</span>  </span><br><span class="line"><span class="number">10</span>.     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;  </span><br><span class="line"><span class="number">11</span>.         <span class="keyword">super</span>.onCreate();  </span><br><span class="line"><span class="number">12</span>.         app = <span class="keyword">this</span>;  </span><br><span class="line"><span class="number">13</span>.     &#125;  </span><br><span class="line"><span class="number">14</span>.       </span><br><span class="line"><span class="number">15</span>. &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>applcation本身就是一个单例了，不用再去做单例模式了。也不应该去new，因为它不是一个java类。application的实例除了不能start an activity和show a dialog其他都可以。</strong></p>
+<blockquote>
+<p>context造成的内存泄漏。在单例模式或者引用静态变量的时候，尽量避免用activity的context,因为静态变量的生命周期是整个应用。如果一个activity销毁了，那么他的context不能被销毁就造成了内存泄漏。所以尽量用application来代替。</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Handler" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

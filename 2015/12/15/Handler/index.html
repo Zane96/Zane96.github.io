@@ -5,16 +5,23 @@
   
   <title>Handler | 徐志的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客。原文http://kermit95.github.io/2015/08/28/handler%E6%80%">
+  <meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+
+概述 Handler是android用来更新UI，处理消息的机制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Handler">
 <meta property="og:url" content="http://yoursite.com/2015/12/15/Handler/index.html">
 <meta property="og:site_name" content="徐志的博客">
-<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客。原文http://kermit95.github.io/2015/08/28/handler%E6%80%">
-<meta property="og:updated_time" content="2015-12-15T11:59:57.000Z">
+<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+
+概述 Handler是android用来更新UI，处理消息的机制">
+<meta property="og:image" content="http://yoursite.com/img/Handler.png">
+<meta property="og:updated_time" content="2015-12-15T12:18:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler">
-<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客。原文http://kermit95.github.io/2015/08/28/handler%E6%80%">
+<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+
+概述 Handler是android用来更新UI，处理消息的机制">
   
     <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
@@ -234,7 +241,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/</a></p>
+        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">王凯的博客</a></p>
 <hr>
 <h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
 <h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>
@@ -273,6 +280,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler()&#123;</span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">    Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"hi~~"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">  setContentView(R.layout.activity_main);</span><br><span class="line">  Message message = Message.obtain();</span><br><span class="line">  message.sendToTarget();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p> Handler持有：messagequeue, callback。在Handler的构造方法中，获得当前线程的looper的messageqeue(这也是为什么要先Looper.prepare()后new Handler()的原因，必须先要有looper才会有messagequeue)，至于callback:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">    handleCallback(msg);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    handleMessage(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##图解：<br><img src="/img/Handler.png" alt="图解"></p>
 
       
     </div>

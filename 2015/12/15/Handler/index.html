@@ -5,23 +5,23 @@
   
   <title>Handler | 徐志的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+  <meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
 
-概述 Handler是android用来更新UI，处理消息的机制">
+概述 Handler是android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Handler">
 <meta property="og:url" content="http://yoursite.com/2015/12/15/Handler/index.html">
 <meta property="og:site_name" content="徐志的博客">
-<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
 
-概述 Handler是android用来更新UI，处理消息的机制">
+概述 Handler是android">
 <meta property="og:image" content="http://yoursite.com/img/Handler.png">
-<meta property="og:updated_time" content="2015-12-28T09:10:05.000Z">
+<meta property="og:updated_time" content="2015-12-28T09:12:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler">
-<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文王凯的博客
+<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
 
-概述 Handler是android用来更新UI，处理消息的机制">
+概述 Handler是android">
   
     <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
@@ -241,7 +241,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">王凯的博客</a></p>
+        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">王凯的博客</a></p>
 <hr>
 <h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
 <h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>

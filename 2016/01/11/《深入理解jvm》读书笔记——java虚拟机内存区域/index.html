@@ -25,7 +25,7 @@
 
 程序计数器
   这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条">
-<meta property="og:updated_time" content="2016-01-11T10:46:53.000Z">
+<meta property="og:updated_time" content="2016-01-11T10:49:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《深入理解jvm》读书笔记——java虚拟机内存区域">
 <meta name="twitter:description" content="java的虚拟机内存区域运行时数据区1.方法区（method area）
@@ -267,7 +267,7 @@
 <p><strong>线程恢复跟这个也有关系。当线程恢复之后，这个计数器标识的行号就是这个线程断开的位置记录，每一个线程独自拥有一个计数器</strong></p>
 <p><strong>如果虚拟机现在执行的是java方法，那么计数器记录的是正在执行的虚拟机字节码指令位置，如果执行的是native方法，那么不记录。</strong></p>
 <blockquote>
-<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：</p>
+<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：<br><a id="more"></a></p>
 </blockquote>
 <p>　　１、在Java中声明native()方法，然后编译；</p>
 <p>　　２、用javah产生一个.h文件；</p>

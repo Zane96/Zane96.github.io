@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/01/22/DI理解以及Dagger生成代码分析/index.html">
 <meta property="og:site_name" content="徐志的博客">
 <meta property="og:description" content="前言  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之">
-<meta property="og:updated_time" content="2016-01-22T14:34:57.000Z">
+<meta property="og:updated_time" content="2016-01-22T14:47:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DI理解以及Dagger生成代码分析">
 <meta name="twitter:description" content="前言  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之">
@@ -237,7 +237,7 @@
         <h1 id="前言">前言</h1><p>  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之前先去学习java注解和反射，因为dagger确实不好理解，如果有了注解基础学习起来会更轻松。</p>
 <p>  以前看人家大牛的项目都有个inject包，以前想当然的以为就是个注解包。。也不懂里面的component和module包是干嘛的。现在想想，也又算一种进步吧！</p>
 <h2 id="依赖注入？（DI_and_IOC）">依赖注入？（DI and IOC）</h2><blockquote>
-<p>其实依赖注入也是为了模块<strong>解耦</strong>，你会发现一切一切，不论是mvp还是dagger都是为了模块解耦。dagger和mvp结合起来还可以做到把m-v-p之间进一步解耦。所谓耦合就是两个模块联系在了一起，什么意思呢？比如一个模块A里面new了另一个模块B的对象，这时候就说两个模块耦合在了一起，如果现在B模块的构造函数做了修改，那么你还需要去修改模块A里面的代码。而我们希望的是B无论怎么修改都不会影响模块A。（联系mvp模式，无论m层怎么修改，都不会影响v层）而依赖注入可以用两种方法来解决：</p>
+<p>其实依赖注入也是为了模块<strong>解耦</strong>，你会发现一切一切，不论是mvp还是dagger都是为了模块解耦。dagger和mvp结合起来还可以做到把m-v-p之间进一步解耦。所谓耦合就是两个模块联系在了一起，什么意思呢？比如一个模块A里面new了另一个模块B的对象，这时候就说两个模块耦合在了一起，如果现在B模块的构造函数做了修改，那么你还需要去修改模块A里面的代码。而我们希望的是B无论怎么修改都不会影响模块A。（联系mvp模式，无论m层怎么修改，都不会影响v层）而依赖注入可以用两种方法来解决：<br><a id="more"></a></p>
 </blockquote>
 <p>1.传递依赖：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  B b;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(B b)</span></span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.b = b;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

@@ -17,7 +17,7 @@ context有两个子类一个是ContextWrapper：上下文功能封装类,Context
 android代码与java代码的最大差别就是，android的组件必须通过context来创建实例。context是安卓的一个类，四大组件包括application类的最终父类都是context类。它是维持安卓各种组件能够正常工作的一个核心类。
 
 context有两个子类一个是ContextWrapper：上下文功能封装类,ContextImpl：上下文功能的实现类">
-<meta property="og:updated_time" content="2015-12-15T12:32:58.000Z">
+<meta property="og:updated_time" content="2016-01-22T14:48:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Context学习笔记">
 <meta name="twitter:description" content="Context—上下文环境。
@@ -262,6 +262,7 @@ context有两个子类一个是ContextWrapper：上下文功能封装类,Context
 <blockquote>
 <p>context造成的内存泄漏。在单例模式或者引用静态变量的时候，尽量避免用activity的context,因为静态变量的生命周期是整个应用。如果一个activity销毁了，那么他的context不能被销毁就造成了内存泄漏。所以尽量用application来代替。</p>
 </blockquote>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>

@@ -13,7 +13,7 @@
 <meta property="og:description" content="前言  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇《MVP的一种新的尝试》 ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:项目地址 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：githubQuery 。我在想做这套框架之">
 <meta property="og:image" content="http://yoursite.com/img/EasyMVP.png">
 <meta property="og:image" content="http://yoursite.com/img/EasyMVP2.png">
-<meta property="og:updated_time" content="2016-01-28T11:57:33.000Z">
+<meta property="og:updated_time" content="2016-01-28T12:05:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MVP开发框架的一次尝试——EasyMVP">
 <meta name="twitter:description" content="前言  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇《MVP的一种新的尝试》 ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:项目地址 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：githubQuery 。我在想做这套框架之">
@@ -244,7 +244,7 @@
 </li>
 <li><p>开始想用dagger进一步把v-p-m解耦，后来发现不用了，，</p>
 <p>具体不足请看前言中的借鉴文章！</p>
-<hr>
+<a id="more"></a>
 <h2 id="EasyMVP">EasyMVP</h2><h3 id="介绍">介绍</h3><p>1.使用泛型来使view和presenter解耦，通过编译期间从子activity传递过来的view类型反射获得具体view类型。并且框架完成activity的视图渲染，并且提供同步activity生命周期的函数供开发者使用。</p>
 <p>2.默认使用butterknife作为view的依赖注入。</p>
 <p>3.adapter作为presenter，并且与viewholder完全解耦，viewholder归入view层。默认使用recycle view。（别再提listview了）</p>
@@ -279,6 +279,7 @@
 <h1 id="总结">总结</h1><blockquote>
 <p>这是我第一次去尝试写一个框架出来，并且借鉴了很多别人的思想。而且实践的次数不多，算是自己迈出的第一步吧，以后肯定会遇到越来越多的问题，但是很值得。突然发现我这么一个小小的框架都需要想很多问题，那些牛逼框架能设计出来真是不容易。</p>
 </blockquote>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 </li>
 </ol>
 

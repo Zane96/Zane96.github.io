@@ -14,7 +14,7 @@
 <meta property="og:image" content="http://yoursite.com/img/githubquery依赖注入图.png">
 <meta property="og:image" content="http://yoursite.com/img/githubquery依赖注入图2.png">
 <meta property="og:image" content="http://yoursite.com/img/githubquery项目架构图.png">
-<meta property="og:updated_time" content="2016-03-01T12:58:04.000Z">
+<meta property="og:updated_time" content="2016-03-01T13:01:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MVP中Model的进一步细化——DataManager">
 <meta name="twitter:description" content="前言  首先上篇文章讲到的是依赖注入（dagger），然后我使用rxjava, retrofit, dagger2, mvp做了一个练手app——githubQuery，算是第一次尝试吧。再是mvp用的是我自己的一个框架EasyMVP。然后在model层我学习了一个老外的想法，抽出来了一个叫datamanager的东西，它属于model层，用于过滤和操作从model层得到的数据。主要的目的是方便d">
@@ -241,7 +241,7 @@
 <h3 id="依赖注入图">依赖注入图</h3><p><img src="/img/githubquery依赖注入图.png" alt="依赖注入图"></p>
 <p><img src="/img/githubquery依赖注入图2.png" alt="依赖注入图2"></p>
 <p>  可以看到我在ActivityComponent中的API是抛出了很多的inject方法用来注入其他所有的activity，但是这种做法适合小项目，项目大了之后，如果每个activity的依赖需求不同还是很麻烦，所以最好一个activity一个component。对照这个图看代码基本问题不大，我记得当时对于@Inject这个注解的理解不是很深刻！</p>
-<p>  DataManager相当于是model所有数据源的代理层，作为ApplicaitonComponent的API暴露出来，然后作为ActivityComponent的依赖注入进去。</p>
+<p>  DataManager相当于是model所有数据源的代理层，作为ApplicaitonComponent的API暴露出来，然后作为ActivityComponent的依赖注入进去。<br><a id="more"></a></p>
 <h4 id="@Inject()">@Inject()</h4><p>  如果@Inject标注的是构造方法。那么表明这个类的对象也是依赖注入图里面的一员，前提是这个构造函数里面的所有参数都是来自依赖注入图（@provide）。</p>
 <h3 id="项目架构图">项目架构图</h3><p><img src="/img/githubquery项目架构图.png" alt="项目架构图"></p>
 <p><strong>注意，我的mvp开发模式是将activity,fragment作为presenter。</strong></p>

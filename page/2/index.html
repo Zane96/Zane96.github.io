@@ -198,6 +198,84 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Android-Touch-System" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/13/Android-Touch-System/" class="article-date">
+  	<time datetime="2015-11-13T12:28:08.000Z" itemprop="datePublished">2015-11-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/13/Android-Touch-System/">Android Touch System(一)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言">前言</h1><blockquote>
+<p>之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。</p>
+</blockquote>
+<hr>
+<h2 id="Android如何处理触摸事件">Android如何处理触摸事件</h2><h4 id="MotionEvent">MotionEvent</h4><blockquote>
+<p>我相信MotionEvent这个sdk提供的常量大家应该不陌生吧。这是android系统给我们封装好的用来存储touch事件的东西。它包含了很多你感兴趣的东西。比如触摸的时间，触摸的手指数，触摸的地点等等。。。而它又分为action_down, action_up等等很多类型。开发者可以通过这些名字来分别触摸事件的类别，我相信大家也用到过这些。</p>
+</blockquote>
+<ul>
+<li>action_down 所有的触摸事件开始于这个。也就是你的手指触摸到屏幕的时候产生的事件。</li>
+<li>action_up 所有的触摸事件终止于这个。也就是你的手指离开屏幕。</li>
+<li>action_move 手指在屏幕滑动。</li>
+<li>action_cancel 当一个view在消费某个事件的时候，如果你要把这个事件转给其他的view会用到这个。</li>
+</ul>
+<blockquote>
+<p>以上时最基本的，也就是说，一个完整的手势定义就是开始于down，然后接受其他的事件，然后终止于up。周而复始。你自己新定义的手势必须遵循这个原则。</p>
+</blockquote>
+<hr>
+<h4 id="Android的事件分发机制">Android的事件分发机制</h4><blockquote>
+<p>首先，清楚一点，你的activity优先于所有你的activity里面的view获得触摸事件。因为他是你的可视图的顶层。然后这个事件流会被activity的<strong>dispatchTouchEvent()</strong> 方法分发给自己的子view。这是系统框架自己做的事情。我们知道就好。如果子view里面又有viewgroup，那么这个viewgroup又会把事件流拿到分发给自己的子view。这就是一个视图结构树。</p>
+</blockquote>
+<p><img src="/img/touch event.png" alt=""><br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/13/Android-Touch-System/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Github-node-js-hexo搭建我的个人博客" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

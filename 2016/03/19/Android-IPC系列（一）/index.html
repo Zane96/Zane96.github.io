@@ -5,18 +5,21 @@
   
   <title>Android-IPC系列（一） | 徐志的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神">
+  <meta name="description" content="未经博主同意，不得转载该篇文章
+前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的frame">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android-IPC系列（一）">
 <meta property="og:url" content="http://yoursite.com/2016/03/19/Android-IPC系列（一）/index.html">
 <meta property="og:site_name" content="徐志的博客">
-<meta property="og:description" content="前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神">
+<meta property="og:description" content="未经博主同意，不得转载该篇文章
+前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的frame">
 <meta property="og:image" content="http://yoursite.com/img/ipc1.png">
 <meta property="og:image" content="http://yoursite.com/img/ipc2.png">
-<meta property="og:updated_time" content="2016-03-19T07:53:31.000Z">
+<meta property="og:updated_time" content="2016-03-19T08:03:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-IPC系列（一）">
-<meta name="twitter:description" content="前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神">
+<meta name="twitter:description" content="未经博主同意，不得转载该篇文章
+前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的frame">
   
     <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
@@ -236,7 +239,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言">前言</h1><p>  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神学长交流，以保证文章的可靠性。这篇文章我将以自己的语言总结对于ipc的学习成果～</p>
+        <p><strong>未经博主同意，不得转载该篇文章</strong></p>
+<h1 id="前言">前言</h1><p>  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神学长交流，以保证文章的可靠性。这篇文章我将以自己的语言总结对于ipc的学习成果～</p>
 <h2 id="几个概念">几个概念</h2><p>1.<strong>Binder</strong>:</p>
 <p>  Binder是安卓的一个类，实现了Binder接口（后面多次出现）。Binder我理解成安卓IPC机制的核心，也就是实现IPC的核心工具。它不仅用于安卓开发层还用于安卓的framework层。在架构层里面binder是各种系统manager之间连接的工具（WindowManager, ActivityManager等等）。开发层用于service，别告诉我你不知道service里面会返回一个IBinder。</p>
 <p>2.<strong>AIDL</strong>:</p>
@@ -249,6 +253,7 @@
 <p>这个问题我专门请教了一个学长～</p>
 </blockquote>
 <p>  Linux没有很严格的纯粹进程概念。一堆线程共享一块内存区域就是一个进程。当你的手机启动的时候，系统会启动一个init进程，这个应该可以成为Linux的主进程了。之后的所有进程都是从init进程fork出来的，比如zygote进程和SystemServer进程。</p>
+  <a id="more"></a>
 <p>4.<strong>zygote进程</strong></p>
 <p>  顾名思义（受精卵），这个进程会像个受精卵一样不停的“分裂”，去fork出别的进程。几乎后面出现的所有进程都是从这个进程fork出来的。包括SystemServer进程，ActivityManagerService等等。但是具体来说，AMS是SystemServer里面fork出来的。也许你会问为什么要这样做，那是因为这样设计更高效（当然我只是个普通的开发者，并不懂那些大神是怎么想的哈哈）。</p>
 <p>4.<strong>ActivityManagerService</strong>:</p>
@@ -311,6 +316,7 @@
 <h1 id="总结">总结</h1><p>  开始准备一篇文章直接写完。。发现得需要两篇了！</p>
 <p>  这篇文章我们解决了一些IPC的基本概念知识and通过aidl学习binder的工作原理。</p>
 <p>  <strong>啊啊，，，突然发烧了卧槽，好难受，下篇我们接着说AIDL的使用！</strong></p>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>

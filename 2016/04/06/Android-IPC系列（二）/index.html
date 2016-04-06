@@ -15,9 +15,9 @@ Android_IPC系列(一)
 <meta property="og:description" content="前言  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。虽然我学的很浅，但是我尽量保证自己写的都是对的！ 来一波binder的最新认识总结吧！～
 Android_IPC系列(一)
 上一">
-<meta property="og:image" content="http://yoursite.com/img/ipc2-2.png">
 <meta property="og:image" content="http://yoursite.com/img/ipc2-1.png">
-<meta property="og:updated_time" content="2016-04-06T05:49:12.000Z">
+<meta property="og:image" content="http://yoursite.com/img/ipc2-2.png">
+<meta property="og:updated_time" content="2016-04-06T05:58:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-IPC系列（二）">
 <meta name="twitter:description" content="前言  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。虽然我学的很浅，但是我尽量保证自己写的都是对的！ 来一波binder的最新认识总结吧！～
@@ -253,7 +253,7 @@ Android_IPC系列(一)
 </ol>
 <hr>
 <h2 id="一些补充知识">一些补充知识</h2><p>1.<strong>UserSpace, KernelSpace ,用户态，内核态</strong></p>
-<p>  用户空间和内核空间。内核空间是linux系统的核心，可以访问受保护资源和所有的硬件设备的权限。内核独立于应用程序，看起来是系统内部的一个应用。kernel有自己的保护措施，告知其他应用程序他拥有什么权限。所以在逻辑上，将kernal和应用程序抽离成两块空间。</p>
+<p>  用户空间和内核空间。内核空间是linux系统的核心，可以访问受保护资源和所有的硬件设备的权限。内核独立于应用程序，看起来是系统内部的一个应用。kernel有自己的保护措施，告知其他应用程序他拥有什么权限。所以在逻辑上，将kernal和应用程序抽离成两块空间。<br><a id="more"></a></p>
 <p>  当某个应用程序需要访问内核资源的时候，可以通过系统调用来接入内核。然后内核会来控制这个应用程序对资源的访问，防止这个程序破坏系统资源，保证安全。这时候就会称这个进程处于<strong>内核态</strong> 。当应用程序在跑自己的代码的时候，就称为<strong>用户态</strong>。</p>
 <p>2.<strong>Binder驱动</strong></p>
 <p>  Linux系统内部是支持socket，信号量等进程通信的，但是安卓系统在性能和安全两个方面设计了自己的进程通信方式：Binder。两个用户空间想要通信，必须通过内核空间来支持。所以安卓就是将binder驱动作为内核模块添加到Linux Kernel。Binder驱动运行在kernel空间，支持用户空间的通信，可以堪称一个桥梁，所有包含binder的数据包传输都会通过binder驱动来完成，无一例外！在binder驱动里面，binder的实体和引用是以节点（struct）的形式存在的，包括server的binder实体，clinet里面拥有的binder引用，内核的0号应用以及SM的binder实体（后两者后面会提到）。</p>
@@ -270,7 +270,7 @@ Android_IPC系列(一)
 <p>  在客户端：同样的，我们在客户端也需要去实现Binder，只不过这个binder是SM转发给我们的，如果客户端和服务端在同一个进程，那么就会返回binder实体，如果不在同一个进程就会返回binder的代理。由于binder代理和binder实体都是实现了AIDL接口的类。所以客户端看不出来这个binder是实体或是引用。如果你做过IPC通信，你会知道以上的过程是通过asInterface(IBiner binder)这个方法实现的。</p>
 <hr>
 <h2 id="实现流程">实现流程</h2><p>  直接上一张我自己画的简介图！</p>
-<p><img src="/img/ipc2-2.png" alt="简介图"></p>
+<p><img src="/img/ipc2-1.png" alt="简介图"></p>
 <p>  可以很清楚的看出，binder驱动是整个流程的核心！</p>
 <p>  1.Server将自己的binder通过binder驱动在SM中进行注册。</p>
 <p>  2.binder驱动会建立一个binder实体的数据节点和实体的引用。</p>
@@ -278,11 +278,12 @@ Android_IPC系列(一)
 <p>  4.Client通过binder驱动拿着他所需要的binder名字向SM请求binder。</p>
 <p>  5.SM在自己的查找表里面找到对应的引用之后再通过binder驱动返回给client。</p>
 <p>  好了，再来一张我在一位大牛博客里面截下来的图片，这个流程描述就更具体了：</p>
-<p><img src="/img/ipc2-1.png" alt="具体图"></p>
+<p><img src="/img/ipc2-2.png" alt="具体图"></p>
 <p>  其实就是多了binder驱动里面的一些数据结构节点和一个叫0号引用的东西。那么这个0号引用是什么呢？我们知道SM, Client, Server都是运行在三个不同的进程的。那么第一步Server要向SM注册自己binder的信息，那么这里已经涉及到了跨进程通信了。那么这个进程通信是怎么实现的呢？通过上图可以看到，所有的Client里面的0号引用都指向了SM里面的binder。也就是说SM和其他所有Server通信的过程都是SM先通过特殊的命令在biner驱动中建立了自己binder的实体节点，并且其他所有地方的0号引用都默认留给SM的binder实体引用。</p>
 <hr>
 <h1 id="结束语">结束语</h1><p>  上一篇文章讲的AIDL生成代码的分析，本来准备第二篇总结一下AIDL的使用。后来通过不断的学习觉得这篇文章讲的东西更值得总结！</p>
 <p>  总之，binder要学习的东西还是很多。比如binder协议，binder传输数据包类型，binder在驱动里面的数据结构，缓存和线程池管理等等…<strong>Binder在安全性，效率性都优于Linux系统默认支持的IPC通信方式,拥有面向对象的设计原理。</strong></p>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>

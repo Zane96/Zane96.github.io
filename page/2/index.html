@@ -198,6 +198,78 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-关于RecycleView显示异步加载图片乱序的问题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/" class="article-date">
+  	<time datetime="2015-11-26T14:41:45.000Z" itemprop="datePublished">2015-11-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/">关于RecycleView显示异步加载图片乱序的问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="关于RecycleView显示加载图片乱序的问题">关于RecycleView显示加载图片乱序的问题</h1><h1 id="前言">前言</h1><blockquote>
+<p>本来之前都在准备touch的第二篇博客。但是突然想起之前做的一个项目中和搭档一起遇到一个问题，就是recycleview的item中的imageview显示图片错位（网络加载图片）。当然。。当时在做项目，自然就是赶紧找解决办法呗，看了官方教程和郭神的博客，但是只看他们的教程还是没有很好的解决，因为我们的东西是有些item的imageview为空，而他们讲的都是所有item的imageview都有图片。不过最后也还是稀里糊涂的解决了哈哈。昨天自己写了一个demo,放在我的github嗒。通过源码和大神们的博客想总结一下这个问题。<a href="https://github.com/Zane-cqupt/BestBitmapDownload">源码地址</a></p>
+</blockquote>
+<h2 id="关于这个问题">关于这个问题</h2><blockquote>
+<p>如果大家看过郭神的博客或者自己遇到过，就会知道解决这个问题有三种方法，第一是给imageview设置tag，第二是我用到的，给AsyncTask和imageview双向添加弱引用，进行逻辑判断。第三当然就是用第三方库啰，比如volley的图片加载或者现在最牛逼的fresco！第三方库的控件之所以能解决这个问题，其实就是自己内部做了处理。虽然提倡<strong>不要造重复的轮子</strong> ,但是得知道轮子时怎么造出来的。而我们遇到的问题（有些item的imageview为空图）连第三方库都不能解决。通过看imageview的源码，很快也解决了这个问题。那么recycleview显示异步加载图片错位的原因是什么呢？</p>
+</blockquote>
+<p><img src="/img/4.1.png" alt="图解"></p>
+<blockquote>
+<p>RecycleView和ListView一样，每个item里面的控件<strong>都是复用的</strong> ！也就是说不可能你有10k个item系统就给你提供10k个imageview，要不然系统造就gg了。所以正是这个原因也导致了我们遇到的这个坑。系统真正提供给你的imageview可能只有显示的item多一点点～</p>
+</blockquote>
+<p><img src="/img/4.2.png" alt=""></p>
+<blockquote>
+<p>从这个图你就可以清楚的知道为什么会错乱了。首先<strong>itemA处于显示状态，然后隐藏，那么他的imageview被收回到recycleBin等待下一次被利用。并且这个imageview已经跟一个drawable关联了，这个drawable就是task请求的结果，task是否在被回收之前已经完成自己的使命并不确定。接下来itemB从隐藏变成了显示状态。那么itemA的那个imageview就可能会被系统拿去给itemB使用。一旦使用就会导致图片错乱。也就是说，，一个imageview就有了两个task，两个drawble…不错乱才怪了</strong> 。</p>
+</blockquote>
+<h2 id="解决它！">解决它！</h2>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Android-Touch-System" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

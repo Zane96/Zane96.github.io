@@ -198,6 +198,76 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Handler" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/15/Handler/" class="article-date">
+  	<time datetime="2015-12-15T11:57:16.000Z" itemprop="datePublished">2015-12-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/15/Handler/">Handler</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/">王凯的博客</a></p>
+<hr>
+<h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
+<h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>
+<li>方法一</li>
+</ul>
+<p> 新建handler对象，并覆写handleMessage()，在主线程中开启一个子线程，进行耗时操作（比如下载图片），得到图片之后，利用handler的sendMessage()，将图片发送给handler，在handleMessage()中进行UI的更新。发送时有两种方式，一种是’handler.sendMessage()’，一种是’message.sendToTarge()’。</p>
+<ul>
+<li>方法二</li>
+</ul>
+<p> 用view的post方法，post方法接收一个runnable对象，该方法将这个runnable对象发送至主线程执行。</p>
+<h3 id="原理">原理</h3><p> 上述方法都是从非UI线程发送消息到UI线程，通知UI线程进行界面更新。</p>
+<p> Android使用消息机制实现线程间的通信，线程通过Looper建立自己的消息循环，MessageQueue是FIFO的消息队列，Looper负责从MessageQueue中取出消息，并且分发到消息指定目标Handler对象。Handler对象绑定到线程的局部变量Looper，封装了发送消息和处理消息的接口。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/12/15/Handler/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MVP模式的一种新尝试" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

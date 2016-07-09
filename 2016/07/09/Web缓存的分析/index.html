@@ -17,8 +17,9 @@ Web缓存的好处
 Web缓存的好处
 缓存可以减少手机流量的消耗
 可以更快的响应用户的操作">
+<meta property="og:image" content="http://yoursite.com/img/web.png">
 <meta property="og:image" content="http://yoursite.com/img/web2.png">
-<meta property="og:updated_time" content="2016-07-09T06:40:55.000Z">
+<meta property="og:updated_time" content="2016-07-09T06:47:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web缓存的分析">
 <meta name="twitter:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
@@ -283,7 +284,7 @@ Web缓存的好处
 <li>大型的广域网内缓存：<strong>三级缓存</strong> ，大型的，代价高，容量大的缓存代理</li>
 </ul>
 <h3 id="Web缓存的流程">Web缓存的流程</h3><p>先上张图：</p>
-<p><img src="" alt="流程">/img/web.png)</p>
+<p><img src="/img/web.png" alt="流程"></p>
 <ol>
 <li>在客户端发起一次请求的时候，首先一层一层的缓存会根据算法判断缓存中是否存在文档副本，如果不存在的话就会像资源服务器或者父代理缓存服务器（上一级缓存服务器）继续请求客户端需要的资源。</li>
 <li>如果资源副本存在的话就会根据资源的元数据（记录资源在缓存中保存了多长时间以及它被用了多少次）来计算资源的新鲜度，如果资源新鲜的话就直接返回给客户端</li>
@@ -295,9 +296,46 @@ Web缓存的好处
 <ul>
 <li><p>过期时期(新鲜生存期)</p>
 <p>过期时期可以通过Cache-Control的max-age和max-stale或者Expires来设置。其中，Cache-Control中指定的是相对时间，而Expries指定的是数据过期的绝对时间。但是资源服务器的时间经常会出现与客户端不同步的情况（我就遇到过这种坑。。）所以用相对时间更加合理，并且Cache-Control的优先级要高于Expries。</p>
-<p>| Cache-Control: max-stale = <s>   | 在指定的秒数里面缓存可以提供过期了的数据            |<br>| ——————————– | ——————————- |<br>| Cache-Control: max-age = <s>     | 在指定的秒数里面，缓存里面的数据不会过期            |<br>| Cache-Control: min-fresh = <s>   | 至少在未来<s>秒内数据要保持新鲜               |<br>| Cache-Control: private or public | 私有缓存或者共有缓存                      |<br>| Cache-Control: no-cache          | 提供数据之前必去要去和资源服务器的数据进行比对判断数据是否更新 |<br>| Cache-Control: no-store          | 禁止一切缓存                          |<br>| Cache-Control: must-revalidate   | 告诉缓存，必须严格遵循服务器的规定，验证之后才能提供过期的数据 |<br>| Cache-Contero: only-if-cached    | 只有当缓存中有副本的时候，客户端才能获取一份数据副本      |</s></s></s></s></p>
 </li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>Cache-Control: max-stale = <s></s></th>
+<th>在指定的秒数里面缓存可以提供过期了的数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cache-Control: max-age = <s></s></td>
+<td>在指定的秒数里面，缓存里面的数据不会过期</td>
+</tr>
+<tr>
+<td>Cache-Control: min-fresh = <s></s></td>
+<td>至少在未来<s>秒内数据要保持新鲜</s></td>
+</tr>
+<tr>
+<td>Cache-Control: private or public</td>
+<td>私有缓存或者共有缓存</td>
+</tr>
+<tr>
+<td>Cache-Control: no-cache</td>
+<td>提供数据之前必去要去和资源服务器的数据进行比对判断数据是否更新</td>
+</tr>
+<tr>
+<td>Cache-Control: no-store</td>
+<td>禁止一切缓存</td>
+</tr>
+<tr>
+<td>Cache-Control: must-revalidate</td>
+<td>告诉缓存，必须严格遵循服务器的规定，验证之后才能提供过期的数据</td>
+</tr>
+<tr>
+<td>Cache-Contero: only-if-cached</td>
+<td>只有当缓存中有副本的时候，客户端才能获取一份数据副本</td>
+</tr>
+</tbody>
+</table>
 <p>需要注意的是</p>
 <ol>
 <li><strong>no-cache</strong> 不是不使用缓存而是必须比对了之后才能提供，no-store才是完全禁止缓存</li>

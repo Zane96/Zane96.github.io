@@ -100,6 +100,8 @@
 				        
 							<li><a href="/tags/java">java</a></li>
 				        
+							<li><a href="/tags/web">web</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -113,6 +115,8 @@
 					        
 								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
 					        
+								<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+					        
 						</div>
 					</nav>
 				</section>
@@ -120,7 +124,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
+						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
 					</div>
 				</section>
 				
@@ -177,6 +181,8 @@
 		        
 					<li><a href="/tags/java">java</a></li>
 		        
+					<li><a href="/tags/web">web</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -191,12 +197,145 @@
 			        
 						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
 			        
+						<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+			        
 				</div>
 			</nav>
 		</header>				
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Web缓存的分析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/09/Web缓存的分析/" class="article-date">
+  	<time datetime="2016-07-09T06:39:36.000Z" itemprop="datePublished">2016-07-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/09/Web缓存的分析/">Web缓存的分析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
+<h3 id="Web缓存的好处">Web缓存的好处</h3><ul>
+<li>缓存可以减少手机流量的消耗</li>
+<li>可以更快的响应用户的操作，提升用户体验度</li>
+<li>降低资源服务器的压力，减少并发量</li>
+</ul>
+<h3 id="Web缓存的分类">Web缓存的分类</h3><ul>
+<li><p>手机文件缓存</p>
+<p>由于移动端不像前端，前端开发中浏览器都默认实现了Web缓存，所以我们可以通过请求头的控制来让浏览器自动为我们进行缓存。但是移动端没有这种默认实现Web缓存的容器，所以需要我们自己手动通过文件缓存网络请求过来的报文。Okhttp或者结合Retrofit（一样）都是可以通过OkhttpClient添加一个构造好的Cache实例，其中Cache实例我们需要指定文件路径和大小。具体可以看我这个代码<a href="https://github.com/Zane96/ICY-ClaTable" target="_blank" rel="external">Demo</a></p>
+</li>
+<li><p>CDN缓存（内容分发网关缓存）</p>
+<p>实际上是网关缓存的一种，而网关缓存又叫反向代理缓存（提前接受客户端发来的原始请求，然后进行按需请求分配）。CDN缓存一般是由网站管理员自己部署，为了让他们的网站更容易扩展并获得更好的性能。通常情况下，浏览器先向CDN网关发起Web请求，网关服务器后面对应着一台或多台负载均衡源服务器，会根据它们的负载请求，动态将请求转发到合适的源服务器上。从浏览器角度来看，整个CDN就是一个源服务器，从这个层面来说，浏览器和服务器之间的缓存机制，在这种架构下同样适用。</p>
+</li>
+<li><p>代理服务器缓存</p>
+<p>代理服务器是一种处在客户端和服务端中间的服务器，处在两者之间的网络之中。代理服务器以共享缓存的方式保存着报文副本，可以减少客户端到原始服务器的长距离请求。自然访问同一种报文副本的用户越多，代理服务器的利用率越高，缓存的命中率也越高。</p>
+</li>
+<li><p>数据库缓存</p>
+<p>这是后台开发的时候，缓存从数据库中查找的数据，减少数据库的并发（比如NoSQL）</p>
+</li>
+</ul>
+<h3 id="共有缓存和私有缓存">共有缓存和私有缓存</h3><ul>
+<li>共有缓存(Cache-Control: public)：这种缓存常见的就是代理缓存，意思就是一个用户群体都可以访问这个缓存服务器，这个缓存服务器缓存了所有群体的报文缓存</li>
+<li>私有缓存(Cache-Control: private)：这种缓存常见的就是文件缓存（本地缓存），只允许一个用户个体去访问。</li>
+</ul>
+<h3 id="Web缓存的层次结构">Web缓存的层次结构</h3><p>一般来说，安卓中的图片多级缓存和这个概念不大相同，这里的多级缓存的意思是在客户端和服务端之间部署多级缓存。常见部署如下：</p>
+<ul>
+<li>手机文件缓存（浏览器缓存）: <strong>一级缓存</strong></li>
+<li>小型的局域网内缓存：<strong>二级缓存</strong>，小型的，代价小，容量小的缓存代理</li>
+<li>大型的广域网内缓存：<strong>三级缓存</strong> ，大型的，代价高，容量大的缓存代理</li>
+</ul>
+<h3 id="Web缓存的流程">Web缓存的流程</h3><p>先上张图：</p>
+<p><img src="" alt="流程">/img/web.png)</p>
+<ol>
+<li>在客户端发起一次请求的时候，首先一层一层的缓存会根据算法判断缓存中是否存在文档副本，如果不存在的话就会像资源服务器或者父代理缓存服务器（上一级缓存服务器）继续请求客户端需要的资源。</li>
+<li>如果资源副本存在的话就会根据资源的元数据（记录资源在缓存中保存了多长时间以及它被用了多少次）来计算资源的新鲜度，如果资源新鲜的话就直接返回给客户端</li>
+<li>如果不新鲜的话，会判断资源在缓存中的副本和在资源服务器里面的文本副本是否一致，如果一致表示资源未发生改变，那么仍然还是由缓存返回</li>
+<li>如果资源发生改变，那么由资源服务器来返回资源给客户端，并且用这份资源存入缓存中</li>
+</ol>
+<p>大致流程就是这样，请求－检验－在验证，下面对于过程的细节详细说说：</p>
+<h4 id="文档过期的判断">文档过期的判断</h4><p>缓存数据是否过期是由数据的使用期和过期日期共同决定的。</p>
+<ul>
+<li><p>过期时期(新鲜生存期)</p>
+<p>过期时期可以通过Cache-Control的max-age和max-stale或者Expires来设置。其中，Cache-Control中指定的是相对时间，而Expries指定的是数据过期的绝对时间。但是资源服务器的时间经常会出现与客户端不同步的情况（我就遇到过这种坑。。）所以用相对时间更加合理，并且Cache-Control的优先级要高于Expries。</p>
+<p>| Cache-Control: max-stale = <s>   | 在指定的秒数里面缓存可以提供过期了的数据            |<br>| ——————————– | ——————————- |<br>| Cache-Control: max-age = <s>     | 在指定的秒数里面，缓存里面的数据不会过期            |<br>| Cache-Control: min-fresh = <s>   | 至少在未来<s>秒内数据要保持新鲜               |<br>| Cache-Control: private or public | 私有缓存或者共有缓存                      |<br>| Cache-Control: no-cache          | 提供数据之前必去要去和资源服务器的数据进行比对判断数据是否更新 |<br>| Cache-Control: no-store          | 禁止一切缓存                          |<br>| Cache-Control: must-revalidate   | 告诉缓存，必须严格遵循服务器的规定，验证之后才能提供过期的数据 |<br>| Cache-Contero: only-if-cached    | 只有当缓存中有副本的时候，客户端才能获取一份数据副本      |</s></s></s></s></p>
+</li>
+</ul>
+<p>需要注意的是</p>
+<ol>
+<li><strong>no-cache</strong> 不是不使用缓存而是必须比对了之后才能提供，no-store才是完全禁止缓存</li>
+<li>优先级：no-staore&gt;no-cache&gt;must-revalidate&gt;max-age&gt;Exprise</li>
+</ol>
+<p>在移动端的开发中，如何控制我们的数据缓存过期时间需要移动端和后台共同商量之后得出一套方案，比如像数据不停变换更新的并且数据量不大的，应该禁用缓存以保证数据的及时性，像周刊，课表这种长期不变的数据应该添加上合理的缓存时间。</p>
+<ul>
+<li><p>使用时间</p>
+<p>所谓使用时间就是数据从资源服务器发出之后，到被客户端收到，一共经历了多久。但是使用时期并不容易计算。因为服务器，代理，客户端之间时间不同步，网络延时，网络传输耗时等等都会造成使用时期难以计算。</p>
+<p>1.直接通过Date首部进行计算</p>
+<p>​ 这种计算方式我就被坑过，之前直接设置max-age=3600（一分钟）发现一点缓存效果都没有。我发现响应头的Date首部与现在时间不同，慢了好几天。首先要理解Date首部，<strong>Date首部是服务器发出相应的时间，并且是服务器的绝对时间，并且Date首部只能是资源服务器设置，代理和缓存都不能修改，时间的描述格式由RFC822定义</strong>，所以如果时间不同步的话，直接用客户端时间减去Date来计算使用期是行不通的</p>
+<p>2.通过Age首部进行计算</p>
+<p><strong>Age首部只适用于HTTP/1.1的设备,Age表示数据从产生到现在经过了多长时间，是个相对时间</strong></p>
+<p>通过Age首部，我们可以累加资源在各个代理中存在的时间，加上数据从资源服务器到缓存的网络传输时间（一般用缓存到服务器，服务器到缓存双向的传输时间来保守估计）。</p>
+<p>所以我们可以看出，完整的使用时期计算应该是如下图：</p>
+<p><img src="/img/web2.png" alt=""></p>
+<p>可以看出其实是忽略了客户端到缓存的网络传输时间，多算了缓存到资源服务器的网络传输时间</p>
+<p>​</p>
+<h3 id="再验证">再验证</h3><p>如果第一次缓存未命中的话，就会进行服务器再验证。用来判断服务器的资源是否发生改变。</p>
+<ul>
+<li><p>If-Modified-Since与Last-Modified(基于Date的再验证)</p>
+<p>If-Modified-Since是请求字段，值为一个绝对时间，用于通知服务器在这个时间之前，默认资源是未被修改的（不去进行再验证），如果超过了这个时间，就会将这个时间和资源最后修改的时间进行对比，如果小于资源最后修改的时间，那么Last-Modified响应首部会返回资源最后被修改的时间，并且返回200.如果大于最后修改的时间，那么Last-Modified响应首部会返回304表示资源未被修改。</p>
+</li>
+<li><p>If-None-Match和ETag(基于实体标签的再验证)</p>
+<p>ETag可以看作是资源的版本号，并且在强验证器下，资源发生细微的变化都会导致ETag的变化，在弱验证器下，资源发生细微的变化都不会导致ETag的变化，这个“细微”度量标准是由后台开发人员来确定的。客户端可以根据If-Modified-Since来添加你现在所拥有的ETag版本号，发送给服务器，然后服务器进行比较。如果版本号不同，那么就会返回200，并且将最新的ETag值添加到ETag响应头里面。如果相同，返回304.</p>
+<p>​</p>
+<p>两者之间并没有优先级之分，如果同时存在，那么客户端和服务端应该将两者综合起来考量。</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-《深入理解jvm》读书笔记——类加载机制" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -790,76 +929,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/01/16/大二上学期总结/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-《深入理解jvm》读书笔记——java虚拟机内存区域" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/" class="article-date">
-  	<time datetime="2016-01-11T10:46:11.000Z" itemprop="datePublished">2016-01-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/">《深入理解jvm》读书笔记——java虚拟机内存区域</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="java的虚拟机内存区域">java的虚拟机内存区域</h1><h2 id="运行时数据区">运行时数据区</h2><p>1.方法区（method area）</p>
-<p>2.堆（heap）</p>
-<p>3.虚拟机栈（VM Stack）</p>
-<p>4.本地方法栈（native method stack）</p>
-<p>5.程序计数器（program counter register）</p>
-<hr>
-<h3 id="程序计数器">程序计数器</h3><blockquote>
-<p>  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条字节码来执行。</p>
-</blockquote>
-<p><strong>线程恢复跟这个也有关系。当线程恢复之后，这个计数器标识的行号就是这个线程断开的位置记录，每一个线程独自拥有一个计数器</strong></p>
-<p><strong>如果虚拟机现在执行的是java方法，那么计数器记录的是正在执行的虚拟机字节码指令位置，如果执行的是native方法，那么不记录。</strong></p>
-<blockquote>
-<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

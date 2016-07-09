@@ -19,7 +19,7 @@ Web缓存的好处
 可以更快的响应用户的操作">
 <meta property="og:image" content="http://yoursite.com/img/web.png">
 <meta property="og:image" content="http://yoursite.com/img/web2.png">
-<meta property="og:updated_time" content="2016-07-09T06:49:34.000Z">
+<meta property="og:updated_time" content="2016-07-09T06:53:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web缓存的分析">
 <meta name="twitter:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
@@ -364,12 +364,12 @@ Web缓存的好处
 </li>
 <li><p>If-None-Match和ETag(基于实体标签的再验证)</p>
 <p>ETag可以看作是资源的版本号，并且在强验证器下，资源发生细微的变化都会导致ETag的变化，在弱验证器下，资源发生细微的变化都不会导致ETag的变化，这个“细微”度量标准是由后台开发人员来确定的。客户端可以根据If-Modified-Since来添加你现在所拥有的ETag版本号，发送给服务器，然后服务器进行比较。如果版本号不同，那么就会返回200，并且将最新的ETag值添加到ETag响应头里面。如果相同，返回304.</p>
-<p>​</p>
 <p>两者之间并没有优先级之分，如果同时存在，那么客户端和服务端应该将两者综合起来考量。</p>
 </li>
 </ul>
 </li>
 </ul>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>

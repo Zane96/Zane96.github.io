@@ -214,6 +214,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-DI理解以及Dagger生成代码分析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/22/DI理解以及Dagger生成代码分析/" class="article-date">
+  	<time datetime="2016-01-22T14:34:03.000Z" itemprop="datePublished">2016-01-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/22/DI理解以及Dagger生成代码分析/">DI理解以及Dagger生成代码分析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言">前言</h1><p>  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之前先去学习java注解和反射，因为dagger确实不好理解，如果有了注解基础学习起来会更轻松。</p>
+<p>  以前看人家大牛的项目都有个inject包，以前想当然的以为就是个注解包。。也不懂里面的component和module包是干嘛的。现在想想，也又算一种进步吧！</p>
+<p>  <strong>大家可以通过我这个练手app巩固dagger的用法</strong> :<a href="https://github.com/Zane96/GithubQuery">githubQuery</a></p>
+<h2 id="依赖注入？（DI_and_IOC）">依赖注入？（DI and IOC）</h2><blockquote>
+<p>其实依赖注入也是为了模块<strong>解耦</strong>，你会发现一切一切，不论是mvp还是dagger都是为了模块解耦。dagger和mvp结合起来还可以做到把m-v-p之间进一步解耦。所谓耦合就是两个模块联系在了一起，什么意思呢？比如一个模块A里面new了另一个模块B的对象，这时候就说两个模块耦合在了一起，如果现在B模块的构造函数做了修改，那么你还需要去修改模块A里面的代码。而我们希望的是B无论怎么修改都不会影响模块A。（联系mvp模式，无论m层怎么修改，都不会影响v层）而依赖注入可以用两种方法来解决：<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/01/22/DI理解以及Dagger生成代码分析/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-大二上学期总结" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -864,90 +926,9 @@
 
 
   
-    <article id="post-自定义widget（组合view和自定义属性）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/06/自定义widget（组合view和自定义属性）/" class="article-date">
-  	<time datetime="2015-11-06T13:50:50.000Z" itemprop="datePublished">2015-11-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/06/自定义widget（组合view和自定义属性）/">自定义widget（组合view和自定义属性）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><blockquote>
-<p>在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（<a href="http://blog.csdn.net/aigestudio/article/category/2397181">爱哥的csdn</a>），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成</p>
-</blockquote>
-<ul>
-<li><p><em>继承view</em></p>
-</li>
-<li><p><em>组合view</em></p>
-</li>
-<li><p><em>自己画的view（用paint和canvas）</em></p>
-</li>
-<li><p><em>自定义viewgroup（widget）</em></p>
-<p>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</p>
-</li>
-</ul>
-<h2 id="ImageButton">ImageButton</h2><blockquote>
-<p>要实现ImageButton最容易想到的不就是把button和imageview合在一起么。嗯，人容易就想到这是一个组合自定义view。可是如何把一个image放到button上呢，自然就是用一个FrameLayout把button和imageview包裹起来，然后将这个layout当作一个weidgt。把一个layout当成一个控件我开始不太理解。后来了解到一些东西。</p>
-</blockquote>
-<h3 id="补充知识点（安卓的顶层视图）">补充知识点（安卓的顶层视图）</h3><blockquote>
-<p>在android里面，你的app界面的活动的视图并非是最顶级的视图。大家应该都知道viewtree。在安卓里面，最顶级的视图是一个叫DecorView的东西。它包括你的状态栏，标题栏，以及你的活动界面。而且这个活动界面，安卓会自动帮你提前弄进去一个FrameLayout。可以这么理解吧，在安卓这个上帝的面前，你的activity就是放在他的framelayout的一个个view。上一张图～</p>
-</blockquote>
-<p><img src="/img/1.1.png" alt=""></p>
-<p>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
-<blockquote>
-<p>好啦，回归正题。我上代码了。<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/06/自定义widget（组合view和自定义属性）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>

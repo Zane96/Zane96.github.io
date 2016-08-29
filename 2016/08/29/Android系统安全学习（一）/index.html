@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android系统安全学习（一） | 徐志的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="进程：一个可执行文件的活动表现，一次生命的历练
+进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g
+3到4g是内核态，所有进程共享，0到3g是进程的私有空间
+这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程
+操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash
+旧时代的塞班系统，单进程多任务，一个app gg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android系统安全学习（一）">
+<meta property="og:url" content="http://yoursite.com/2016/08/29/Android系统安全学习（一）/index.html">
+<meta property="og:site_name" content="徐志的博客">
+<meta property="og:description" content="进程：一个可执行文件的活动表现，一次生命的历练
+进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g
+3到4g是内核态，所有进程共享，0到3g是进程的私有空间
+这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程
+操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash
+旧时代的塞班系统，单进程多任务，一个app gg">
+<meta property="og:updated_time" content="2016-08-29T11:55:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android系统安全学习（一）">
+<meta name="twitter:description" content="进程：一个可执行文件的活动表现，一次生命的历练
+进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g
+3到4g是内核态，所有进程共享，0到3g是进程的私有空间
+这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程
+操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash
+旧时代的塞班系统，单进程多任务，一个app gg">
+  
+    <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/sql-python-web/" style="font-size: 10px;">sql python web</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Android系统安全学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/29/Android系统安全学习（一）/" class="article-date">
+  	<time datetime="2016-08-29T11:54:14.000Z" itemprop="datePublished">2016-08-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android系统安全学习（一）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>进程：一个可执行文件的活动表现，一次生命的历练</p>
+<p>进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g</p>
+<p>3到4g是内核态，所有进程共享，0到3g是进程的私有空间</p>
+<p>这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程</p>
+<p>操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash</p>
+<p>旧时代的塞班系统，单进程多任务，一个app gg那么整个手机gg</p>
+<p>一个应用是无法访问另一个应用的数据存储地址</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>多用户目录：每个用户都有自己的HOME，独立的工作目录</p>
+<p>用户的访问和操作资源的权限，权限管理</p>
+<p>UID GID，16进制整形值，他们才是进程的特征标志，UserId, GroupId</p>
+<p>用户是静态表现，进程才是用户的动态表现</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>文件是一种资源，，在Linux里面，一切皆是资源</p>
+<p>通过UID来描述文件的Target人群，UID属于GID，如果文件的Target是多个用户，那么就是通过GID来限定权限</p>
+<p>root是超级用户，UID＝0，可以做任何事情</p>
+<p>PID，进程运行的ID，每次可能不同，GIDs进程所属的全部GID</p>
+<p>android的root UID是0，AID_SYSTEM的UID是1000，后面的系统进程只能在1000的基础上累加</p>
+<p>android的AID<em>APP的UID是10000，所有的开发应用进程的userId只能在10000的基础上累加，并且UID是通过100xx减去10000，再在这个数字前面加上APP</em>，APP_XX</p>
+<p>以上都是宏定义的，name和UID的连接关系是通过一个map来做的</p>
+<p>应用的GIDs里面立邦会有一些系统进程的ID，其实就是表明了这些应用的权限</p>
+<p>chmod是用来更改权限，r,w,x分别占用一个bit</p>
+<p>chown是用来修改文件UID和GID的</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>UID分很多种，Real UID用来表明身份，Effective UID用来表示权利的标示，文件对进程的权限访问就是通过Effective UID来进行判断的</p>
+<p>EffectiveUID = root，那么这个进程就是“皇权”进程</p>
+<p>UID世袭遵循，身份UID世袭，权利UID不世袭</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>平民身份需要root权限</p>
+<p>如果可执行文件设置了setUID标志的话，那么在执行这个文件的时候，子进程的Effective UID就不会在去和父进程的Real UID一样，而是会被提升到可执行文件的owner UID（root等）,但是这样之后，自己是否要为自己正身是很关键的问题，一旦正身，自己的子进程将都是root进程</p>
+<p>setUID包含了x这个标志位，占用了x的位置，叫s</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>Capability：与UID相比，细粒度的权限管理，解决权限过剩的问题</p>
+<p>UID粒度大的列子：一个进程只需要一个root的某一个权限，却获得了所有的root的权限。</p>
+<p>”我们不仅需要皇帝，还需要地方官“</p>
+<p>进程的：</p>
+<p>Permitted Capability Sets：这个进程最大的权利范围，围栏</p>
+<p>Effective Capability Sets：这个进程实际使用的权利集合</p>
+<p>Inheritable Capability Sets：这个进程唯一可以直接继承的权限</p>
+<p> Capability BoundSet：Init进程的这个参数默认全部为1，可以被子进程继承</p>
+<p>文件的：</p>
+<p>Permitted Capability Sets：该可执行文件可以为其进程带来的Per Ca Sets</p>
+<p>Effective Capability Sets：该执行文件running所在的进程的Per Ca Stes是否全部添加到Effective Ca Sets，只可能会是两个值，Disable和Able</p>
+<p>Inheritable Capability Sets：与可执行文件所running的进程的父进程的Inher Ca Sets进行位与运算，然后共同决定子进程Per Ca Sets</p>
+<p>计算公式：</p>
+<p>P’(permitted) = (p(inheritable) &amp; F(inheritable)) | (F(permotted) &amp; cap_bset)</p>
+<p>P’(effective) = F(effective) ? P’(permitted) : 0</p>
+<p>P’(inheritable) ＝ P(inheritable)</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>SELinux对于安全性控制的两种模式：</p>
+<p>DAC：传统的安全管理模式，主体（进程）对它所属的对象和运行的程序有全部的控制权，这样一旦病毒程序获得了root，那么病毒将可以为所欲为</p>
+<p>MAC：SELinux基于的安全策略，管理员来控制访问，用户无法改变，默认情况下应用程序和用户程序没有任何的权限，权限都被管理员规定好了</p>
+<p>SEAndroid：将原本运行在Linux系统上的SELinux移植到Android平台，添加了对于Binder IPC, Socket, Properties的访问控制加入到了SEAndroid。目的：即使恶意应用篡夺到了root权限，但是恶意应用仍然会被控制着</p>
+<p>自签名：证书的签名者和拥有者都是一个人，可以作为证书链的根证书，</p>
+<p>证书链：可以回溯到根证书</p>
+<p>权限只会给手机可信任的应用</p>
+<p>权限的完整性保护：通过认证并获得签名再加policy权限，将所有的manifist…resource这些文件打包保护起来，所以签名之后，不可能再去偷偷的添加权限</p>
+<p>权限的授权安全策略：一般的权限，一般的签名可以通过授权，但是特权的权限，只有通过系统内置的私钥签名才能通过授权，所以一般的应用是拿不到特权权限的</p>
+<p>Shared Process UID：</p>
+<p>android:sharedUserId=”xxxx”</p>
+<p>sharedUID相同就可以共享资源，应用进程的UID相同不能共享数据，只能sharedUID相同才行，这样做的话，相当于同一个开发商或者合作的开发商才会使多个app拥有相同的shareUID，也是在manifist里面注明sharedUID</p>
+<p>Android签名：</p>
+<ul>
+<li><p>完整性鉴别：验证apk的完整性（自签名）</p>
+</li>
+<li><p>自签名只能表明自己的身份，但是不能表明身份是否可信任</p>
+</li>
+<li><p>安卓应用的区分标志是Package Name，如果Package Name相同的话，就是进行升级操作，但是升级的要求就是必须签名相同，防止恶意软件冒充其他应用的包名，如果不一致的话，就会先卸载之前的应用，然后再安装新的应用，正常的升级不会删除旧的数据。</p>
+</li>
+<li><p>apk里面的META INF文件夹就是与签名有关的东西</p>
+</li>
+</ul>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>安卓权限类别：</p>
+<ul>
+<li><p>Normal，如果不定义protectionLevel的话，默认就是Normal</p>
+</li>
+<li><p>Dangerous</p>
+</li>
+<li><p>Signature：特权权限，必须被用开发厂商私钥加密的签名的apk才允许使用</p>
+</li>
+<li><p>SignatureOrSystem，必须被用开发厂商和系统私钥加密的签名的aok才允许使用</p>
+</li>
+</ul>
+<p>如果是安卓层级特有的service所提供的服务，那么这样的权限申请将会在Android Framework层进行check out（一个IPC的调用），如果是非安卓特有的服务权限，比如网络请求，文件访问，这些Linux可能就提供了，那么可以通过多个入口进行访问，比如用java的api进行文件读写，而这些权限的check out都是在OS层面统一控制，因此我们需要将这些的权限 mapping到os的GID上。（所有的安卓内置的权限都在framework/base/core/res/mainfest.xml里面定义）</p>
+<p>为什么你在应用的mainfest里面定义了读写文件的权限，就可以去访问了呢？：</p>
+<p>安卓SD Card文件里面的文件，UID为system的权限为空，GID为Sdcard_rw的权限为rex，others的权限为r－x。所以这个应用进程要想读写scared的话，就必须将自己的GIDs里面添加一个Sdacrd_rw，而manifest里面添加的那个权限申请，最后就会将这个权限和Sdcard_rw映射在一起，并且给添加到这个应用进程的GIDs里面</p>
+<p>platform.xml文件定义了一些内置的mapping关系，但是这个文件的更改权限own和group都是root，所以是不能被应用随意篡改的</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>四大组件：呈现层</p>
+<p>activity：相当于是将你的ui(view)，通过一个一个的逻辑块分割开，变成一个一个的具有逻辑的页面</p>
+<p>组件的Public和Private：组件如果public，那么这个组件可以和其他的进程的组件进行通信，如果组件是private的话，那么这个组件只能和自己进程的组件或者和其他应用里面sharedUID相同的组件进行通信。通过android:expored这个字段来控制组件的public和private，如果不声明的话，就是default值。</p>
+<p>default值的理解：如果组件内部通过显示或者隐示的拥有IntentFilter的话，default值就是True，这样其他进程的应用的组件可以通过包名类名来（或者通过一个action等）与这个组件进行通信，如果不拥有IntentFilter的话，那么default值就是False</p>
+<p>如果一个组件是public，但是控制某些人才能启动这个组件，那么就需要在manifest的组件里面声明一个permission，这个permission你自己可以在manifest里面定义，那么其他的应用必须要申请了这个permission才可能会被允许和这个组件进行通信。在service安全中，如果你希望不关关是控制是否能够boun or start这个service而是可以进一步的控制能否调用这个service中的某些功能，那么应该及时的调用checkCallingPermission()这个方法，进行细粒度的检查。在ContentProvider安全里面，一般来说他会提供read和wirte两个功能，所以说，exported可以控制你是否能连接到他，如果要进行下一步的操作，必须要申请有他声明在组件里面的readPermission和writePerrimission两个权限，根据你所需要的功能来进行申请。BroadcastReceiver也是一样的道理，可以声明一个权限</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>应用的安装要对用户可知可控，一定要呈现一个view去给用户控制</p>
+<p>所以一个应用要去安装其他应用，就必要委派给系统的Install App去负责通知用户，如果用户选择了确认安装，那么会进一步调用Install Package这个系统应用去安装，，并且这个应用拥有INSTALL_PACKAGE这个signature|system等级的权限，也就是说，手机只能是通过Install Package这个应用来安装app。在安装的过程中，就会给应用的applicationinfo.uid赋值，会创建工作目录，并且这个工作目录要和uid,gid对应起来，保证私有的读写权限</p>
+<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>首先，所有的调用系统远程服务都是通过Binder进行一次远程调用，而在远程的Binder线程池里面，可以调用getCallingUid()方法，这个方法将获得客户端的进程UID，这个UID将会被用于更高级别的系统服务权限识别（就是看你的应用注册权限没有，没有就蹦掉）</p>
+<p>还有，服务端的服务将会通过Binder运行时的注册到ServiceManager里面，这时，ServiceManager将会检查这个系统服务的UID，来判断是否是可以被注册的服务</p>
+<p> ActivityThread-&gt;ActivityManagerService-&gt;请求Zygote fork子进程-&gt;返回到ActivityThread</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/08/26/利用redis构建多消费者请求队列/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">利用redis构建多消费者请求队列</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Android系统安全学习（一）" data-title="Android系统安全学习（一）" data-url="http://yoursite.com/2016/08/29/Android系统安全学习（一）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

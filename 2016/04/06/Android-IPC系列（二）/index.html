@@ -17,7 +17,7 @@ Android_IPC系列(一)
 上一">
 <meta property="og:image" content="http://yoursite.com/img/ipc2-1.png">
 <meta property="og:image" content="http://yoursite.com/img/ipc2-2.png">
-<meta property="og:updated_time" content="2016-09-12T11:56:06.000Z">
+<meta property="og:updated_time" content="2016-09-12T12:03:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-IPC系列（二）">
 <meta name="twitter:description" content="前言  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。虽然我学的很浅，但是我尽量保证自己写的都是对的！ 来一波binder的最新认识总结吧！～
@@ -293,7 +293,7 @@ Android_IPC系列(一)
 <p>  3.Binder驱动再把名字和引用打包发给SM。</p>
 <p>  4.Client通过binder驱动拿着他所需要的binder名字向SM请求binder。</p>
 <p>  5.SM在自己的查找表里面找到对应的引用之后再通过binder驱动返回给client。</p>
-<p><strong>所有的系统服务在SystemServer进程深沉之后就会被建立并且注册在ServiceManager里面，开发者也可以开发自定义的服务并且注册在ServiceManager里面成为系统级别的服务</strong></p>
+<p><strong>所有的系统服务在SystemServer进程深沉之后就会被建立并且注册在ServiceManager里面，开发者也可以开发自定义的服务并且注册在ServiceManager里面成为系统级别的服务，前提是这个包含服务的应用必须是system用户并且带了system签名（系统安全），否则是不能随意注册的！</strong></p>
 <p>  好了，再来一张我在一位大牛博客里面截下来的图片，这个流程描述就更具体了：</p>
 <p><img src="/img/ipc2-2.png" alt="具体图"></p>
 <p>  其实就是多了binder驱动里面的一些数据结构节点和一个叫0号引用的东西。那么这个0号引用是什么呢？我们知道SM, Client, Server都是运行在三个不同的进程的。那么第一步Server要向SM注册自己binder的信息，那么这里已经涉及到了跨进程通信了。那么这个进程通信是怎么实现的呢？通过上图可以看到，所有的Client里面的0号引用都指向了SM里面的binder。也就是说SM和其他所有Server通信的过程都是SM先通过特殊的命令在biner驱动中建立了自己binder的实体节点，并且其他所有地方的0号引用都默认留给SM的binder实体引用。</p>

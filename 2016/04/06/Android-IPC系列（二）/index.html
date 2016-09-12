@@ -17,7 +17,7 @@ Android_IPC系列(一)
 上一">
 <meta property="og:image" content="http://yoursite.com/img/ipc2-1.png">
 <meta property="og:image" content="http://yoursite.com/img/ipc2-2.png">
-<meta property="og:updated_time" content="2016-04-06T05:58:42.000Z">
+<meta property="og:updated_time" content="2016-09-12T11:56:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-IPC系列（二）">
 <meta name="twitter:description" content="前言  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。虽然我学的很浅，但是我尽量保证自己写的都是对的！ 来一波binder的最新认识总结吧！～
@@ -274,9 +274,9 @@ Android_IPC系列(一)
 <p>2.<strong>Binder驱动</strong></p>
 <p>  Linux系统内部是支持socket，信号量等进程通信的，但是安卓系统在性能和安全两个方面设计了自己的进程通信方式：Binder。两个用户空间想要通信，必须通过内核空间来支持。所以安卓就是将binder驱动作为内核模块添加到Linux Kernel。Binder驱动运行在kernel空间，支持用户空间的通信，可以堪称一个桥梁，所有包含binder的数据包传输都会通过binder驱动来完成，无一例外！在binder驱动里面，binder的实体和引用是以节点（struct）的形式存在的，包括server的binder实体，clinet里面拥有的binder引用，内核的0号应用以及SM的binder实体（后两者后面会提到）。</p>
 <p>  驱动是Binder通信的核心，系统中所有的Binder实体以及每个实体在各个进程中的引用都登记在驱动中；驱动需要记录Binder引用-&gt;实体之间多对一的关系；为引用找到对应的实体；在某个进程中为实体创建或查找到对应的引用；记录Binder的归属地（位于哪个进程中）；通过管理Binder的强/弱引用创建/销毁Binder实体等等。</p>
-<p>3.<strong>SystemService, Binder,Clinet, Server</strong></p>
+<p>3.<strong>ServiceManager, Binder,Clinet, Server</strong></p>
 <p>  在Binder的机制中，SM, Clinet, Server以及上面提到的Binder驱动是很重要的四个部分，而binder就可以看成是这四个部件之间沟通的管道。但是binder在每个部件里面的形态，功能是完全不同的。宏观来看，binder可以看成是安卓跨进程通信的方式，工具，协议。微观的来看，binder可以看成各个部件里面重要的结构，类，binder可以看成binder驱动里面的红黑树数据结构，binder可以看成进程之间传输的数据包。binder作为胶水，将不同的进程粘合在一起，模糊了进程隔离。</p>
-<p>  SystemService是独立于client, server的系统进程。是由zygote进程fork出来的。它在IPC通信中的作用是作为”通讯录”。所有的server里面的binder实体会先在SM里面注册自己的信息，key是binder的名字（独一无二），在AIDL的生成代码里面你会看到这个玩意:</p>
+<p>  ServiceManager是独立于client, server的系统进程。是由zygote进程fork出来的。它在IPC通信中的作用是作为”通讯录”。所有的server里面的binder实体会先在SM里面注册自己的信息，key是binder的名字（独一无二），在AIDL的生成代码里面你会看到这个玩意:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> java.lang.String DESCRIPTOR =<span class="string">"com.example.zane.ipc_test.IBookManager"</span>;</span><br></pre></td></tr></table></figure>
 <p>value就是这个binder的引用，这样就把这个binder的信息保存下来了。也就是说client需要通过SM，以名字来去得到server的binder引用。然后通过这个引用去操作server端的binder。这里也体现了binder中面向对象的设计理念。clinet自己并不知道自己获得的这个binder引用是真的实体还是什么假的实体，它只会去拿着自己获得的引用去操作。并且server中binder实体的引用会在SM,和所有需要跟自己通信的clinet里面存在。在这里，你可以把引用看成指针，或者代理对象。</p>
 <p>  client和server就是客户端和服务端。</p>
@@ -293,6 +293,7 @@ Android_IPC系列(一)
 <p>  3.Binder驱动再把名字和引用打包发给SM。</p>
 <p>  4.Client通过binder驱动拿着他所需要的binder名字向SM请求binder。</p>
 <p>  5.SM在自己的查找表里面找到对应的引用之后再通过binder驱动返回给client。</p>
+<p><strong>所有的系统服务在SystemServer进程深沉之后就会被建立并且注册在ServiceManager里面，开发者也可以开发自定义的服务并且注册在ServiceManager里面成为系统级别的服务</strong></p>
 <p>  好了，再来一张我在一位大牛博客里面截下来的图片，这个流程描述就更具体了：</p>
 <p><img src="/img/ipc2-2.png" alt="具体图"></p>
 <p>  其实就是多了binder驱动里面的一些数据结构节点和一个叫0号引用的东西。那么这个0号引用是什么呢？我们知道SM, Client, Server都是运行在三个不同的进程的。那么第一步Server要向SM注册自己binder的信息，那么这里已经涉及到了跨进程通信了。那么这个进程通信是怎么实现的呢？通过上图可以看到，所有的Client里面的0号引用都指向了SM里面的binder。也就是说SM和其他所有Server通信的过程都是SM先通过特殊的命令在biner驱动中建立了自己binder的实体节点，并且其他所有地方的0号引用都默认留给SM的binder实体引用。</p>

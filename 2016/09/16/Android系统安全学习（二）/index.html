@@ -15,7 +15,7 @@ ServiceManager是一个远程服务名字管理（注册）器，服务可以通
 <meta property="og:description" content="Android中系统Service的安全Binder的安全
 RPC的server端里面的bind thread里面bind会调用getCallingUID()方法来进行对调用远程服务的客户端的check，bind自然是运行在bind thread pool里面的。
 ServiceManager是一个远程服务名字管理（注册）器，服务可以通过向ServiceManager注册来使自己晋升为系统服务。提">
-<meta property="og:updated_time" content="2016-09-16T07:31:22.000Z">
+<meta property="og:updated_time" content="2016-09-16T07:32:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统安全学习（二）">
 <meta name="twitter:description" content="Android中系统Service的安全Binder的安全
@@ -266,6 +266,7 @@ ServiceManager是一个远程服务名字管理（注册）器，服务可以通
 <ul>
 <li>fork是在Native层做得，因为子进程的EffectiveUID和RealUID世袭父进程的RealUID。并且Zygote进程的RealUID = root，所以需要给fork出来的进程的uid改成request传进来的uid，gid，降级。这些都是在Native层做得。之后回到Java层，才会跳到ActivityThread里面进程activity实例的构建等等等等…。</li>
 </ul>
+<a id="more"></a>
 <h3 id="Zygote进程Socket的安全检查">Zygote进程Socket的安全检查</h3><ul>
 <li>再从Socket获得Peer的时候，会进行很多东西的检查。比如先检查远端请求进程的UID，如果是root，那么接受，如果是系统服务进程，要么必须要求他说要求让我fork的进程的uid的数字是大于10000的（即一个普通进程），不然就拒绝。当然，普通应用是没资格请求Zygote去fork进程的。</li>
 </ul>

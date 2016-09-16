@@ -250,27 +250,6 @@
 <ul>
 <li>fork是在Native层做得，因为子进程的EffectiveUID和RealUID世袭父进程的RealUID。并且Zygote进程的RealUID = root，所以需要给fork出来的进程的uid改成request传进来的uid，gid，降级。这些都是在Native层做得。之后回到Java层，才会跳到ActivityThread里面进程activity实例的构建等等等等…。</li>
 </ul>
-<h3 id="Zygote进程Socket的安全检查">Zygote进程Socket的安全检查</h3><ul>
-<li>再从Socket获得Peer的时候，会进行很多东西的检查。比如先检查远端请求进程的UID，如果是root，那么接受，如果是系统服务进程，要么必须要求他说要求让我fork的进程的uid的数字是大于10000的（即一个普通进程），不然就拒绝。当然，普通应用是没资格请求Zygote去fork进程的。</li>
-</ul>
-<h3 id="ContentProvider以及URI的安全理解">ContentProvider以及URI的安全理解</h3><p>ps：<strong>找到共性，进行抽象</strong></p>
-<ul>
-<li>ContentProvider就是对一个app的文件，数据库等等数据对外提供一个统一的数据接口，并且可以进程不同app应用之间的数据传递。ContentProvider的设计实际上也是使用了Binder进行跨进程，进而也是一种C/S的设计理念。</li>
-<li>Android进程之间都有自己的工作目录，并且地址空间也是分离的，想要直接access是不可以的。</li>
-<li>一个ContentProvider的访问权限在manifast里面定义，另一个应用的ContentResolver访问的时候通过URI来提供权限给数据提供者check。URI：content://权限/数据。</li>
-</ul>
-<h3 id="Policy模式">Policy模式</h3><p>​ 安卓中解决用户隐私，安全的策略模式</p>
-<h3 id="SDCard安装应用">SDCard安装应用</h3><ul>
-<li>往SD卡上装的应用必须要给手机设备绑定，因为SDccard是可以拔出的，然而数据不应该任何设备都可以访问，所以应用和私有数据会通过SystemKey加密存储在SD卡的.Android_Secure这个隐藏文件夹里面。System key存储在系统的/data/misc/systemkeys文件里。</li>
-</ul>
-<h3 id="SuperUser机制">SuperUser机制</h3><ul>
-<li>换字体，换开机动画，删除系统应用等等都需要Root权限。</li>
-<li>Root刷机，找到系统漏洞之后，就会在system文件夹里面安装su文件和superuser apk。su的Owner和Group都是Root，具有可执行权限，并且具有setUid和setGid的权限（会提升或者叫改变自己的EffectiveUID）</li>
-<li>RootExplorer会运行su文件（先通过Runtime启动一个shell，然后通过shell启动SU进程），su首先EUID会继承父进程的RUID，生成完进程之后就会通过SUID将自己的EUID提升为Root。SU起来之后，会启动一个SuperuserRequestActivity来询问用户是否授权，并且用户未做决定之前会一直循环的读sqlite中的某个标志位，如果用户允许那么SU继续运行，否则return退出。</li>
-<li>在得到用户的允许之后，SU会将自己的RUID设置为Root，使得SU的子进程都是Root的。并且SU自己本身不会去主动fork子进程，而是在SU的进程空间里面去load shell的代码，这样SU只提供一个ROOT的运行空间，如果SU的RUID不是Root，那么sh如果需要启动其他子进程的话，就不会是Root的进程了，那么就会出问题，所以SU的RUID必须为Root</li>
-<li>RootExplorer在做了上述的启动过程之后，就可以通过IO流向 shell中写命令，然后这些命令都会在SU中去运行。所以Android中App获得Root权限不是自身的UID升级为Root，而是通过具有Root权限的sh流在执行shell命令。</li>
-</ul>
-
       
     </div>
     
@@ -283,6 +262,10 @@
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2016/09/16/Android系统安全学习（二）/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

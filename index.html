@@ -214,6 +214,90 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Android系统安全学习（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/16/Android系统安全学习（二）/" class="article-date">
+  	<time datetime="2016-09-16T07:31:02.000Z" itemprop="datePublished">2016-09-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/16/Android系统安全学习（二）/">Android系统安全学习（二）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Android中系统Service的安全">Android中系统Service的安全</h2><h3 id="Binder的安全">Binder的安全</h3><ul>
+<li>RPC的server端里面的bind thread里面bind会调用getCallingUID()方法来进行对调用远程服务的客户端的check，bind自然是运行在bind thread pool里面的。</li>
+<li>ServiceManager是一个远程服务名字管理（注册）器，服务可以通过向ServiceManager注册来使自己晋升为系统服务。提供一个AddService和getService两种服务。他自己的binder是0，在自己这个process fork出来的时候就已经被注册了。</li>
+</ul>
+<h3 id="Zygote进程fork子进程的安全问题">Zygote进程fork子进程的安全问题</h3><ul>
+<li>startActivity的时候，在AMS环境中处理的时候，当activity实例还未生成的时候，会先fork一个进程出来，不然通过反射弄出来的组件实例没有运行环境。在Process.start()之前，会通过PMS解析apk获得uid和gid，然后将这两个参数以及其他参数传给Process.start()方法。这个方法里面会像Zygote进程提出一个request，通过一个ConnectScoket进行连接，将request以二进制流的形式传给Zygote，然后会收到一个pid。Zygote进程里面在main()函数里面会初始化一个功能，循环的读取Peer，并且把这个Peer转换为ZygoteSocket，然后读取request信息，然后就开始fork并且获取进程pid了。</li>
+</ul>
+<ul>
+<li>fork是在Native层做得，因为子进程的EffectiveUID和RealUID世袭父进程的RealUID。并且Zygote进程的RealUID = root，所以需要给fork出来的进程的uid改成request传进来的uid，gid，降级。这些都是在Native层做得。之后回到Java层，才会跳到ActivityThread里面进程activity实例的构建等等等等…。</li>
+</ul>
+<h3 id="Zygote进程Socket的安全检查">Zygote进程Socket的安全检查</h3><ul>
+<li>再从Socket获得Peer的时候，会进行很多东西的检查。比如先检查远端请求进程的UID，如果是root，那么接受，如果是系统服务进程，要么必须要求他说要求让我fork的进程的uid的数字是大于10000的（即一个普通进程），不然就拒绝。当然，普通应用是没资格请求Zygote去fork进程的。</li>
+</ul>
+<h3 id="ContentProvider以及URI的安全理解">ContentProvider以及URI的安全理解</h3><p>ps：<strong>找到共性，进行抽象</strong></p>
+<ul>
+<li>ContentProvider就是对一个app的文件，数据库等等数据对外提供一个统一的数据接口，并且可以进程不同app应用之间的数据传递。ContentProvider的设计实际上也是使用了Binder进行跨进程，进而也是一种C/S的设计理念。</li>
+<li>Android进程之间都有自己的工作目录，并且地址空间也是分离的，想要直接access是不可以的。</li>
+<li>一个ContentProvider的访问权限在manifast里面定义，另一个应用的ContentResolver访问的时候通过URI来提供权限给数据提供者check。URI：content://权限/数据。</li>
+</ul>
+<h3 id="Policy模式">Policy模式</h3><p>​ 安卓中解决用户隐私，安全的策略模式</p>
+<h3 id="SDCard安装应用">SDCard安装应用</h3><ul>
+<li>往SD卡上装的应用必须要给手机设备绑定，因为SDccard是可以拔出的，然而数据不应该任何设备都可以访问，所以应用和私有数据会通过SystemKey加密存储在SD卡的.Android_Secure这个隐藏文件夹里面。System key存储在系统的/data/misc/systemkeys文件里。</li>
+</ul>
+<h3 id="SuperUser机制">SuperUser机制</h3><ul>
+<li>换字体，换开机动画，删除系统应用等等都需要Root权限。</li>
+<li>Root刷机，找到系统漏洞之后，就会在system文件夹里面安装su文件和superuser apk。su的Owner和Group都是Root，具有可执行权限，并且具有setUid和setGid的权限（会提升或者叫改变自己的EffectiveUID）</li>
+<li>RootExplorer会运行su文件（先通过Runtime启动一个shell，然后通过shell启动SU进程），su首先EUID会继承父进程的RUID，生成完进程之后就会通过SUID将自己的EUID提升为Root。SU起来之后，会启动一个SuperuserRequestActivity来询问用户是否授权，并且用户未做决定之前会一直循环的读sqlite中的某个标志位，如果用户允许那么SU继续运行，否则return退出。</li>
+<li>在得到用户的允许之后，SU会将自己的RUID设置为Root，使得SU的子进程都是Root的。并且SU自己本身不会去主动fork子进程，而是在SU的进程空间里面去load shell的代码，这样SU只提供一个ROOT的运行空间，如果SU的RUID不是Root，那么sh如果需要启动其他子进程的话，就不会是Root的进程了，那么就会出问题，所以SU的RUID必须为Root</li>
+<li>RootExplorer在做了上述的启动过程之后，就可以通过IO流向 shell中写命令，然后这些命令都会在SU中去运行。所以Android中App获得Root权限不是自身的UID升级为Root，而是通过具有Root权限的sh流在执行shell命令。</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-Android系统安全学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -811,71 +895,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/03/01/MVP中Model的进一步细化——DataManager/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-MVP开发框架的一次尝试——EasyMVP" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/28/MVP开发框架的一次尝试——EasyMVP/" class="article-date">
-  	<time datetime="2016-01-28T11:56:51.000Z" itemprop="datePublished">2016-01-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/28/MVP开发框架的一次尝试——EasyMVP/">MVP开发框架的一次尝试——EasyMVP</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><p>  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇<a href="http://zane96.github.io/2015/12/06/MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B0%E5%B0%9D%E8%AF%95/">《MVP的一种新的尝试》</a> ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:<a href="https://github.com/Zane96/EasyMVP">项目地址</a> 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：<a href="https://github.com/Zane96/GithubQuery">githubQuery</a> 。我在想做这套框架之后意外的发现一个大牛做的框架和我是一样的思想！都是借鉴了这篇文章:<a href="https://github.com/bboyfeiyu/android-tech-frontier/tree/master/androidweekly/%E4%B8%80%E7%A7%8D%E5%9C%A8android%E4%B8%AD%E5%AE%9E%E7%8E%B0MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF">《借鉴文章》</a> 。做的也是大同小异了，顺便也借鉴了不少，还借鉴了另一个学长把adapter和viewholder解耦的思想。</p>
-<h2 id="传统mvp模式的不足">传统mvp模式的不足</h2><ol>
-<li><p>如果把activity作为view，那么如果activity异常销毁，那么恢复数据就是个问题了。并且还必须要把presenter和view生命周期同步。如果使用bundle，这是就直接破坏了mvp的设计模式，因为这样难免会把v和m耦合在一起。而将activity作为presenter，可以很方便的使用bundle和model层的数据进行异常恢复。</p>
-</li>
-<li><p>context以及各种安卓系统服务，使用intent等等。</p>
-</li>
-<li><p>开始想用dagger进一步把v-p-m解耦，后来发现不用了，，</p>
-<p>具体不足请看前言中的借鉴文章！</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/01/28/MVP开发框架的一次尝试——EasyMVP/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

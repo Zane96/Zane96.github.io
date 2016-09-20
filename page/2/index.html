@@ -214,6 +214,66 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-MVP中Model的进一步细化——DataManager" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/01/MVP中Model的进一步细化——DataManager/" class="article-date">
+  	<time datetime="2016-03-01T12:57:31.000Z" itemprop="datePublished">2016-03-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/01/MVP中Model的进一步细化——DataManager/">MVP中Model的进一步细化——DataManager</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言">前言</h1><p>  首先上篇文章讲到的是依赖注入（dagger），然后我使用rxjava, retrofit, dagger2, mvp做了一个练手app——<a href="https://github.com/Zane96/GithubQuery">githubQuery</a>，算是第一次尝试吧。再是mvp用的是我自己的一个框架<a href="https://github.com/Zane96/EasyMVP">EasyMVP</a>。然后在model层我学习了一个老外的想法，抽出来了一个叫datamanager的东西，它属于model层，用于过滤和操作从model层得到的数据。主要的目的是方便dagger提供单一的数据层依赖，并且减少presenter层的代码量。这几个库都不好上手，但是我觉得多用多写就好了，我现在已经在用这套方法在做别的项目了。</p>
+<h3 id="依赖注入图">依赖注入图</h3><h2 id=""><img src="/img/gtihubquery依赖注入图1.png" alt="依赖注入图"></h2><p><img src="/img/githubquery依赖注入图2.png" alt="依赖注入图2"><br>  可以看到我在ActivityComponent中的API是抛出了很多的inject方法用来注入其他所有的activity，但是这种做法适合小项目，项目大了之后，如果每个activity的依赖需求不同还是很麻烦，所以最好一个activity一个component。对照这个图看代码基本问题不大，我记得当时对于@Inject这个注解的理解不是很深刻！</p>
+<p>  DataManager相当于是model所有数据源的代理层，作为ApplicaitonComponent的API暴露出来，然后作为ActivityComponent的依赖注入进去。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/03/01/MVP中Model的进一步细化——DataManager/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-MVP开发框架的一次尝试——EasyMVP" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -823,82 +883,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/11/13/Android-Touch-System/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Github-node-js-hexo搭建我的个人博客" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" class="article-date">
-  	<time datetime="2015-11-12T12:22:53.000Z" itemprop="datePublished">2015-11-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/">Github+node.js+hexo搭建我的个人博客</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><blockquote>
-<p>几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以windows的同学不用看了。。ok，开始！</p>
-</blockquote>
-<h2 id="环境和工具">环境和工具</h2><ul>
-<li>Git</li>
-</ul>
-<ul>
-<li>Hexo</li>
-<li>Node.js</li>
-<li>Github</li>
-<li>Homebrew</li>
-<li>npm</li>
-</ul>
-<p>如果git还不了解，并且还没有自己的github。赶紧去学一下吧！如果程序员连这个都不知道，转行吧。我推荐的当然是廖雪峰的系列教程（python的也不错！）</p>
-<p><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001373962845513aefd77a99f4145f0a2c7a7ca057e7570000">廖雪峰的官方网站</a></p>
-<blockquote>
-<p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
-</blockquote>
-<h3 id="安装Node-js">安装Node.js</h3>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>

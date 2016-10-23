@@ -1,200 +1,256 @@
 <!DOCTYPE html>
-<!--[if lte IE 8 ]>
-<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
-<!--
-***************  *      *     *
-      8          *    *       *
-      8          *  *         *
-      8          **           *
-      8          *  *         *
-      8          *    *       *
-      8          *      *     *
-      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
--->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<!--<![endif]-->
-
+<html>
 <head>
+  <meta charset="utf-8">
+  
   <title>《深入理解jvm》读书笔记——类加载机制 | 徐志的博客</title>
-  <!-- Meta data -->
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content="徐志的博客">
-    <meta name="author" content="Zane Xu">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-
-    <!-- Favicon, (keep icon in root folder) -->
-    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
-
-    <link rel="alternate" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
-    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
-	
-    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
-    
-    
-
-    <!-- Custom stylesheet, (add custom styles here, always load last) -->
-    <!-- Load our stylesheet for IE8 -->
-    <!--[if IE 8]>
-    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
-    <![endif]-->
-
-    <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
-    <link href='//fonts.useso.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link href='//fonts.useso.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
-
-    <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
-    <!--[if IE]>
-    <link href='http://fonts.useso.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.useso.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.useso.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
-    <![endif]-->
-
-    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
-    <script src="/js/jquery-1.11.1.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
-
-    <!-- Load these in the <head> for quicker IE8+ load times -->
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="/js/html5shiv.min.js"></script>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
-
-
-
-
-
-
-
-
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。
+动态性​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《深入理解jvm》读书笔记——类加载机制">
+<meta property="og:url" content="http://yoursite.com/2016/05/28/《深入理解jvm》读书笔记——类加载机制/index.html">
+<meta property="og:site_name" content="徐志的博客">
+<meta property="og:description" content="概述​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。
+动态性​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在">
+<meta property="og:image" content="http://yoursite.com/img/classloader_1.png">
+<meta property="og:updated_time" content="2016-05-28T13:55:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《深入理解jvm》读书笔记——类加载机制">
+<meta name="twitter:description" content="概述​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。
+动态性​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在">
+  
+    <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
   
+    <link rel="icon" href="/favicon.png">
   
-
-  
-  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<!--
-<body class="post-template">
--->
-<body id="index" class="lightnav animsition">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-      <!-- ============================ Off-canvas navigation =========================== -->
+		
 
-    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
-        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
-            <img src="/img/close.png" alt="Close"/>
-        </div>
-        <!-- Lists in Slidebars -->
-        <ul class="sb-menu">
-            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
-            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
-            <!-- Dropdown Menu -->
-			 
-            <li>
-                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
-                <ul class="sb-submenu">
-                    
-                        <li><a href="https://lanshan.studio/" target="_BLANK" class="animsition-link">蓝山工作室</a></li>
-                    
-                        <li><a href="https://github.com/lanshan-studio" target="_BLANK" class="animsition-link">蓝山工作室Github</a></li>
-                    
-                </ul>
-            </li>
-            
-            
-            
-        </ul>
-        <!-- Lists in Slidebars -->
-        <ul class="sb-menu secondary">
-            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
-            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
-        </ul>
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/sql-python-web/" style="font-size: 10px;">sql python web</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
     </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-《深入理解jvm》读书笔记——类加载机制" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/" class="article-date">
+  	<time datetime="2016-05-28T13:46:26.000Z" itemprop="datePublished">2016-05-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-    <!-- ============================ END Off-canvas navigation =========================== -->
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      《深入理解jvm》读书笔记——类加载机制
+    </h1>
+  
 
-    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
-
-    <div id="sb-site">
-        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
-
-        <!-- ============================ Header & Logo bar =========================== -->
-
-        <div id="navigation" class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <!-- Nav logo -->
-                    <div class="logo">
-                        <a href="/" title="Logo" class="animsition-link">
-                         <img src="/img/me.jpg" alt="Logo" width="35px;"/> 
-                        </a>
-                    </div>
-                    <!-- // Nav logo -->
-                    <!-- Info-bar -->
-                    <nav>
-                        <ul class="nav">
-                            <li><a href="/" class="animsition-link">徐志的博客</a></li>
-                            <li class="nolink"><span>Always </span>Creative.</li>
-                            
-                            <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a></li>
-                            
-                            
-                            
-                            
-                            
-                            <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
-                            
-                            <li class="nolink"><span>Welcome!</span></li>
-                        </ul>
-                    </nav>
-                    <!--// Info-bar -->
-                </div>
-                <!-- // .container -->
-                <div class="learnmore sb-toggle-right">More</div>
-                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar before"></span>
-                <span class="icon-bar main"></span>
-                <span class="icon-bar after"></span>
-                </button>
-            </div>
-            <!-- // .navbar-inner -->
-        </div>
-
-        <!-- ============================ Header & Logo bar =========================== -->
-
-
+      </header>
       
-<section id="intro">
-    <div class="container">
-        <div class="row col-md-offset-2">
-            <div class="col-md-8">
-    			<span class="post-meta">
-      <time datetime="2016-05-28T13:46:26.000Z" itemprop="datePublished">
-          2016-05-28
-      </time>
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-    
-    | 
-    <a href='/tags/java/'>java</a>
-    
-    
-</span>
-                <h1>《深入理解jvm》读书笔记——类加载机制</h1>
-            </div>
-        </div>
-        <div class="col-md-8 col-md-offset-2">
-      		<h2 id="概述">概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述">概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
 <h2 id="动态性">动态性</h2><p>​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗，但是Java的动态性带来的灵活性却是很重要的一部分。比如面向接口编程，反射等等。</p>
 <h2 id="何时开始加载">何时开始加载</h2><p> <img src="/img/classloader_1.png" alt="classloader_1"></p>
 <p>​ 其中 <strong>验证，准备，解析</strong> 称为连接状态。<br><a id="more"></a></p>
@@ -351,103 +407,134 @@
 <p>有点类似Android中的view绘制和消息传递机制，不同的是消息机制里面viewgroup先将event传递到view视图底层，如果所有的底层视图都对event不感兴趣才会返回到viewgroup的onTouchEvent和onTouch中。</p>
 <p>之前说了，一个全限定名的类如果被一个类加载器加载了之后才会称为同一个类。之所以虚拟机团队要设计这样的模式，就是因为防止这种类型错误的问题。比如Object类是默认被系统的最顶层类加载器加载的，所以所有的程序里面Object都是相同类型的，不会出现Object被其他类加载器加载然后导致Object类型错误的问题。</p>
 
-            <div class="clearfix"></div>
-            <hr class="nogutter">
-        </div>
-        <nav class="pagination" role="pagination">
+      
+    </div>
     
-    <a class="pull-left" href="/2016/07/09/Web缓存的分析/" style="float: left;">
-        ← Web缓存的分析
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/09/Web缓存的分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Web缓存的分析
+        
+      </div>
     </a>
-    
-    
-    <a class="pull-right" href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/">
-        《深入理解jvm》读书笔记——垃圾回收以及内存分配 →
+  
+  
+    <a href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《深入理解jvm》读书笔记——垃圾回收以及内存分配</div>
+      <strong class="article-nav-caption">></strong>
     </a>
-    
+  
 </nav>
 
-        <div class="duoshuo">
-<div class="ds-thread" data-thread-key="2016/05/28/《深入理解jvm》读书笔记——类加载机制/" data-title="《深入理解jvm》读书笔记——类加载机制" data-url="http://yoursite.com/2016/05/28/《深入理解jvm》读书笔记——类加载机制/"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"Zane"};
-(function() {
-	var ds = document.createElement('script');
-	ds.type = 'text/javascript';ds.async = true;
-	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-	ds.charset = 'UTF-8';
-	(document.getElementsByTagName('head')[0] 
-	 || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script>
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="《深入理解jvm》读书笔记——类加载机制" data-title="《深入理解jvm》读书笔记——类加载机制" data-url="http://yoursite.com/2016/05/28/《深入理解jvm》读书笔记——类加载机制/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
-</section>
-
-
-      
-<!-- ============================ Footer =========================== -->
-
-<footer>
-    <div class="container">
-            <div class="copy">
-                <p>
-                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By Zane Xu. All Rights Reserved.
-                </p>
-                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
-            </div>
-            <div class="social">
-                <ul>
-                    
-                    <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
-                    
-                    
-                    
-                    
-                    
-                    <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
-                    
-                </ul>
-            </div>
-            <div class="clearfix"> </div>
-        </div>
+  </div>
 </footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
 
-<!-- ============================ END Footer =========================== -->
-      <!-- Load our scripts -->
-        
-<!-- Resizable 'on-demand' full-height hero -->
-<script type="text/javascript">
-    
-    var resizeHero = function () {
-        var hero = $(".cover,.heightblock"),
-            window1 = $(window);
-        hero.css({
-            "height": window1.height()
-        });
-    };
-    
-    resizeHero();
-    
-    $(window).resize(function () {
-        resizeHero();
-    });
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
 </script>
-<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
-<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
-<script src="/js/scripts.js"></script><!-- Theme scripts -->
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
 
-<!-- Initiate flexslider plugin -->
-<script type="text/javascript">
-    $(document).ready(function($) {
-      $('.flexslider').flexslider({
-        animation: "fade",
-        prevText: "",
-        nextText: "",
-        directionNav: true
-      });
-    });
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
 </script>
 
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
 </body>
 </html>

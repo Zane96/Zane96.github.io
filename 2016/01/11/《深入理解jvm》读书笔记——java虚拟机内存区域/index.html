@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>《深入理解jvm》读书笔记——java虚拟机内存区域 | 徐志的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="java的虚拟机内存区域运行时数据区1.方法区（method area）
+2.堆（heap）
+3.虚拟机栈（VM Stack）
+4.本地方法栈（native method stack）
+5.程序计数器（program counter register）
+
+程序计数器
+  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《深入理解jvm》读书笔记——java虚拟机内存区域">
+<meta property="og:url" content="http://yoursite.com/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/index.html">
+<meta property="og:site_name" content="徐志的博客">
+<meta property="og:description" content="java的虚拟机内存区域运行时数据区1.方法区（method area）
+2.堆（heap）
+3.虚拟机栈（VM Stack）
+4.本地方法栈（native method stack）
+5.程序计数器（program counter register）
+
+程序计数器
+  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条">
+<meta property="og:updated_time" content="2016-01-22T14:49:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《深入理解jvm》读书笔记——java虚拟机内存区域">
+<meta name="twitter:description" content="java的虚拟机内存区域运行时数据区1.方法区（method area）
+2.堆（heap）
+3.虚拟机栈（VM Stack）
+4.本地方法栈（native method stack）
+5.程序计数器（program counter register）
+
+程序计数器
+  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条">
+  
+    <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/sql-python-web/" style="font-size: 10px;">sql python web</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="google" target="_blank" href="/zanebot96@gmail.com" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-《深入理解jvm》读书笔记——java虚拟机内存区域" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/" class="article-date">
+  	<time datetime="2016-01-11T10:46:11.000Z" itemprop="datePublished">2016-01-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      《深入理解jvm》读书笔记——java虚拟机内存区域
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="java的虚拟机内存区域">java的虚拟机内存区域</h1><h2 id="运行时数据区">运行时数据区</h2><p>1.方法区（method area）</p>
+<p>2.堆（heap）</p>
+<p>3.虚拟机栈（VM Stack）</p>
+<p>4.本地方法栈（native method stack）</p>
+<p>5.程序计数器（program counter register）</p>
+<hr>
+<h3 id="程序计数器">程序计数器</h3><blockquote>
+<p>  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条字节码来执行。</p>
+</blockquote>
+<p><strong>线程恢复跟这个也有关系。当线程恢复之后，这个计数器标识的行号就是这个线程断开的位置记录，每一个线程独自拥有一个计数器</strong></p>
+<p><strong>如果虚拟机现在执行的是java方法，那么计数器记录的是正在执行的虚拟机字节码指令位置，如果执行的是native方法，那么不记录。</strong></p>
+<blockquote>
+<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：<br><a id="more"></a></p>
+</blockquote>
+<p>　　１、在Java中声明native()方法，然后编译；</p>
+<p>　　２、用javah产生一个.h文件；</p>
+<p>　　３、写一个.cpp文件实现native导出方法，其中需要包含第二步产生的.h文件（注意其中又包含了JDK带的jni.h文件）；</p>
+<p>　　４、将第三步的.cpp文件编译成动态链接库文件；</p>
+<p>  ５、在Java中用System.loadLibrary()方法加载第四步产生的动态链接库文件，这个native()方法就可以在Java中被访问了。</p>
+<h3 id="java虚拟机栈">java虚拟机栈</h3><blockquote>
+<p>  java虚拟机栈是线程私有。用来描述java方法的执行。每个方法执行，都会在栈里面生成一个栈帧，用于存储局部变量，操作数栈，动态链接，方法出口等。</p>
+</blockquote>
+<p>  局部变量表：存编译期就可知的基本数据类型和对象引用（看作指针吧）。</p>
+<p>  <strong>局部变量表的大小在编译期间就可以确定大小，并且在运行期间不会改变这一块内存的大小。</strong></p>
+<blockquote>
+<p>定义了两个异常</p>
+</blockquote>
+<p>1.stackoverflow:如果线程请求的栈深度大于了虚拟机的规定深度。</p>
+<p>2.oom:如果虚拟机栈在动态扩展的时候，无法申请到足够的内存。</p>
+<h3 id="本地方法栈">本地方法栈</h3><blockquote>
+<p>  用来描述native方法的执行，与上着类似。java的本地方法我好像还是在这里第一次遇到唉。。以后再深究。这块内存同样定义了两种异常。</p>
+</blockquote>
+<h3 id="java堆">java堆</h3><blockquote>
+<p>  这块倒是在没学习虚拟机之前就了解过。这是运行数据内存中最大的一块内存，同样也是gc重点关注的地方。这块就是用来存对象实例的。线程共享！</p>
+</blockquote>
+<p>  <strong>可以通过-Xmx, -Xms来控制这一块的内存大小，哈哈，终于能理解当初在windows下运行android studio为啥要加这个声明才能建立工程了</strong></p>
+<p>  同样的，如果内存不够用可并且不能扩展，那么就会报oom。</p>
+<h3 id="方法区">方法区</h3><blockquote>
+<p>  我理解的是这一块就是来存储类信息的。包括类的静态变量，常量，编译后的代码。同样也是线程共享的。</p>
+</blockquote>
+<p>  <strong>在现在的虚拟机设计下，方法区不等同于永久带（我理解的是gc永远不会去回收内存的区域）</strong></p>
+<h3 id="运行常量池">运行常量池</h3><blockquote>
+<p>  常量池时包含在方法区的，用于存放编译期间生成的各种数据（class文件的常量池）。但是这个常量池不是静态的，是动态的，是可以在运行的时候存入新的数据。根据这个特性，String.intern()方法运用的很多。</p>
+</blockquote>
+<p>  <strong>简单补充：String.intern()方法，这个方法会先判断常量池里面有没有这个string的对象，如果有的话会直接返回这个对象的引用，而不会再去生成一个新的对象，所以字符串不可变这个特性也支持了这种做法，如果不存在才会去生成一个新的对象然后再返回引用。String s = “s”;和String s = new String(“s”);的区别在于第一种会直接把这个数据对象放入常量池儿第二种会像生成一个对象一样把数据对象放入java堆中。所以尽量使用第一种，并且字符串拼接也要使用StringBuilder或者StringBuffer，避免＋，因为这样每＋一次就会生成一个StringBuffer对象，造成大量的空间浪费。</strong></p>
+<p>  如果这个区域的内存不够的话也会造成oom。</p>
+<hr>
+<h2 id="java对象的创建">java对象的创建</h2><blockquote>
+<p>  对象的创建在我们程序员的眼里就是简单的new，但是这里说的是jvm内部时如何实现的。首先虚拟机遇到一个new指令之后，会去常量池里面（方法区里面的）看这个有没有这种符号引用的类类型（类信息），如果没有的话要去加载类信息，如果有的话就去java堆划出一块内存区域。</p>
+<p>  接下来是对象的设置，这里要涉及对象头。对象头一般分为两块（数组对象时三块），一块用来存储对象的元信息，hash码等等一块用来确定这个对象是哪个类型的对象。数组对象会多出一块来存储大小。</p>
+</blockquote>
+<p>  <strong>这在虚拟机的眼里已经完成了独享的创建，但是还差对象的初始化哈，接下来就是对象的init</strong></p>
+<h2 id="java对象的访问">java对象的访问</h2><blockquote>
+<p>  我们都知道对象实例在java堆，引用存储在虚拟机栈。要通过引用来操作对象实例，得去访问它</p>
+</blockquote>
+<p>  1.句柄访问法：</p>
+<p>  <strong>这种方法相当于是把对象实例和引用解耦了（解耦无处不在！），堆里面有一个对象实例有一个句柄池来指向对象实例和对象类型数据（方法区里面的类信息）的地址，然后引用时指向这个句柄池。也就是说引用通过句柄池来访问对象实例。这样做就是有解耦的好处啦！如果对象实例的地址变了，引用不用变，只需要修改句柄池的数据就好了。</strong></p>
+<p>  2.直接指针法：</p>
+<p>  <strong>这种方法就是直接引用指向对象实例的地址啦。这种方法访问速度更快！</strong></p>
+<p>  <strong>未经博主同意，不得转载该篇文章</strong></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/16/大二上学期总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          大二上学期总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/15/Context学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Context学习笔记</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="《深入理解jvm》读书笔记——java虚拟机内存区域" data-title="《深入理解jvm》读书笔记——java虚拟机内存区域" data-url="http://yoursite.com/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

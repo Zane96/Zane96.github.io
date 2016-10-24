@@ -1,513 +1,553 @@
 <!DOCTYPE html>
-<html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--
+***************  *      *     *
+      8          *    *       *
+      8          *  *         *
+      8          **           *
+      8          *  *         *
+      8          *    *       *
+      8          *      *     *
+      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
 <head>
-  <meta charset="utf-8">
-  
   <title>徐志的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="学习总结 思考感悟 知识管理">
-<meta property="og:type" content="website">
-<meta property="og:title" content="徐志的博客">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
-<meta property="og:site_name" content="徐志的博客">
-<meta property="og:description" content="学习总结 思考感悟 知识管理">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="徐志的博客">
-<meta name="twitter:description" content="学习总结 思考感悟 知识管理">
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="徐志的博客">
+    <meta name="author" content="Zane Xu">
+    <meta name="description" content="爱编程，爱生活，不羁放纵爱自由" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+    
+
+    <!-- Custom stylesheet, (add custom styles here, always load last) -->
+    <!-- Load our stylesheet for IE8 -->
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+    <link href='//fonts.useso.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='//fonts.useso.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+    <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+    <!--[if IE]>
+    <link href='http://fonts.useso.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+
+
+
+
+
+
+
+
+
   
-    <link rel="alternative" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+
   
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
-			
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
-		</hgroup>
+<!--
+<body class="home-template">
+-->
+<body id="index" class="lightnav animsition">
 
-		
-		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
-		
+      <!-- ============================ Off-canvas navigation =========================== -->
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						<div class="icon-wrap icon-link hide" data-idx="2">
-							<div class="loopback_l"></div>
-							<div class="loopback_r"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						<li>友情链接</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
-
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/tags/随笔">随笔</a></li>
-				        
-							<li><a href="/tags/android">android</a></li>
-				        
-							<li><a href="/tags/java">java</a></li>
-				        
-							<li><a href="/tags/web">web</a></li>
-				        
-							<li><a href="/tags/python">python</a></li>
-				        
-							<li><a href="/tags/sql">sql</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
-					        
-								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
-					        
-								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
-					        
-								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/android/" style="font-size: 20px;">android</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/sql-python-web/" style="font-size: 10px;">sql python web</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/随记/" style="font-size: 10px;">随记</a>
-					</div>
-				</section>
-				
-				
-				
-				<section class="switch-part switch-part3">
-					<div id="js-friends">
-					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
-			        
-			        </div>
-				</section>
-				
-
-				
-				
-				<section class="switch-part switch-part4">
-				
-					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
-</div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Zane Xu</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags/随笔">随笔</a></li>
-		        
-					<li><a href="/tags/android">android</a></li>
-		        
-					<li><a href="/tags/java">java</a></li>
-		        
-					<li><a href="/tags/web">web</a></li>
-		        
-					<li><a href="/tags/python">python</a></li>
-		        
-					<li><a href="/tags/sql">sql</a></li>
-		        
-		        <div class="clearfix"></div>
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+            <!-- Dropdown Menu -->
+			 
+            <li>
+                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                        <li><a href="https://lanshan.studio/" target="_BLANK" class="animsition-link">蓝山工作室</a></li>
+                    
+                        <li><a href="https://github.com/lanshan-studio" target="_BLANK" class="animsition-link">蓝山工作室Github</a></li>
+                    
+                </ul>
+            </li>
+            
+            
+        	<li>
+        		<a class="sb-toggle-submenu">Categories<span class="sb-caret"></span></a>
+            	<ul class="sb-submenu">
+				  	
+				    <li><a href="/categories/android/" class="animsition-link">android<small>(15)</small></a></li>
+				    
+				    <li><a href="/categories/java/" class="animsition-link">java<small>(4)</small></a></li>
+				    
+				    <li><a href="/categories/python/" class="animsition-link">python<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/web/" class="animsition-link">web<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/随笔/" class="animsition-link">随笔<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/随记/" class="animsition-link">随记<small>(1)</small></a></li>
+				    
 				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
-			        
-						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
-			        
-						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap">
-  
-    <article id="post-Github-node-js-hexo搭建我的个人博客" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" class="article-date">
-  	<time datetime="2015-11-12T12:22:53.000Z" itemprop="datePublished">2015-11-12</time>
-</a>
+        	</li>
+			
+            
+        </ul>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu secondary">
+            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+        </ul>
     </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/">Github+node.js+hexo搭建我的个人博客</a>
-    </h1>
-  
+    <!-- ============================ END Off-canvas navigation =========================== -->
 
-      </header>
-      
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/me.jpg" alt="Logo" width="35px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="/" class="animsition-link">徐志的博客</a></li>
+                            <li class="nolink"><span>Always </span>Creative.</li>
+                            
+                            <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            
+                            
+                            
+                            
+                            
+                            <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
+                            
+                            <li class="nolink"><span>Welcome!</span></li>
+                        </ul>
+                    </nav>
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <div class="learnmore sb-toggle-right">More</div>
+                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button>
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+
+      <!-- ============================ Hero Image =========================== -->
+
+<section id="hero" class="scrollme">
+    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+                    <div>
+                        
+                        <h2>Read The Fucking Code</h2>
+                        <p></p>
+                        
+                        <h2></h2>
+                        <p>每一个不曾起舞的日子都是对生命的辜负。</p>
+                        
+
+                    </div>
+                </div>
+            </div>
+            <!-- // .col-md-12 -->
+        </div>
+        <div class="herofade beige-dk"></div>
+    </div>
+</section>
+
+<!-- Height spacing helper -->
+<div class="heightblock"></div>
+<!-- // End height spacing helper -->
+
+<!-- ============================ END Hero Image =========================== -->
+<!-- ============================ Content =========================== -->
+
+<section id="intro">
+    <div class="container">
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2016/01/22/DI理解以及Dagger生成代码分析/">DI理解以及Dagger生成代码分析</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2016-01-22T14:34:03.000Z" itemprop="datePublished">
+          2016-01-22
+      </time>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><blockquote>
-<p>几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以windows的同学不用看了。。ok，开始！</p>
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="前言">前言</h1><p>  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之前先去学习java注解和反射，因为dagger确实不好理解，如果有了注解基础学习起来会更轻松。</p>
+<p>  以前看人家大牛的项目都有个inject包，以前想当然的以为就是个注解包。。也不懂里面的component和module包是干嘛的。现在想想，也又算一种进步吧！</p>
+<p>  <strong>大家可以通过我这个练手app巩固dagger的用法</strong> :<a href="https://github.com/Zane96/GithubQuery">githubQuery</a></p>
+<h2 id="依赖注入？（DI_and_IOC）">依赖注入？（DI and IOC）</h2><blockquote>
+<p>其实依赖注入也是为了模块<strong>解耦</strong>，你会发现一切一切，不论是mvp还是dagger都是为了模块解耦。dagger和mvp结合起来还可以做到把m-v-p之间进一步解耦。所谓耦合就是两个模块联系在了一起，什么意思呢？比如一个模块A里面new了另一个模块B的对象，这时候就说两个模块耦合在了一起，如果现在B模块的构造函数做了修改，那么你还需要去修改模块A里面的代码。而我们希望的是B无论怎么修改都不会影响模块A。（联系mvp模式，无论m层怎么修改，都不会影响v层）而依赖注入可以用两种方法来解决：<br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2016/01/22/DI理解以及Dagger生成代码分析/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2016/01/16/大二上学期总结/">大二上学期总结</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2016-01-16T15:38:15.000Z" itemprop="datePublished">
+          2016-01-16
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="写一点东西来结束大二上学期">写一点东西来结束大二上学期</h1><p>  感觉昨天还是在高考，今天就大二上结束了。岁月如梭，时不我待。</p>
+<p>  刚回家一天多，想写点东西总结一下大二上学期。</p>
+<h2 id="生活">生活</h2><blockquote>
+<p> 程序员嘛，也不要整天张口闭口都是技术，聊聊生活也是挺好的。大二换了寝室楼栋，终于摆脱了坑爹的五栋。18栋还是挺棒的。由于18栋时4人间，所以脖子和老蒋没和我们在一起住了，我，辉儿子，薛撸撸，以及新加入我们的王叔叔住在一起了，组成了重邮319新生代F4。朕作为319之父，很幸运能和国舅和儿子们住在一起，学习生活虽然烦累，但在寝室还是总有些乐趣聊以自慰。</p>
+<p>  这学期主要吃兴业苑的食堂。反正吃多了，怎么都觉得难吃，一回家妈妈就说我瘦了。在大学很难睡着晚上，莫名其妙的晚上喜欢亢奋（有时候是因为睡前还是想技术的问题）。反正学校过的当然不如家里了。</p>
+<p>  其实要说生活还是很枯燥的，每天就是寝室，教室，工作室三点一线的生活，和高中也差不多了，这学期在大学每天在工作室待到晚上11点才到寝室（周末不休息），比高中回得还迟。然而枯燥却很有意义。</p>
+<p>  辉儿子每天都在寝室锻炼身体，之前有去跑跑步，主要每天坐着太累了。想想确实得锻炼一下身体了，不然夏天穿衣服不好看，  下学期争取早点回寝室，洗澡锻炼两不误。</p>
+<p>  直接把考试的学习方面也在这里总结一下吧，这学期学的运筹学和概率论确实在开头给我造成了不小麻烦，上课也听，但是我每天确实是没工夫记这些玩意，平时我也从来不关注我这些学科，都在搞自己的技术活，还好后来期末复习拼命弄了两周，及格应该没问题了。java考试和教学真的无力吐槽了。。对这种教育现状心累</p>
+<p>  这学期没有了学生会这些，也没有去下山通宵了，毕竟这种事情大一做做就可以了，大二了，该踏实点了。这学期有一次班聚，喝白酒吐了一晚上，所以之后再也没有碰酒了，酒量也不行，以后能不碰坚决不碰，啤酒在内。<br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2016/01/16/大二上学期总结/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/">《深入理解jvm》读书笔记——java虚拟机内存区域</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2016-01-11T10:46:11.000Z" itemprop="datePublished">
+          2016-01-11
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="java的虚拟机内存区域">java的虚拟机内存区域</h1><h2 id="运行时数据区">运行时数据区</h2><p>1.方法区（method area）</p>
+<p>2.堆（heap）</p>
+<p>3.虚拟机栈（VM Stack）</p>
+<p>4.本地方法栈（native method stack）</p>
+<p>5.程序计数器（program counter register）</p>
+<hr>
+<h3 id="程序计数器">程序计数器</h3><blockquote>
+<p>  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条字节码来执行。</p>
 </blockquote>
-<h2 id="环境和工具">环境和工具</h2><ul>
-<li>Git</li>
-</ul>
-<ul>
-<li>Hexo</li>
-<li>Node.js</li>
-<li>Github</li>
-<li>Homebrew</li>
-<li>npm</li>
-</ul>
-<p>如果git还不了解，并且还没有自己的github。赶紧去学一下吧！如果程序员连这个都不知道，转行吧。我推荐的当然是廖雪峰的系列教程（python的也不错！）</p>
-<p><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001373962845513aefd77a99f4145f0a2c7a7ca057e7570000">廖雪峰的官方网站</a></p>
+<p><strong>线程恢复跟这个也有关系。当线程恢复之后，这个计数器标识的行号就是这个线程断开的位置记录，每一个线程独自拥有一个计数器</strong></p>
+<p><strong>如果虚拟机现在执行的是java方法，那么计数器记录的是正在执行的虚拟机字节码指令位置，如果执行的是native方法，那么不记录。</strong></p>
 <blockquote>
-<p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
-</blockquote>
-<h3 id="安装Node-js">安装Node.js</h3>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-java集合框架总结" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/06/java集合框架总结/" class="article-date">
-  	<time datetime="2015-11-06T14:16:37.000Z" itemprop="datePublished">2015-11-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：<br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2016/01/11/《深入理解jvm》读书笔记——java虚拟机内存区域/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/06/java集合框架总结/">java集合框架总结</a>
-    </h1>
-  
-
-      </header>
-      
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2015/12/15/Context学习笔记/">Context学习笔记</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2015-12-15T12:30:43.000Z" itemprop="datePublished">
+          2015-12-15
+      </time>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><blockquote>
-<p>java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉有些知识不用再去单纯的去背了。</p>
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="Context—上下文环境。">Context—上下文环境。</h1><blockquote>
+<p>android代码与java代码的最大差别就是，android的组件必须通过context来创建实例。context是安卓的一个类，四大组件包括application类的最终父类都是context类。它是维持安卓各种组件能够正常工作的一个核心类。</p>
 </blockquote>
-<h2 id="图列">图列</h2><p>Collection</p>
-<p>├List</p>
-<p>│├LinkedList</p>
-<p>│├ArrayList</p>
-<p>│└Vector</p>
-<p>│　└Stack</p>
-<p>└Set</p>
-<p>Map</p>
-<p>├Hashtable</p>
-<p>├HashMap</p>
-<p>└WeakHashMap</p>
-<h3 id="Interface_Collection">Interface Collection</h3><blockquote>
-<p>第一个就要提到<strong>Collection</strong>接口。java sdk不提供这个最基本的集合接口，而是只提供实现了Collection接口的set和list接口。所有实现Collection接口的类都必须提供两个标准的构造函数：无参数的构造函数用于创建一个空的Collection，有一个 Collection参数的构造函数用于创建一个新的Collection，这个新的Collection与传入的Collection有相同的元素。后 一个构造函数允许用户复制一个Collection。实现Collection里面接口的实现需要使用一种叫迭代器的东西（Iterator)，方法：</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子</span></span><br><span class="line">　　　　<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">　　　　　　Object obj = it.next(); <span class="comment">// 得到下一个元素</span></span><br><span class="line">　　　　&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="<!-more->">
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/06/java集合框架总结/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-自定义widget（组合view和自定义属性）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/06/自定义widget（组合view和自定义属性）/" class="article-date">
-  	<time datetime="2015-11-06T13:50:50.000Z" itemprop="datePublished">2015-11-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/06/自定义widget（组合view和自定义属性）/">自定义widget（组合view和自定义属性）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言">前言</h1><blockquote>
-<p>在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（<a href="http://blog.csdn.net/aigestudio/article/category/2397181">爱哥的csdn</a>），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成</p>
-</blockquote>
-<ul>
-<li><p><em>继承view</em></p>
-</li>
-<li><p><em>组合view</em></p>
-</li>
-<li><p><em>自己画的view（用paint和canvas）</em></p>
-</li>
-<li><p><em>自定义viewgroup（widget）</em></p>
-<p>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</p>
-</li>
-</ul>
-<h2 id="ImageButton">ImageButton</h2><blockquote>
-<p>要实现ImageButton最容易想到的不就是把button和imageview合在一起么。嗯，人容易就想到这是一个组合自定义view。可是如何把一个image放到button上呢，自然就是用一个FrameLayout把button和imageview包裹起来，然后将这个layout当作一个weidgt。把一个layout当成一个控件我开始不太理解。后来了解到一些东西。</p>
-</blockquote>
-<h3 id="补充知识点（安卓的顶层视图）">补充知识点（安卓的顶层视图）</h3><blockquote>
-<p>在android里面，你的app界面的活动的视图并非是最顶级的视图。大家应该都知道viewtree。在安卓里面，最顶级的视图是一个叫DecorView的东西。它包括你的状态栏，标题栏，以及你的活动界面。而且这个活动界面，安卓会自动帮你提前弄进去一个FrameLayout。可以这么理解吧，在安卓这个上帝的面前，你的activity就是放在他的framelayout的一个个view。上一张图～</p>
-</blockquote>
-<p><img src="/img/1.1.png" alt=""></p>
-<p>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
+<p><strong>context有两个子类一个是ContextWrapper：上下文功能封装类,ContextImpl：上下文功能的实现类。</strong></p>
 <blockquote>
-<p>好啦，回归正题。我上代码了。<br>
-      
-    </div>
+<p>context可以用来启动新的ativity， 弹出toast， 启动service， 发送广播， 操作数据库等等。不同的context的能力是不同的。比如弹出一个Dialog必须依赖在一个activity上面，所以必须通过activity的context才能来弹出一个Dialog。</p>
+</blockquote>
+<p><strong>一个application类或者他的子类对象本身就是一个context。</strong></p>
+<blockquote>
+<p>getApplication()；获得application对象实例。getApplicationContext();同样也是返回application实例，但是这个返回的实例作用域更大。getBaseApplication()；用于返回ContextImpl类的对象（实现类）。activity, application, service都是做了一层接口封装，所有的实现都是在ContextImpl中。</p>
+</blockquote>
+<p><strong>application（或者其他），ContextWrapper与ContextImpl三者实际上是有一种类适配器的设计模式联系在一起的。application是调用适配器，ContextWrapper是适配器，ContextImpl是被转换者。application调用getResource(), registerBroadcast()等等方法，实际上在适配器里面转换成了调用ContextImpl中对应的方法。application并不知道他的实现，也不用知道，做到了解耦。</strong></p>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2015/12/15/Context学习笔记/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2015/12/15/Handler/">Handler</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2015-12-15T11:57:16.000Z" itemprop="datePublished">
+          2015-12-15
+      </time>
     
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/11/06/自定义widget（组合view和自定义属性）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/">王凯的博客</a></p>
+<hr>
+<h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
+<h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>
+<li>方法一</li>
+</ul>
+<p> 新建handler对象，并覆写handleMessage()，在主线程中开启一个子线程，进行耗时操作（比如下载图片），得到图片之后，利用handler的sendMessage()，将图片发送给handler，在handleMessage()中进行UI的更新。发送时有两种方式，一种是’handler.sendMessage()’，一种是’message.sendToTarge()’。</p>
+<ul>
+<li>方法二</li>
+</ul>
+<p> 用view的post方法，post方法接收一个runnable对象，该方法将这个runnable对象发送至主线程执行。</p>
+<h3 id="原理">原理</h3><p> 上述方法都是从非UI线程发送消息到UI线程，通知UI线程进行界面更新。</p>
+<p> Android使用消息机制实现线程间的通信，线程通过Looper建立自己的消息循环，MessageQueue是FIFO的消息队列，Looper负责从MessageQueue中取出消息，并且分发到消息指定目标Handler对象。Handler对象绑定到线程的局部变量Looper，封装了发送消息和处理消息的接口。<br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2015/12/15/Handler/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
+                    <h3><a href="/2015/12/06/MVP模式的一种新尝试/">MVP模式的一种新尝试</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2015-12-06T11:54:22.000Z" itemprop="datePublished">
+          2015-12-06
+      </time>
     
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
-  
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 Zane Xu
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="前言">前言</h1><p>  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完善会导致安卓上面mvvm模式越来越火，但是我觉得设计模式嘛，学习一下没有坏处，可以提升自己的理解力。这篇博客主要讲一种mvp的一种新尝试（将activity, fragment, adapter作为presenter）。</p>
+<h2 id="MVP">MVP</h2><blockquote>
+<p>  mvp模式与mvc模式最大的差别就是，它将view层跟model实现完全解耦。所有的数据交互都在presenter层中。view,model和presenter的交互通过接口，view和model的交互通过presenter。解耦的好处就是视图层和数据层两者互不影响，所有的逻辑都在presenter中，他作为一个中间层可以给多个view来使用。完全通过接口来解耦可以提高代码维护度。</p>
+<p>  而mvc模式则是视图层可以通过control与数据层交互也可以直接跳过control和数据层直接交互。这样大多数时候会在view层里面new出model／bean的对象来。这样就把两者耦合在了一起。</p>
+</blockquote>
+<h3 id="传统mvp">传统mvp</h3><blockquote>
+<p>  传统的mvp模式是将activity或者fragment作为view层，将所有的逻辑代码抽出到presenter（一个java类）。这是我暑假写的一个demo源码 <a href="https://github.com/Zane96/mvp-test-login">传统mvp demo</a> 。</p>
+</blockquote>
+<p><img src="/img/mvp1.png" alt=""></p>
+<blockquote>
+<p>可以通过我的项目分包看出来，每一个类实现接口，通过接口来进行抽象解耦，以及数据交互。</p>
+</blockquote>
+<h3 id="一种新思想">一种新思想</h3><blockquote>
+<p>  这个思想也是通过github上面一个翻译的文章看来的。因为activity中包含着context， intent，获得系统服务等等，如果把activity作为视图层就应该避免这些业务逻辑。所以将activity仅仅作为视图层有点发挥不出他的真正价值。所以我们考虑把activity，fragment，adapter来作为presenter处理逻辑，用java类文件来作为视图层。并且这样做了之后，我感觉代码的清晰度是有提升的。这是我写的demo源码：<a href="https://github.com/Zane96/MVPLogin">新mvp demo</a> 。</p>
+</blockquote>
+<p><img src="/img/mvp2.png" alt=""><br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2015/12/06/MVP模式的一种新尝试/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <nav class="pagination" role="pagination">
+          <a class="pull-left" href="/page/2/">← Newer Posts</a>
+          <a class="pull-right" href="/page/4/">Older Posts →</a>
+        </nav>
     </div>
-  </div>
+</section>
+<section id="statement">
+    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
+        <div class="row">
+            <p>Talk is cheap, Show me the code</p>
+        </div>
+    </div>
+</section>
+<!-- ============================ END Content =========================== -->
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By Zane Xu. All Rights Reserved.
+                </p>
+                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
 </footer>
-    </div>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
     
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: true,
-		isPost: false,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+    
+    resizeHero();
+    
+    $(window).resize(function () {
+        resizeHero();
+    });
 </script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
 
-
-
-
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+<!-- Initiate flexslider plugin -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+      $('.flexslider').flexslider({
+        animation: "fade",
+        prevText: "",
+        nextText: "",
+        directionNav: true
+      });
+    });
 </script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  </div>
 </body>
 </html>

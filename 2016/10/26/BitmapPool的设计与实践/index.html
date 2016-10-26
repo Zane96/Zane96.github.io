@@ -33,7 +33,7 @@
     <link rel="alternate" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
     <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
 	
-    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    <link rel="stylesheet" href="/highlightjs/googlecode.css" type="text/css">
     
     
 
@@ -103,6 +103,10 @@
             <li>
                 <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
                 <ul class="sb-submenu">
+                    
+                        <li><a href="https://github.com/Zane96" target="_BLANK" class="animsition-link">Zane96的Github</a></li>
+                    
+                        <li><a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_BLANK" class="animsition-link">我的知乎</a></li>
                     
                         <li><a href="https://lanshan.studio/" target="_BLANK" class="animsition-link">蓝山工作室</a></li>
                     
@@ -222,8 +226,8 @@
 <p>基于以上的问题，我基本上一步步的进行了解决，最终完成了BitmapPool的设计。</p>
 <h2 id="设计">设计</h2><p>​   先上一张导图。</p>
 <p>​   <img src="/img/bitmappool1.jpg" alt=""></p>
-<p>​   可以看到，我基本上将很多功能都已经模块化了。首先一个图片加载库，会提供多种数据形式的数据加载，网络，Resource，本地文件，缓存等等。而这些不同的加载形式都可以封装成不同的加载模块或者说加载策略。然后通过策略模式去提供不同的加载模块。所以在这里我们把他们看成<strong>数据提供原</strong>。（这里的数据源最终转换成Bitmap的像素点阵）</p>
-<p>​   所有的数据源提供的数据都通过BitmapDecode和Bitmap内存融合。然后拥有了全新像素点阵的Bitmap全部被封装成LeasedDrawable发布到UImageLoader中进行最终的渲染。所以很清楚的发现，<strong>UImageLoader</strong>中就是Bitmap被复用的一点计数点。</p>
+<p>​   可以看到，我基本上将很多功能都已经模块化了。首先一个图片加载库，会提供多种数据形式的数据加载，网络，Resource，本地文件，缓存等等。而这些不同的加载形式都可以封装成不同的加载模块或者说加载策略。然后通过策略模式去提供不同的加载模块。所以在这里我们把他们看成<strong>数据提供源</strong>。（这里的数据源最终转换成Bitmap的像素点阵）</p>
+<p>​   所有的数据源提供的数据都通过BitmapDecode和Bitmap内存融合。然后拥有了全新像素点阵的Bitmap全部被封装成LeasedDrawable发布到UImageLoader中进行最终的渲染。所以很清楚的发现，<strong>UImageLoader</strong>中就是Bitmap被复用的计数点。</p>
 <p>​   <strong>计数点和LeasedDrawable</strong>可以一起来解释。上述的第二个问题，实际上可以被JVM中内存是否该被回收中的引用计数算法解决。如果发布一次，那么引用计数加1，回首一次，那么引用计数减1。如果减完了之后引用计数为0，那么就可以进行内存的回收到BitmapPool中等待复用了。而谁来进行引用的计数呢？很简单的道理，使用<strong>BitmapDrawable</strong>。在RecycleView加载图片错位那里，我也是通过这个类将Bitmap进行封装，然后存储它的Task解决的。一样的道理，这里也是进行对Bitmap的二次封装，然后进行引用计数的增加或者减少。</p>
 <p>​   可以看到数据源那里我写了<strong>DiskCache</strong>，但是没有<strong>LruCache</strong>。其实这个问题不难。。我也不知道为啥我会被傻x的困扰了好久（大概是因为最近太开心了吧2333，科科，严肃）。LruCache实际是一个将点对点的映射（数据源信息到拥有正确像素点阵的Bitmap）关系存储到了内存中。所以，存储进去的时候，我们不应该引用计数减1啊，，因为还在内存中啊少年。但是DiskCache直接将Bitmap打成了Stream存入了磁盘中。所以Disk和Lru需要分开对待。</p>
 <p>​   还有一点，如果Bitmap在Lru中因为Lru的内存空间忙了而被踢出去了，怎么拿到被剔除的Bitmap并且进行回收操作？嗯，，我还不是不知道，但是我通过看Lru的源码发现了这个方法：</p>
@@ -263,7 +267,7 @@
         <div class="duoshuo">
 <div class="ds-thread" data-thread-key="2016/10/26/BitmapPool的设计与实践/" data-title="BitmapPool的设计与实践" data-url="http://yoursite.com/2016/10/26/BitmapPool的设计与实践/"></div>
 <script type="text/javascript">
-var duoshuoQuery = {short_name:"Zane"};
+var duoshuoQuery = {short_name:"zane"};
 (function() {
 	var ds = document.createElement('script');
 	ds.type = 'text/javascript';ds.async = true;

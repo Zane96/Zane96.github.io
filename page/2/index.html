@@ -244,10 +244,8 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h2 id="概述">概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
-<h2 id="动态性">动态性</h2><p>​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗，但是Java的动态性带来的灵活性却是很重要的一部分。比如面向接口编程，反射等等。</p>
-<h2 id="何时开始加载">何时开始加载</h2><p> <img src="/img/classloader_1.png" alt="classloader_1"></p>
-<p>​ 其中 <strong>验证，准备，解析</strong> 称为连接状态。<br>
+                        概述​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。
+动态性​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗
                       
                     </p>
                     
@@ -277,18 +275,11 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h2 id="概述">概述</h2><ul>
-<li>JVM的垃圾回收主要发生在java堆，因为线程的私有内存（程序计数器， 虚拟机栈， 本地方法栈）会随着线程的销毁而释放内存，并且栈的内存大小在运行之前就已经根据类结构确定了内存的大小。java堆和方法区（常量池比较特殊）和上面的就不同了，一个接口总的多个实现类需要的内存可能不同，一个方法中的多个分支需要的内存也可能不一样，我们只能在程序运行的时候才知道要去创建哪些对象。</li>
-</ul>
-<h2 id="对象生命">对象生命</h2><ul>
-<li>引用计数算法：给每一个对象添加一个引用计数器，每当有一个引用指向它的时候，他的引用计数器就加一，引用失效就减一。但是无法解决对象相互引用的问题。</li>
-<li>可达分析算法（主流）：通过一系列称为”GC Root”的对象作为起点，从这些起点往下进行搜索，搜索走的路经叫做引用链，当一个对象到GC Root没有任何引用链相连的话，就说这个对象是不可达的对象，判定为可以回收的对象</li>
-</ul>
-<p>​ 可以作为Gc Root对象的种类：</p>
-<p>​ 1. 虚拟机栈中引用的对象</p>
-<p>​ 2. 方法区中类静态变量引用的对象</p>
-<p>​ 3. 方法区中常量引用的对象</p>
-<p>​ 4. 本地方法栈中JNI引用的对象</p>
+                        概述
+JVM的垃圾回收主要发生在java堆，因为线程的私有内存（程序计数器， 虚拟机栈， 本地方法栈）会随着线程的销毁而释放内存，并且栈的内存大小在运行之前就已经根据类结构确定了内存的大小。java堆和方法区（常量池比较特殊）和上面的就不同了，一个接口总的多个实现类需要的内存可能不同，一个方法中的多个分支需要的内存也可能不一样，我们只能在程序运行的时候才知道要去创建哪些对象。
+
+对象生命
+引用计数算法：给每一个对象添加一个引用计数器，每
                       
                     </p>
                     
@@ -318,33 +309,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>​ 我还记得上个学期意外看到一篇文章，是凯子哥的一篇博客，讲的是app第一个activity启动的底层过程(java)，我当时几乎没接触过这块的源码，好像看了一半就放弃。还有一次刷知乎，看到一个人回答为什么ActivityThread里面Loop不会造成ANR，但是也是一脸萌比。这个学期开始刷艺术探索，已经看完了第十章，每一章都对着源码自己又看了一遍，再加上之前对Binder,IPC的浅显的研究。今天重新再来看这篇文章[<a href="http://blog.csdn.net/zhaokaiqiang1992/article/details/49428287">【凯子哥带你学Framework】Activity启动过程全解析</a>]，发现基本上是看小说一样的轻松看完了。。这是一种进步！！感觉挺好的。感谢大神的知识分享，下面我用自己的方式来总结一下Activity启动的过程，但是我跟凯子哥不同，他讲的那个其实就多了一点Launcher和applicaiton创建的知识。</p>
-<p>​ 说一点自己的学习感受。首先：</p>
-<ul>
-<li>源码海洋里面不要太追求了解每一个细节，不然分分钟迷失自我。</li>
-</ul>
-<ul>
-<li>有些知识是需要有其他知识储备才能理解的。所以看不懂的时候放一放，过一段时间再来看。比如binder设计原理那块我就留了一半。。因为后半部分有点看不太懂了，涉及到了C草。</li>
-</ul>
-<ul>
-<li>看书上的源码远远不够，一定一定要自己去独立的看一遍，自己去把整个流程过一遍。</li>
-</ul>
-<ul>
-<li>画草图，流程图。因为过程异常的复杂，在不同的类里面调来调用，又臭又长的调用链。</li>
-</ul>
-<ul>
-<li>永远不要放弃，静下心来研究，一切都不是问题。</li>
-</ul>
-<h3 id="知识储备">知识储备</h3><ol>
-<li><p><strong>Binder</strong>, <strong>IPC机制</strong>。可以看看我之前的两篇文章<a href="http://zane96.github.io/2016/03/19/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">Android-IPC系列（一）</a><a href="http://zane96.github.io/2016/04/06/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">Android-IPC系列（二）</a> 。还有几篇我觉得写的非常好的文章<a href="http://blog.csdn.net/universus/article/details/6211589">Android Binder设计与实现 - 设计篇</a> <a href="http://blog.csdn.net/luoshengyang/article/details/6618363">Android进程间通信（IPC）机制Binder简要介绍和学习计划</a> 。（这两篇讲的都比较深）看到艺术探索后面我终于知道为什么binder要在第二章就讲解了。因为Binder在后面几乎是无处不在！</p>
-</li>
-<li><p><strong>ActivityManagerService</strong>。本质就是一个Binder，并且实体在服务端。AMS在远端操作着activity的生命周期。这个进程由SystemServer进程fork出来。</p>
-</li>
-<li><p><strong>ActivityThread</strong>。大家都知道ActivityThread就是应用的UI线程，main方法就是整个应用的入口。ActivityThread本质并不是一个线程，他只是依附着主线程存在。ActivityThread通过和AMS进行IPC通信来共同管理Activity的生命周期。在后面我准备写一篇关于Handle的续篇，里面还会提到他，因为主线程里面的Looper就是在这里init的。</p>
-</li>
-<li><p><strong>ApplicationThread</strong>.。它是ActivityThread的内部类，本质上ActivityThread是通过它来进行和AMS的IPC通信的。它的本质也是一个Binder！只不过这次他的实体放在客户端，AMS通过他的代理类<strong>ApplicationThreadProxy</strong>来和ApplicationThread通信。</p>
-</li>
-</ol>
+                        前言​ 我还记得上个学期意外看到一篇文章，是凯子哥的一篇博客，讲的是app第一个activity启动的底层过程(java)，我当时几乎没接触过这块的源码，好像看了一半就放弃。还有一次刷知乎，看到一个人回答为什么ActivityThread里面Loop不会造成ANR，但是也是一脸萌比。这个学期开始刷艺术探索，已经看完了第十章，每一章都对着源码自己又看了一遍，再加上之前对Binder,IPC的浅显的研究。今天重新再来看这篇文章[【凯子哥带你
                       
                     </p>
                     
@@ -374,18 +339,9 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。<strong>虽然我学的很浅，但是我尽量保证自己写的都是对的！</strong> 来一波binder的最新认识总结吧！～</p>
-<p><a href="http://zane96.github.io/2016/03/19/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">Android_IPC系列(一)</a></p>
-<p>上一篇文章主要是介绍一些简单的linux知识，通过AIDL中的生成代码来理解binder实现跨进程的原理。</p>
-<p>任务：</p>
-<ol>
-<li>补充一些Linux知识。</li>
-<li>binder实现跨进程通信的实现流程是怎样的</li>
-<li>简单介绍binder机制</li>
-</ol>
-<hr>
-<h2 id="一些补充知识">一些补充知识</h2><p>1.<strong>UserSpace, KernelSpace ,用户态，内核态</strong></p>
-<p>  用户空间和内核空间。内核空间是linux系统的核心，可以访问受保护资源和所有的硬件设备的权限。内核独立于应用程序，看起来是系统内部的一个应用。kernel有自己的保护措施，告知其他应用程序他拥有什么权限。所以在逻辑上，将kernal和应用程序抽离成两块空间。<br>
+                        前言  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。虽然我学的很浅，但是我尽量保证自己写的都是对的！ 来一波binder的最新认识总结吧！～
+Android_IPC系列(一)
+上一篇文章主要是介绍一些简单的linux知识
                       
                     </p>
                     
@@ -415,21 +371,8 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <p><strong>未经博主同意，不得转载该篇文章</strong></p>
-<h1 id="前言">前言</h1><p>  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神学长交流，以保证文章的可靠性。这篇文章我将以自己的语言总结对于ipc的学习成果～</p>
-<p>  <strong>Demo地址</strong>:<a href="https://github.com/Zane96/IPC-demo">IPC-demo</a></p>
-<h2 id="几个概念">几个概念</h2><p>1.<strong>Binder</strong>:</p>
-<p>  Binder是安卓的一个类，实现了Binder接口（后面多次出现）。Binder我理解成安卓IPC机制的核心，也就是实现IPC的核心工具。它不仅用于安卓开发层还用于安卓的framework层。在架构层里面binder是各种系统manager之间连接的工具（WindowManager, ActivityManager等等）。开发层用于service，别告诉我你不知道service里面会返回一个IBinder。</p>
-<p>2.<strong>AIDL</strong>:</p>
-<blockquote>
-<p>前不久在一个安卓群看到有个面试官问别人aidl是什么。。别人当时就蒙蔽了。。</p>
-</blockquote>
-<p>  AIDL(Android Interface Definition Language)，安卓接口定义语言。它是安卓实现IPC通信的一种比较重要的方式，并且底层基于binder。所以我们就讲这个啦！</p>
-<p>3.<strong>linux的进程</strong>：</p>
-<blockquote>
-<p>这个问题我专门请教了一个学长～</p>
-</blockquote>
-<p>  Linux没有很严格的纯粹进程概念。一堆线程共享一块内存区域就是一个进程。当你的手机启动的时候，系统会启动一个init进程，这个应该可以成为Linux的主进程了。之后的所有进程都是从init进程fork出来的，比如zygote进程和SystemServer进程。</p>
+                        未经博主同意，不得转载该篇文章
+前言  IPC－进程间通信。安卓虽然是一个基于linux内核的系统，但是安卓却有自己的一套IPC机制。想要弄懂安卓的IPC机制首先要理解几个framework层的概念，安卓的序列化机制以及binder和AIDL的实现流程（其它基于binder的ipc实现方式就不再多说了～）。在写这篇博客之前反复看了几遍《安卓开发艺术探索》的第二章，以及凯子哥（csdn）的framework层的文章and与一位大神学长交流
                       
                     </p>
                     
@@ -459,9 +402,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>  首先上篇文章讲到的是依赖注入（dagger），然后我使用rxjava, retrofit, dagger2, mvp做了一个练手app——<a href="https://github.com/Zane96/GithubQuery">githubQuery</a>，算是第一次尝试吧。再是mvp用的是我自己的一个框架<a href="https://github.com/Zane96/EasyMVP">EasyMVP</a>。然后在model层我学习了一个老外的想法，抽出来了一个叫datamanager的东西，它属于model层，用于过滤和操作从model层得到的数据。主要的目的是方便dagger提供单一的数据层依赖，并且减少presenter层的代码量。这几个库都不好上手，但是我觉得多用多写就好了，我现在已经在用这套方法在做别的项目了。</p>
-<h3 id="依赖注入图">依赖注入图</h3><h2 id=""><img src="/img/gtihubquery依赖注入图1.png" alt="依赖注入图"></h2><p><img src="/img/githubquery依赖注入图2.png" alt="依赖注入图2"><br>  可以看到我在ActivityComponent中的API是抛出了很多的inject方法用来注入其他所有的activity，但是这种做法适合小项目，项目大了之后，如果每个activity的依赖需求不同还是很麻烦，所以最好一个activity一个component。对照这个图看代码基本问题不大，我记得当时对于@Inject这个注解的理解不是很深刻！</p>
-<p>  DataManager相当于是model所有数据源的代理层，作为ApplicaitonComponent的API暴露出来，然后作为ActivityComponent的依赖注入进去。<br>
+                        前言  首先上篇文章讲到的是依赖注入（dagger），然后我使用rxjava, retrofit, dagger2, mvp做了一个练手app——githubQuery，算是第一次尝试吧。再是mvp用的是我自己的一个框架EasyMVP。然后在model层我学习了一个老外的想法，抽出来了一个叫datamanager的东西，它属于model层，用于过滤和操作从model层得到的数据。主要的目的是方便dagger提供单一的数据层依赖，并且减少
                       
                     </p>
                     

@@ -244,14 +244,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇<a href="http://zane96.github.io/2015/12/06/MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B0%E5%B0%9D%E8%AF%95/">《MVP的一种新的尝试》</a> ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:<a href="https://github.com/Zane96/EasyMVP">项目地址</a> 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：<a href="https://github.com/Zane96/GithubQuery">githubQuery</a> 。我在想做这套框架之后意外的发现一个大牛做的框架和我是一样的思想！都是借鉴了这篇文章:<a href="https://github.com/bboyfeiyu/android-tech-frontier/tree/master/androidweekly/%E4%B8%80%E7%A7%8D%E5%9C%A8android%E4%B8%AD%E5%AE%9E%E7%8E%B0MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF">《借鉴文章》</a> 。做的也是大同小异了，顺便也借鉴了不少，还借鉴了另一个学长把adapter和viewholder解耦的思想。</p>
-<h2 id="传统mvp模式的不足">传统mvp模式的不足</h2><ol>
-<li><p>如果把activity作为view，那么如果activity异常销毁，那么恢复数据就是个问题了。并且还必须要把presenter和view生命周期同步。如果使用bundle，这是就直接破坏了mvp的设计模式，因为这样难免会把v和m耦合在一起。而将activity作为presenter，可以很方便的使用bundle和model层的数据进行异常恢复。</p>
-</li>
-<li><p>context以及各种安卓系统服务，使用intent等等。</p>
-</li>
-<li><p>开始想用dagger进一步把v-p-m解耦，后来发现不用了，，</p>
-<p>具体不足请看前言中的借鉴文章！</p>
+                        前言  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇《MVP的一种新的尝试》 ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:项目地址 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：githubQuery 。我在想做这套框架之后意外的发现一个大牛做的框架和我是一样的
                       
                     </p>
                     
@@ -281,11 +274,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之前先去学习java注解和反射，因为dagger确实不好理解，如果有了注解基础学习起来会更轻松。</p>
-<p>  以前看人家大牛的项目都有个inject包，以前想当然的以为就是个注解包。。也不懂里面的component和module包是干嘛的。现在想想，也又算一种进步吧！</p>
-<p>  <strong>大家可以通过我这个练手app巩固dagger的用法</strong> :<a href="https://github.com/Zane96/GithubQuery">githubQuery</a></p>
-<h2 id="依赖注入？（DI_and_IOC）">依赖注入？（DI and IOC）</h2><blockquote>
-<p>其实依赖注入也是为了模块<strong>解耦</strong>，你会发现一切一切，不论是mvp还是dagger都是为了模块解耦。dagger和mvp结合起来还可以做到把m-v-p之间进一步解耦。所谓耦合就是两个模块联系在了一起，什么意思呢？比如一个模块A里面new了另一个模块B的对象，这时候就说两个模块耦合在了一起，如果现在B模块的构造函数做了修改，那么你还需要去修改模块A里面的代码。而我们希望的是B无论怎么修改都不会影响模块A。（联系mvp模式，无论m层怎么修改，都不会影响v层）而依赖注入可以用两种方法来解决：<br>
+                        前言  依赖注入是我在安卓项目架构学习（dagger+mvp+retrofit+rxjava+eventbus）里面的又一大步。通过一天多的系统学习（看别人的项目源码，博客文章，自己看dagger的生成源码），差不多也可以去自己总结一下了。dagger2的用法网上太多教程了，我就不再描述了。这里我只总结依赖注入的概念，在项目架构中的作用以及部分最基础的生成源码个人分析。建议大家在学习dagger之前先去学习java注解和反射，因为dag
                       
                     </p>
                     
@@ -315,15 +304,10 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="写一点东西来结束大二上学期">写一点东西来结束大二上学期</h1><p>  感觉昨天还是在高考，今天就大二上结束了。岁月如梭，时不我待。</p>
-<p>  刚回家一天多，想写点东西总结一下大二上学期。</p>
-<h2 id="生活">生活</h2><blockquote>
-<p> 程序员嘛，也不要整天张口闭口都是技术，聊聊生活也是挺好的。大二换了寝室楼栋，终于摆脱了坑爹的五栋。18栋还是挺棒的。由于18栋时4人间，所以脖子和老蒋没和我们在一起住了，我，辉儿子，薛撸撸，以及新加入我们的王叔叔住在一起了，组成了重邮319新生代F4。朕作为319之父，很幸运能和国舅和儿子们住在一起，学习生活虽然烦累，但在寝室还是总有些乐趣聊以自慰。</p>
-<p>  这学期主要吃兴业苑的食堂。反正吃多了，怎么都觉得难吃，一回家妈妈就说我瘦了。在大学很难睡着晚上，莫名其妙的晚上喜欢亢奋（有时候是因为睡前还是想技术的问题）。反正学校过的当然不如家里了。</p>
-<p>  其实要说生活还是很枯燥的，每天就是寝室，教室，工作室三点一线的生活，和高中也差不多了，这学期在大学每天在工作室待到晚上11点才到寝室（周末不休息），比高中回得还迟。然而枯燥却很有意义。</p>
-<p>  辉儿子每天都在寝室锻炼身体，之前有去跑跑步，主要每天坐着太累了。想想确实得锻炼一下身体了，不然夏天穿衣服不好看，  下学期争取早点回寝室，洗澡锻炼两不误。</p>
-<p>  直接把考试的学习方面也在这里总结一下吧，这学期学的运筹学和概率论确实在开头给我造成了不小麻烦，上课也听，但是我每天确实是没工夫记这些玩意，平时我也从来不关注我这些学科，都在搞自己的技术活，还好后来期末复习拼命弄了两周，及格应该没问题了。java考试和教学真的无力吐槽了。。对这种教育现状心累</p>
-<p>  这学期没有了学生会这些，也没有去下山通宵了，毕竟这种事情大一做做就可以了，大二了，该踏实点了。这学期有一次班聚，喝白酒吐了一晚上，所以之后再也没有碰酒了，酒量也不行，以后能不碰坚决不碰，啤酒在内。<br>
+                        写一点东西来结束大二上学期  感觉昨天还是在高考，今天就大二上结束了。岁月如梭，时不我待。
+  刚回家一天多，想写点东西总结一下大二上学期。
+生活
+ 程序员嘛，也不要整天张口闭口都是技术，聊聊生活也是挺好的。大二换了寝室楼栋，终于摆脱了坑爹的五栋。18栋还是挺棒的。由于18栋时4人间，所以脖子和老蒋没和我们在一起住了，我，辉儿子，薛撸撸，以及新加入我们的王叔叔住在一起了，组成了重邮319新生代F4。朕作为319之父，很幸运能和国舅和儿子
                       
                     </p>
                     
@@ -353,19 +337,16 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="java的虚拟机内存区域">java的虚拟机内存区域</h1><h2 id="运行时数据区">运行时数据区</h2><p>1.方法区（method area）</p>
-<p>2.堆（heap）</p>
-<p>3.虚拟机栈（VM Stack）</p>
-<p>4.本地方法栈（native method stack）</p>
-<p>5.程序计数器（program counter register）</p>
-<hr>
-<h3 id="程序计数器">程序计数器</h3><blockquote>
-<p>  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条字节码来执行。</p>
-</blockquote>
-<p><strong>线程恢复跟这个也有关系。当线程恢复之后，这个计数器标识的行号就是这个线程断开的位置记录，每一个线程独自拥有一个计数器</strong></p>
-<p><strong>如果虚拟机现在执行的是java方法，那么计数器记录的是正在执行的虚拟机字节码指令位置，如果执行的是native方法，那么不记录。</strong></p>
-<blockquote>
-<p>本地方法：Java不是完美的，Java的不足除了体现在运行速度上要比传统的C++慢许多之外，Java无法直接访问到操作系统底层（如系统硬件等)，为此Java使用native方法来扩展Java程序的功能。　可以将native方法比作Java程序同Ｃ程序的接口，其实现步骤：<br>
+                        java的虚拟机内存区域运行时数据区1.方法区（method area）
+2.堆（heap）
+3.虚拟机栈（VM Stack）
+4.本地方法栈（native method stack）
+5.程序计数器（program counter register）
+
+程序计数器
+  这是运行区内存里面占的比较少的一块内存。它是用来标记当前虚拟机运行的字节码的行号。字节码解释器就是通过改变这个计数器来选取下一条字节码来执行。
+
+线程恢复跟这个也有关系
                       
                     </p>
                     
@@ -395,18 +376,12 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="Context—上下文环境。">Context—上下文环境。</h1><blockquote>
-<p>android代码与java代码的最大差别就是，android的组件必须通过context来创建实例。context是安卓的一个类，四大组件包括application类的最终父类都是context类。它是维持安卓各种组件能够正常工作的一个核心类。</p>
-</blockquote>
-<p><strong>context有两个子类一个是ContextWrapper：上下文功能封装类,ContextImpl：上下文功能的实现类。</strong></p>
-<blockquote>
-<p>context可以用来启动新的ativity， 弹出toast， 启动service， 发送广播， 操作数据库等等。不同的context的能力是不同的。比如弹出一个Dialog必须依赖在一个activity上面，所以必须通过activity的context才能来弹出一个Dialog。</p>
-</blockquote>
-<p><strong>一个application类或者他的子类对象本身就是一个context。</strong></p>
-<blockquote>
-<p>getApplication()；获得application对象实例。getApplicationContext();同样也是返回application实例，但是这个返回的实例作用域更大。getBaseApplication()；用于返回ContextImpl类的对象（实现类）。activity, application, service都是做了一层接口封装，所有的实现都是在ContextImpl中。</p>
-</blockquote>
-<p><strong>application（或者其他），ContextWrapper与ContextImpl三者实际上是有一种类适配器的设计模式联系在一起的。application是调用适配器，ContextWrapper是适配器，ContextImpl是被转换者。application调用getResource(), registerBroadcast()等等方法，实际上在适配器里面转换成了调用ContextImpl中对应的方法。application并不知道他的实现，也不用知道，做到了解耦。</strong></p>
+                        Context—上下文环境。
+android代码与java代码的最大差别就是，android的组件必须通过context来创建实例。context是安卓的一个类，四大组件包括application类的最终父类都是context类。它是维持安卓各种组件能够正常工作的一个核心类。
+
+context有两个子类一个是ContextWrapper：上下文功能封装类,ContextImpl：上下文功能的实现类。
+
+context可以用来启动新的at
                       
                     </p>
                     
@@ -436,19 +411,10 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/">王凯的博客</a></p>
-<hr>
-<h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
-<h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>
-<li>方法一</li>
-</ul>
-<p> 新建handler对象，并覆写handleMessage()，在主线程中开启一个子线程，进行耗时操作（比如下载图片），得到图片之后，利用handler的sendMessage()，将图片发送给handler，在handleMessage()中进行UI的更新。发送时有两种方式，一种是’handler.sendMessage()’，一种是’message.sendToTarge()’。</p>
-<ul>
-<li>方法二</li>
-</ul>
-<p> 用view的post方法，post方法接收一个runnable对象，该方法将这个runnable对象发送至主线程执行。</p>
-<h3 id="原理">原理</h3><p> 上述方法都是从非UI线程发送消息到UI线程，通知UI线程进行界面更新。</p>
-<p> Android使用消息机制实现线程间的通信，线程通过Looper建立自己的消息循环，MessageQueue是FIFO的消息队列，Looper负责从MessageQueue中取出消息，并且分发到消息指定目标Handler对象。Handler对象绑定到线程的局部变量Looper，封装了发送消息和处理消息的接口。<br>
+                        前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
+
+概述 Handler是android用来更新UI，处理消息的机制。
+使用线程
                       
                     </p>
                     

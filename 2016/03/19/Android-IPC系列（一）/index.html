@@ -223,7 +223,6 @@
 <p>这个问题我专门请教了一个学长～</p>
 </blockquote>
 <p>  Linux没有很严格的纯粹进程概念。一堆线程共享一块内存区域就是一个进程。当你的手机启动的时候，系统会启动一个init进程，这个应该可以成为Linux的主进程了。之后的所有进程都是从init进程fork出来的，比如zygote进程和SystemServer进程。</p>
-  <a id="more"></a>
 <p>4.<strong>zygote进程</strong></p>
 <p>  顾名思义（受精卵），这个进程会像个受精卵一样不停的“分裂”，去fork出别的进程。几乎后面出现的所有进程都是从这个进程fork出来的。包括SystemServer进程，ActivityManagerService等等。但是具体来说，AMS是SystemServer里面fork出来的。也许你会问为什么要这样做，那是因为这样设计更高效（当然我只是个普通的开发者，并不懂那些大神是怎么想的哈哈）。</p>
 <p>4.<strong>ActivityManagerService</strong>:</p>

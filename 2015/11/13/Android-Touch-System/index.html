@@ -228,7 +228,7 @@
 <h4 id="Android的事件分发机制">Android的事件分发机制</h4><blockquote>
 <p>首先，清楚一点，你的activity优先于所有你的activity里面的view获得触摸事件。因为他是你的可视图的顶层。然后这个事件流会被activity的<strong>dispatchTouchEvent()</strong> 方法分发给自己的子view。这是系统框架自己做的事情。我们知道就好。如果子view里面又有viewgroup，那么这个viewgroup又会把事件流拿到分发给自己的子view。这就是一个视图结构树。</p>
 </blockquote>
-<p><img src="/img/touch event.png" alt=""><br><a id="more"></a></p>
+<p><img src="/img/touch event.png" alt=""></p>
 <blockquote>
 <p>事件流会呈现一种从上到下，再从下到上的传递形式。我们讲到事件流会从activity由dispatchtouchevent向下传递。如果在传递在最底部的view的过程中还没有一个view宣布对这个事件感兴趣，那么事件将会从下到上又把这个事件传递给activity。但是如果这个过程中，某个view比如button宣布对这个action_down这个事件感兴趣了，那么这个事件流将不会再往下传递。这个时候如果你的手指拿开，就产生了一个action_up的事件。这个流就会直接传到当初你对action_down感兴趣的view去。这样极大的提高了安卓的效率。</p>
 </blockquote>

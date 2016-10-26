@@ -222,8 +222,7 @@
 <blockquote>
 <p>从这个图你就可以清楚的知道为什么会错乱了。首先<strong>itemA处于显示状态，然后隐藏，那么他的imageview被收回到recycleBin等待下一次被利用。并且这个imageview已经跟一个drawable关联了，这个drawable就是task请求的结果，task是否在被回收之前已经完成自己的使命并不确定。接下来itemB从隐藏变成了显示状态。那么itemA的那个imageview就可能会被系统拿去给itemB使用。一旦使用就会导致图片错乱。也就是说，，一个imageview就有了两个task，两个drawble…不错乱才怪了</strong> 。</p>
 </blockquote>
-<h2 id="解决它！">解决它！</h2><a id="more"></a>
-<h4 id="思路">思路</h4><blockquote>
+<h2 id="解决它！">解决它！</h2><h4 id="思路">思路</h4><blockquote>
 <p>既然是因为拿到的imageview包含一个task而导致错乱，那么我们取消它不就完了。确实就是这样。</p>
 </blockquote>
 <ol>

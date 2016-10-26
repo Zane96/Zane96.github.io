@@ -244,22 +244,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><p>  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完善会导致安卓上面mvvm模式越来越火，但是我觉得设计模式嘛，学习一下没有坏处，可以提升自己的理解力。这篇博客主要讲一种mvp的一种新尝试（将activity, fragment, adapter作为presenter）。</p>
-<h2 id="MVP">MVP</h2><blockquote>
-<p>  mvp模式与mvc模式最大的差别就是，它将view层跟model实现完全解耦。所有的数据交互都在presenter层中。view,model和presenter的交互通过接口，view和model的交互通过presenter。解耦的好处就是视图层和数据层两者互不影响，所有的逻辑都在presenter中，他作为一个中间层可以给多个view来使用。完全通过接口来解耦可以提高代码维护度。</p>
-<p>  而mvc模式则是视图层可以通过control与数据层交互也可以直接跳过control和数据层直接交互。这样大多数时候会在view层里面new出model／bean的对象来。这样就把两者耦合在了一起。</p>
-</blockquote>
-<h3 id="传统mvp">传统mvp</h3><blockquote>
-<p>  传统的mvp模式是将activity或者fragment作为view层，将所有的逻辑代码抽出到presenter（一个java类）。这是我暑假写的一个demo源码 <a href="https://github.com/Zane96/mvp-test-login">传统mvp demo</a> 。</p>
-</blockquote>
-<p><img src="/img/mvp1.png" alt=""></p>
-<blockquote>
-<p>可以通过我的项目分包看出来，每一个类实现接口，通过接口来进行抽象解耦，以及数据交互。</p>
-</blockquote>
-<h3 id="一种新思想">一种新思想</h3><blockquote>
-<p>  这个思想也是通过github上面一个翻译的文章看来的。因为activity中包含着context， intent，获得系统服务等等，如果把activity作为视图层就应该避免这些业务逻辑。所以将activity仅仅作为视图层有点发挥不出他的真正价值。所以我们考虑把activity，fragment，adapter来作为presenter处理逻辑，用java类文件来作为视图层。并且这样做了之后，我感觉代码的清晰度是有提升的。这是我写的demo源码：<a href="https://github.com/Zane96/MVPLogin">新mvp demo</a> 。</p>
-</blockquote>
-<p><img src="/img/mvp2.png" alt=""><br>
+                        前言  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完善会导致安卓上面mvvm模式越来越火，但
                       
                     </p>
                     
@@ -289,21 +274,8 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="关于RecycleView显示加载图片乱序的问题">关于RecycleView显示加载图片乱序的问题</h1><h1 id="前言">前言</h1><blockquote>
-<p>本来之前都在准备touch的第二篇博客。但是突然想起之前做的一个项目中和搭档一起遇到一个问题，就是recycleview的item中的imageview显示图片错位（网络加载图片）。当然。。当时在做项目，自然就是赶紧找解决办法呗，看了官方教程和郭神的博客，但是只看他们的教程还是没有很好的解决，因为我们的东西是有些item的imageview为空，而他们讲的都是所有item的imageview都有图片。不过最后也还是稀里糊涂的解决了哈哈。昨天自己写了一个demo,放在我的github嗒。通过源码和大神们的博客想总结一下这个问题。<a href="https://github.com/Zane-cqupt/BestBitmapDownload">源码地址</a></p>
-</blockquote>
-<h2 id="关于这个问题">关于这个问题</h2><blockquote>
-<p>如果大家看过郭神的博客或者自己遇到过，就会知道解决这个问题有三种方法，第一是给imageview设置tag，第二是我用到的，给AsyncTask和imageview双向添加弱引用，进行逻辑判断。第三当然就是用第三方库啰，比如volley的图片加载或者现在最牛逼的fresco！第三方库的控件之所以能解决这个问题，其实就是自己内部做了处理。虽然提倡<strong>不要造重复的轮子</strong> ,但是得知道轮子时怎么造出来的。而我们遇到的问题（有些item的imageview为空图）连第三方库都不能解决。通过看imageview的源码，很快也解决了这个问题。那么recycleview显示异步加载图片错位的原因是什么呢？</p>
-</blockquote>
-<p><img src="/img/4.1.png" alt="图解"></p>
-<blockquote>
-<p>RecycleView和ListView一样，每个item里面的控件<strong>都是复用的</strong> ！也就是说不可能你有10k个item系统就给你提供10k个imageview，要不然系统造就gg了。所以正是这个原因也导致了我们遇到的这个坑。系统真正提供给你的imageview可能只有显示的item多一点点～</p>
-</blockquote>
-<p><img src="/img/4.2.png" alt=""></p>
-<blockquote>
-<p>从这个图你就可以清楚的知道为什么会错乱了。首先<strong>itemA处于显示状态，然后隐藏，那么他的imageview被收回到recycleBin等待下一次被利用。并且这个imageview已经跟一个drawable关联了，这个drawable就是task请求的结果，task是否在被回收之前已经完成自己的使命并不确定。接下来itemB从隐藏变成了显示状态。那么itemA的那个imageview就可能会被系统拿去给itemB使用。一旦使用就会导致图片错乱。也就是说，，一个imageview就有了两个task，两个drawble…不错乱才怪了</strong> 。</p>
-</blockquote>
-<h2 id="解决它！">解决它！</h2>
+                        关于RecycleView显示加载图片乱序的问题前言
+本来之前都在准备touch的第二篇博客。但是突然想起之前做的一个项目中和搭档一起遇到一个问题，就是recycleview的item中的imageview显示图片错位（网络加载图片）。当然。。当时在做项目，自然就是赶紧找解决办法呗，看了官方教程和郭神的博客，但是只看他们的教程还是没有很好的解决，因为我们的东西是有些item的imageview为空，而他们讲的都是所有item的image
                       
                     </p>
                     
@@ -333,27 +305,12 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><blockquote>
-<p>之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。</p>
-</blockquote>
-<hr>
-<h2 id="Android如何处理触摸事件">Android如何处理触摸事件</h2><h4 id="MotionEvent">MotionEvent</h4><blockquote>
-<p>我相信MotionEvent这个sdk提供的常量大家应该不陌生吧。这是android系统给我们封装好的用来存储touch事件的东西。它包含了很多你感兴趣的东西。比如触摸的时间，触摸的手指数，触摸的地点等等。。。而它又分为action_down, action_up等等很多类型。开发者可以通过这些名字来分别触摸事件的类别，我相信大家也用到过这些。</p>
-</blockquote>
-<ul>
-<li>action_down 所有的触摸事件开始于这个。也就是你的手指触摸到屏幕的时候产生的事件。</li>
-<li>action_up 所有的触摸事件终止于这个。也就是你的手指离开屏幕。</li>
-<li>action_move 手指在屏幕滑动。</li>
-<li>action_cancel 当一个view在消费某个事件的时候，如果你要把这个事件转给其他的view会用到这个。</li>
-</ul>
-<blockquote>
-<p>以上时最基本的，也就是说，一个完整的手势定义就是开始于down，然后接受其他的事件，然后终止于up。周而复始。你自己新定义的手势必须遵循这个原则。</p>
-</blockquote>
-<hr>
-<h4 id="Android的事件分发机制">Android的事件分发机制</h4><blockquote>
-<p>首先，清楚一点，你的activity优先于所有你的activity里面的view获得触摸事件。因为他是你的可视图的顶层。然后这个事件流会被activity的<strong>dispatchTouchEvent()</strong> 方法分发给自己的子view。这是系统框架自己做的事情。我们知道就好。如果子view里面又有viewgroup，那么这个viewgroup又会把事件流拿到分发给自己的子view。这就是一个视图结构树。</p>
-</blockquote>
-<p><img src="/img/touch event.png" alt=""><br>
+                        前言
+之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。
+
+
+Android如何处理触摸事件MotionEvent
+我相信MotionEvent这个sdk提供的常量大家应该不陌
                       
                     </p>
                     
@@ -383,25 +340,10 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><blockquote>
-<p>几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以windows的同学不用看了。。ok，开始！</p>
-</blockquote>
-<h2 id="环境和工具">环境和工具</h2><ul>
-<li>Git</li>
-</ul>
-<ul>
-<li>Hexo</li>
-<li>Node.js</li>
-<li>Github</li>
-<li>Homebrew</li>
-<li>npm</li>
-</ul>
-<p>如果git还不了解，并且还没有自己的github。赶紧去学一下吧！如果程序员连这个都不知道，转行吧。我推荐的当然是廖雪峰的系列教程（python的也不错！）</p>
-<p><a href="http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001373962845513aefd77a99f4145f0a2c7a7ca057e7570000">廖雪峰的官方网站</a></p>
-<blockquote>
-<p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
-</blockquote>
-<h3 id="安装Node-js">安装Node.js</h3>
+                        前言
+几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以windows的同学不用看了。。ok，开始！
+
+环境
                       
                     </p>
                     
@@ -431,25 +373,10 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><blockquote>
-<p>java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉有些知识不用再去单纯的去背了。</p>
-</blockquote>
-<h2 id="图列">图列</h2><p>Collection</p>
-<p>├List</p>
-<p>│├LinkedList</p>
-<p>│├ArrayList</p>
-<p>│└Vector</p>
-<p>│　└Stack</p>
-<p>└Set</p>
-<p>Map</p>
-<p>├Hashtable</p>
-<p>├HashMap</p>
-<p>└WeakHashMap</p>
-<h3 id="Interface_Collection">Interface Collection</h3><blockquote>
-<p>第一个就要提到<strong>Collection</strong>接口。java sdk不提供这个最基本的集合接口，而是只提供实现了Collection接口的set和list接口。所有实现Collection接口的类都必须提供两个标准的构造函数：无参数的构造函数用于创建一个空的Collection，有一个 Collection参数的构造函数用于创建一个新的Collection，这个新的Collection与传入的Collection有相同的元素。后 一个构造函数允许用户复制一个Collection。实现Collection里面接口的实现需要使用一种叫迭代器的东西（Iterator)，方法：</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子</span></span><br><span class="line">　　　　<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">　　　　　　Object obj = it.next(); <span class="comment">// 得到下一个元素</span></span><br><span class="line">　　　　&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="<!-more->">
+                        前言
+java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉有些知识不用再去单纯的去背了。
+
+图列C
                       
                     </p>
                     
@@ -479,30 +406,17 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h1 id="前言">前言</h1><blockquote>
-<p>在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（<a href="http://blog.csdn.net/aigestudio/article/category/2397181">爱哥的csdn</a>），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成</p>
-</blockquote>
-<ul>
-<li><p><em>继承view</em></p>
-</li>
-<li><p><em>组合view</em></p>
-</li>
-<li><p><em>自己画的view（用paint和canvas）</em></p>
-</li>
-<li><p><em>自定义viewgroup（widget）</em></p>
-<p>最近又跟同学聊起来了，于是就准备自己实现一个imagebutton来练练手。（最简单的了）以及后面一个把imageview与textview结合使用的案例。</p>
-</li>
-</ul>
-<h2 id="ImageButton">ImageButton</h2><blockquote>
-<p>要实现ImageButton最容易想到的不就是把button和imageview合在一起么。嗯，人容易就想到这是一个组合自定义view。可是如何把一个image放到button上呢，自然就是用一个FrameLayout把button和imageview包裹起来，然后将这个layout当作一个weidgt。把一个layout当成一个控件我开始不太理解。后来了解到一些东西。</p>
-</blockquote>
-<h3 id="补充知识点（安卓的顶层视图）">补充知识点（安卓的顶层视图）</h3><blockquote>
-<p>在android里面，你的app界面的活动的视图并非是最顶级的视图。大家应该都知道viewtree。在安卓里面，最顶级的视图是一个叫DecorView的东西。它包括你的状态栏，标题栏，以及你的活动界面。而且这个活动界面，安卓会自动帮你提前弄进去一个FrameLayout。可以这么理解吧，在安卓这个上帝的面前，你的activity就是放在他的framelayout的一个个view。上一张图～</p>
-</blockquote>
-<p><img src="/img/1.1.png" alt=""></p>
-<p>DecorView-&gt;LinearLayout(状态栏和activity)-&gt;FrameLayout(activity)-&gt;你自己的acitivty视图。</p>
-<blockquote>
-<p>好啦，回归正题。我上代码了。<br>
+                        前言
+在以前经常听到别人说，安卓里面自定义view灰常的重要。然后自己也没有去真正的去学习。自定义view其实是个非常高深的学问，如果深入研究下去的话。我看过爱哥（csdn）的ui博客（爱哥的csdn），真心佩服，感叹他的代码，数学，美术功底。然后，也没认真看下去，因为实在是太深奥了。自定义view大概可以分成
+
+
+继承view
+
+组合view
+
+自己画的view（用paint和canvas）
+
+自定义viewgroup（widget）
                       
                     </p>
                     

@@ -235,7 +235,6 @@
 <li><p><strong>ApplicationThread</strong>.。它是ActivityThread的内部类，本质上ActivityThread是通过它来进行和AMS的IPC通信的。它的本质也是一个Binder！只不过这次他的实体放在客户端，AMS通过他的代理类<strong>ApplicationThreadProxy</strong>来和ApplicationThread通信。</p>
 </li>
 </ol>
-<a id="more"></a>
 <ol>
 <li><p><strong>Instrumentation</strong>.。这个类我在看完第一遍书的时候感觉操作调用链里面的最外层。因为最后一步Activity实例对象的生成和onCreat()方法的调用最终是来自这个类的。其实这个类是ActivityThread想要进行的操作的具体操作类。这个类是全局的，并且每个acitivity里面都拥有一个它的引用。</p>
 </li>

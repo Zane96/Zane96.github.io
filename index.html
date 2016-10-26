@@ -278,11 +278,8 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h2 id="单元测试小总结">单元测试小总结</h2><p>​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。</p>
-<h3 id="单元测试是什么">单元测试是什么</h3><p>​ 不关有单元测试，还有UI测试，集成测试等等。单元测试简单的来说就是来验证某个类里面的某个方法能不能传入一个参数然后返回一个我们预期的值，如果没有返回值就去验证函数中代码能不能正常按预期跑一遍。实际上是如何测试是个非常灵活的事情。常用的单元测试框架有：JUnit，Mockito，Robolectric，DaggerMock等等</p>
-<h3 id="最简单的示例">最简单的示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Add</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​ 对上述代码进行单元测试只需要最基本的JUnit框架就够了，没错，就是AS给你自动引入的JUnit。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">addTest</span> </span>&#123;</span><br><span class="line">  <span class="annotation">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAdd</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">      Add add = <span class="keyword">new</span> Add();</span><br><span class="line">    assertEquals(<span class="number">3</span>, add.sum(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                        单元测试小总结​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。
+单元测试是什么
                       
                     </p>
                     
@@ -312,16 +309,9 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h2 id="Android中系统Service的安全">Android中系统Service的安全</h2><h3 id="Binder的安全">Binder的安全</h3><ul>
-<li>RPC的server端里面的bind thread里面bind会调用getCallingUID()方法来进行对调用远程服务的客户端的check，bind自然是运行在bind thread pool里面的。</li>
-<li>ServiceManager是一个远程服务名字管理（注册）器，服务可以通过向ServiceManager注册来使自己晋升为系统服务。提供一个AddService和getService两种服务。他自己的binder是0，在自己这个process fork出来的时候就已经被注册了。</li>
-</ul>
-<h3 id="Zygote进程fork子进程的安全问题">Zygote进程fork子进程的安全问题</h3><ul>
-<li>startActivity的时候，在AMS环境中处理的时候，当activity实例还未生成的时候，会先fork一个进程出来，不然通过反射弄出来的组件实例没有运行环境。在Process.start()之前，会通过PMS解析apk获得uid和gid，然后将这两个参数以及其他参数传给Process.start()方法。这个方法里面会像Zygote进程提出一个request，通过一个ConnectScoket进行连接，将request以二进制流的形式传给Zygote，然后会收到一个pid。Zygote进程里面在main()函数里面会初始化一个功能，循环的读取Peer，并且把这个Peer转换为ZygoteSocket，然后读取request信息，然后就开始fork并且获取进程pid了。</li>
-</ul>
-<ul>
-<li>fork是在Native层做得，因为子进程的EffectiveUID和RealUID世袭父进程的RealUID。并且Zygote进程的RealUID = root，所以需要给fork出来的进程的uid改成request传进来的uid，gid，降级。这些都是在Native层做得。之后回到Java层，才会跳到ActivityThread里面进程activity实例的构建等等等等…。</li>
-</ul>
+                        Android中系统Service的安全Binder的安全
+RPC的server端里面的bind thread里面bind会调用getCallingUID()方法来进行对调用远程服务的客户端的check，bind自然是运行在bind thread pool里面的。
+ServiceManager是一个远程服务名字管理（注册）器，服务可以通过向ServiceManager注册来使自己晋升为系统服务。提供一个AddService和getSer
                       
                     </p>
                     
@@ -351,19 +341,13 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <p>进程：一个可执行文件的活动表现，一次生命的历练</p>
-<p>进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g</p>
-<p>3到4g是内核态，所有进程共享，0到3g是进程的私有空间</p>
-<p>这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程</p>
-<p>操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash</p>
-<p>旧时代的塞班系统，单进程多任务，一个app gg那么整个手机gg</p>
-<p>一个应用是无法访问另一个应用的数据存储地址</p>
-<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
-<p>多用户目录：每个用户都有自己的HOME，独立的工作目录</p>
-<p>用户的访问和操作资源的权限，权限管理</p>
-<p>UID GID，16进制整形值，他们才是进程的特征标志，UserId, GroupId</p>
-<p>用户是静态表现，进程才是用户的动态表现</p>
-<p>－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+                        进程：一个可执行文件的活动表现，一次生命的历练
+进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g
+3到4g是内核态，所有进程共享，0到3g是进程的私有空间
+这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程
+操作系统的内核Crash，那么整个系统Crash，如果是用户态的普通Crash，不会导致其他的进程Crash
+旧时代的塞班系统，单进程多任务，一个app gg那么整个手机gg
+一个应用是无法访问另一
                       
                     </p>
                     
@@ -393,9 +377,7 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h3 id="原文：http://peiqiang-net/2014/12/31/python-simple-queue-redis-queue-html">原文：<a href="http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html">http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html</a></h3><h2 id="前言">前言</h2><p>​ 最近在捣腾爬虫，用python去爬取知乎的用户信息，项目地址：<a href="https://github.com/Zane96/Script_Set/tree/master/ZHIHU_Crawler">ZHIHU_Crawler</a>（Mongodb+requests+xpath+redis）。由于是年轻的python司机，开始用进程池进行爬取遇到了很多无法解决的问题。后来看到了这篇文章，利用redis的数据存储结构构建一个简单的请求队列，完整地说是一个多消费者请求阻塞队列。这个思想跟Android诸多图片请求库的思想都是相同的，只不过Android多是用Java的并发Api实现（通过Future＋BlockingQueue，我的想法以后是这样去构建），本人上学期也正想自己去造个重复的轮子，但是半路看《Java并发编程》看的有点懵逼，不过下学期一定会补起来。<a href="https://github.com/Zane96/EasyImageProvider">EasyImageProvider</a>。<strong>（Zane写）</strong></p>
-<h2 id="文章">文章</h2><p>​ 本文展示了如何使用<a href="http://redis.io/">redis</a>构建一个简单的多生产者，多消费者队列并且提供类似python标准库<a href="http://docs.python.org/library/queue.html">queue</a>一样的接口。你可以使用这个队列方便的从多个进程或者耗时的计算到多个消费者进程之间共享数据。</p>
-<p>​ 我们使用redis<a href="http://redis.io/topics/data-types#lists">列表</a>来保存数据。redis列表按照字符串插入的顺序保存数据。<br>
+                        原文：http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html前言​ 最近在捣腾爬虫，用python去爬取知乎的用户信息，项目地址：ZHIHU_Crawler（Mongodb+requests+xpath+redis）。由于是年轻的python司机，开始用进程池进行爬取遇到了很多无法解决的问题。后来看到了这篇文章，利用redis的数据存储结构构建一个简单的请求
                       
                     </p>
                     
@@ -425,17 +407,11 @@
                 <div class="col-md-8">
                     <p>
                       
-                        <h2 id="前言">前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
-<h3 id="Web缓存的好处">Web缓存的好处</h3><ul>
-<li>缓存可以减少手机流量的消耗</li>
-<li>可以更快的响应用户的操作，提升用户体验度</li>
-<li>降低资源服务器的压力，减少并发量</li>
-</ul>
-<h3 id="Web缓存的分类">Web缓存的分类</h3><ul>
-<li><p>手机文件缓存</p>
-<p>由于移动端不像前端，前端开发中浏览器都默认实现了Web缓存，所以我们可以通过请求头的控制来让浏览器自动为我们进行缓存。但是移动端没有这种默认实现Web缓存的容器，所以需要我们自己手动通过文件缓存网络请求过来的报文。Okhttp或者结合Retrofit（一样）都是可以通过OkhttpClient添加一个构造好的Cache实例，其中Cache实例我们需要指定文件路径和大小。具体可以看我这个代码<a href="https://github.com/Zane96/ICY-ClaTable">Demo</a>。</p>
-</li>
-</ul>
+                        前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
+Web缓存的好处
+缓存可以减少手机流量的消耗
+可以更快的响应用户的操作，提升用户体验度
+降低资源服务器的压力，
                       
                     </p>
                     

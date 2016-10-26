@@ -231,6 +231,39 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">《深入理解jvm》读书笔记——类加载机制</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2016-05-28T13:46:26.000Z" itemprop="datePublished">
+          2016-05-28
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h2 id="概述">概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
+<h2 id="动态性">动态性</h2><p>​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗，但是Java的动态性带来的灵活性却是很重要的一部分。比如面向接口编程，反射等等。</p>
+<h2 id="何时开始加载">何时开始加载</h2><p> <img src="/img/classloader_1.png" alt="classloader_1"></p>
+<p>​ 其中 <strong>验证，准备，解析</strong> 称为连接状态。<br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/">《深入理解jvm》读书笔记——垃圾回收以及内存分配</a></h3>
                     <span>
                         <span class="post-meta">
@@ -434,43 +467,6 @@
                     
                     <p class="pull-right readMore">
                         <a href="/2016/03/01/MVP中Model的进一步细化——DataManager/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2016/01/28/MVP开发框架的一次尝试——EasyMVP/">MVP开发框架的一次尝试——EasyMVP</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2016-01-28T11:56:51.000Z" itemprop="datePublished">
-          2016-01-28
-      </time>
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p>
-                      
-                        <h1 id="前言">前言</h1><p>  用MVP模式开发安卓相信大家也应该不是很陌生了。各种各样的mvp开发模式，框架也是层出不穷。之前写过一篇<a href="http://zane96.github.io/2015/12/06/MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%80%E7%A7%8D%E6%96%B0%E5%B0%9D%E8%AF%95/">《MVP的一种新的尝试》</a> ，然后我基于这种模式（activity作为presenters）做了一个可能问题还是很多的开发框架:<a href="https://github.com/Zane96/EasyMVP">项目地址</a> 。并且根据这个框架在前几天结合rxjava,retrofit,dagger做了一个挺简单的demo app：<a href="https://github.com/Zane96/GithubQuery">githubQuery</a> 。我在想做这套框架之后意外的发现一个大牛做的框架和我是一样的思想！都是借鉴了这篇文章:<a href="https://github.com/bboyfeiyu/android-tech-frontier/tree/master/androidweekly/%E4%B8%80%E7%A7%8D%E5%9C%A8android%E4%B8%AD%E5%AE%9E%E7%8E%B0MVP%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%96%B0%E6%80%9D%E8%B7%AF">《借鉴文章》</a> 。做的也是大同小异了，顺便也借鉴了不少，还借鉴了另一个学长把adapter和viewholder解耦的思想。</p>
-<h2 id="传统mvp模式的不足">传统mvp模式的不足</h2><ol>
-<li><p>如果把activity作为view，那么如果activity异常销毁，那么恢复数据就是个问题了。并且还必须要把presenter和view生命周期同步。如果使用bundle，这是就直接破坏了mvp的设计模式，因为这样难免会把v和m耦合在一起。而将activity作为presenter，可以很方便的使用bundle和model层的数据进行异常恢复。</p>
-</li>
-<li><p>context以及各种安卓系统服务，使用intent等等。</p>
-</li>
-<li><p>开始想用dagger进一步把v-p-m解耦，后来发现不用了，，</p>
-<p>具体不足请看前言中的借鉴文章！</p>
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2016/01/28/MVP开发框架的一次尝试——EasyMVP/">Read More...</a>
                     </p>
                     
                 </div>

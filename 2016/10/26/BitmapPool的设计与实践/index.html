@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--
+***************  *      *     *
+      8          *    *       *
+      8          *  *         *
+      8          **           *
+      8          *  *         *
+      8          *    *       *
+      8          *      *     *
+      8          *        *   ***********    -----Theme By Kieran(http://go.kieran.top)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
+<head>
+  <title>BitmapPool的设计与实践 | 徐志的博客</title>
+  <!-- Meta data -->
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="徐志的博客">
+    <meta name="author" content="Zane Xu">
+    <meta name="description" content="爱编程，爱生活，不羁放纵爱自由" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicon, (keep icon in root folder) -->
+    <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+    <link rel="alternate" href="/atom.xml" title="徐志的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+    <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+    
+    
+
+    <!-- Custom stylesheet, (add custom styles here, always load last) -->
+    <!-- Load our stylesheet for IE8 -->
+    <!--[if IE 8]>
+    <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+    <![endif]-->
+
+    <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+    <link href='//fonts.useso.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='//fonts.useso.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+    <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+    <!--[if IE]>
+    <link href='http://fonts.useso.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.useso.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+    <![endif]-->
+
+    <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>')</script>
+
+    <!-- Load these in the <head> for quicker IE8+ load times -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+  
+  <style>.col-md-8.col-md-offset-2.opening-statement img{display:none;}</style>
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body id="index" class="lightnav animsition">
+
+      <!-- ============================ Off-canvas navigation =========================== -->
+
+    <div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+            <img src="/img/close.png" alt="Close"/>
+        </div>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu">
+            <li><a href="/" class="animsition-link" title="Home">Home</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">archives</a></li>
+            <!-- Dropdown Menu -->
+			 
+            <li>
+                <a class="sb-toggle-submenu">Works<span class="sb-caret"></span></a>
+                <ul class="sb-submenu">
+                    
+                        <li><a href="https://lanshan.studio/" target="_BLANK" class="animsition-link">蓝山工作室</a></li>
+                    
+                        <li><a href="https://github.com/lanshan-studio" target="_BLANK" class="animsition-link">蓝山工作室Github</a></li>
+                    
+                </ul>
+            </li>
+            
+            
+        	<li>
+        		<a class="sb-toggle-submenu">Categories<span class="sb-caret"></span></a>
+            	<ul class="sb-submenu">
+				  	
+				    <li><a href="/categories/android/" class="animsition-link">android<small>(15)</small></a></li>
+				    
+				    <li><a href="/categories/java/" class="animsition-link">java<small>(4)</small></a></li>
+				    
+				    <li><a href="/categories/python/" class="animsition-link">python<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/web/" class="animsition-link">web<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/随笔/" class="animsition-link">随笔<small>(1)</small></a></li>
+				    
+				    <li><a href="/categories/随记/" class="animsition-link">随记<small>(1)</small></a></li>
+				    
+				</ul>
+        	</li>
+			
+            
+        </ul>
+        <!-- Lists in Slidebars -->
+        <ul class="sb-menu secondary">
+            <li><a href="/about.html" class="animsition-link" title="about">About</a></li>
+            <li><a href="/atom.xml" class="animsition-link" title="rss">RSS</a></li>
+        </ul>
+    </div>
+    
+    <!-- ============================ END Off-canvas navigation =========================== -->
+
+    <!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+    <div id="sb-site">
+        <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+        <div id="navigation" class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <!-- Nav logo -->
+                    <div class="logo">
+                        <a href="/" title="Logo" class="animsition-link">
+                         <img src="/img/me.jpg" alt="Logo" width="35px;"/> 
+                        </a>
+                    </div>
+                    <!-- // Nav logo -->
+                    <!-- Info-bar -->
+                    <nav>
+                        <ul class="nav">
+                            <li><a href="/" class="animsition-link">徐志的博客</a></li>
+                            <li class="nolink"><span>Always </span>Creative.</li>
+                            
+                            <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a></li>
+                            
+                            
+                            
+                            
+                            
+                            <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a></li>
+                            
+                            <li class="nolink"><span>Welcome!</span></li>
+                        </ul>
+                    </nav>
+                    <!--// Info-bar -->
+                </div>
+                <!-- // .container -->
+                <div class="learnmore sb-toggle-right">More</div>
+                <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar before"></span>
+                <span class="icon-bar main"></span>
+                <span class="icon-bar after"></span>
+                </button>
+            </div>
+            <!-- // .navbar-inner -->
+        </div>
+
+        <!-- ============================ Header & Logo bar =========================== -->
+
+
+      
+<section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2016-10-26T13:46:48.000Z" itemprop="datePublished">
+          2016-10-26
+      </time>
+    
+    
+    | 
+    <a href='/tags/android/'>android</a>
+    
+    
+</span>
+                <h1>BitmapPool的设计与实践</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+      		<p><strong>未经博主同意，不得转载该篇文章</strong></p>
+<p>前言</p>
+<p>  前一段时间在重新做自己的图片提供器的开发库EasyImage, 把加载网络图片的这块的功能完成了。主要也是在练习一下Java并发的东西。在完成了基本的架构之后，我发现RecycleView加载图片的时候，快速滑动列表的时候卡顿非常的明显。和Glide比起来差太远。虽然完全不是一个量级的东西。但是还是想做点什么让卡顿降低一点。</p>
+<p>问题</p>
+<p>  如果要问卡顿出现的原理，不是本文的讨论的重点。总之来说，就是手机超过了16ms才去刷新一个帧，就会导致界面卡顿。我通过Monitor跟踪分析了RecycleView快速滑动的时候的内存占用。发现Bitmap在疯狂的产生，清除。在图像上产生了大量的强制gc的信号。嗯，虽然RecycleView的ImageView重用了，但是Bitmap的内存是不停的根据适配进来的数据生成，释放，生成，释放…。所以造成大量的虚拟机强制GC，导致界面卡顿。所以，很简单的道理，应该想到将Bitmap的内存复用起来。毕竟RecycleView中重复加载的的Bitmap的Config都是一致的。</p>
+<p>  并且Glide， Fresco都是使用了Bitmap复用技术。总的来说，解决方式找到了，但是如何解决还是遇到了很多问题。</p>
+<ul>
+<li>我开发的是一个图片加载库，那么我如何找到Bitmap内存回收的Point？如何找到Bitmap内存复用的Point?毕竟这个复用操作对开发者是隐藏的。我不可能去让开发者在Adapter的ViewHolder中去回调Bitmap复用／释放的操作。</li>
+<li>如何判断一个Bitmap是否该回收？如果这个Bitmap被多个ImageView引用了怎么办？</li>
+<li>如何将被复用的Bitmap内存和新的数据融合？</li>
+<li>LruCache的时候是否该回收？DiskCache呢？如果Bitmap在LruCache存储中因为内存满了被踢出了缓存中或者因为数据源对应缓存的Bitmap数据更新而被踢出内存中的旧Bitmap，如果给它的引用计数减1？</li>
+<li>如何通过ImageView的宽高来拿到相对应的Bitmap的宽高？（后面内存复用的时候需要这个）</li>
+</ul>
+<p>基于以上的问题，我基本上一步步的进行了解决，最终完成了BitmapPool的设计。</p>
+<p>设计</p>
+<p>  先上一张导图。</p>
+<p>  可以看到，我基本上将很多功能都已经模块化了。首先一个图片加载库，会提供多种数据形式的数据加载，网络，Resource，本地文件，缓存等等。而这些不同的加载形式都可以封装成不同的加载模块或者说加载策略。然后通过策略模式去提供不同的加载模块。所以在这里我们把他们看成数据提供原。（这里的数据源最终转换成Bitmap的像素点阵）</p>
+<p>  所有的数据源提供的数据都通过BitmapDecode和Bitmap内存融合。然后拥有了全新像素点阵的Bitmap全部被封装成LeasedDrawable发布到UImageLoader中进行最终的渲染。所以很清楚的发现，UImageLoader中就是Bitmap被复用的一点计数点。</p>
+<p>  计数点和LeasedDrawable可以一起来解释。上述的第二个问题，实际上可以被JVM中内存是否该被回收中的引用计数算法解决。如果发布一次，那么引用计数加1，回首一次，那么引用计数减1。如果减完了之后引用计数为0，那么就可以进行内存的回收到BitmapPool中等待复用了。而谁来进行引用的计数呢？很简单的道理，使用BitmapDrawable。在RecycleView加载图片错位那里，我也是通过这个类将Bitmap进行封装，然后存储它的Task解决的。一样的道理，这里也是进行对Bitmap的二次封装，然后进行引用计数的增加或者减少。</p>
+<p>  可以看到数据源那里我写了DiskCache，但是没有LruCache。其实这个问题不难。。我也不知道为啥我会被傻x的困扰了好久（大概是因为最近太开心了吧2333，科科，严肃）。LruCache实际是一个将点对点的映射（数据源信息到拥有正确像素点阵的Bitmap）关系存储到了内存中。所以，存储进去的时候，我们不应该引用计数减1啊，，因为还在内存中啊少年。但是DiskCache直接将Bitmap打成了Stream存入了磁盘中。所以Disk和Lru需要分开对待。</p>
+<p>  还有一点，如果Bitmap在Lru中因为Lru的内存空间忙了而被踢出去了，怎么拿到被剔除的Bitmap并且进行回收操作？嗯，，我还不是不知道，但是我通过看Lru的源码发现了这个方法：</p>
+<pre><code>/**
+     * <span class="type">Called</span> <span class="keyword">for</span> entries that have been evicted <span class="keyword">or</span> removed. <span class="type">This</span> <span class="keyword">method</span> <span class="keyword">is</span>
+     * invoked <span class="keyword">when</span> a value <span class="keyword">is</span> evicted to make space, removed by a call to
+     * {@link <span class="comment">#remove}, or replaced by a call to {@link #put}. The default</span>
+     * implementation does nothing.
+     *
+     * &lt;p&gt;<span class="type">The</span> <span class="keyword">method</span> <span class="keyword">is</span> called <span class="keyword">without</span> synchronization: other threads may
+     * access the cache <span class="keyword">while</span> this <span class="keyword">method</span> <span class="keyword">is</span> executing.
+     *
+     * @param evicted <span class="literal">true</span> <span class="keyword">if</span> the entry <span class="keyword">is</span> being removed to make space, <span class="literal">false</span>
+     *     <span class="keyword">if</span> the removal was caused by a {@link <span class="comment">#put} or {@link #remove}.</span>
+     * @param newValue the new value <span class="keyword">for</span> {@code key}, <span class="keyword">if</span> it exists. <span class="type">If</span> non-null,
+     *     this removal was caused by a {@link <span class="comment">#put}. Otherwise it was caused by</span>
+     *     an eviction <span class="keyword">or</span> a {@link <span class="comment">#remove}.</span>
+     */
+    protected <span class="type">void</span> entryRemoved(boolean evicted, K key, V oldValue, V newValue) {}
+</code></pre><p>  看到没，@param evicted true if the entry is being removed to make space。通过源码可以发现，entryRemoved方法只在trimToSize方法中才会传入True</p>
+<pre><code>/<span class="keyword">*</span><span class="keyword">*</span>
+ <span class="keyword">*</span> Remove the eldest entries until the total of remaining entries is at or
+ <span class="keyword">*</span> below the requested size.
+ <span class="keyword">*</span>
+ <span class="keyword">*</span> <span class="comment">@param maxSize the maximum size of the cache before returning. May be -1</span>
+ <span class="keyword">*</span>            to evict even 0-sized elements.
+ <span class="keyword">*</span>/
+public void trimToSize(int maxSize) {
+</code></pre><p>  注释写的很清楚了。所以，我们只需要继承LruCache然后实现entryRemoved方法，并且当evicted为True的时候将Bitmap的引用计数减1就可以了。</p>
+<p>  解决了以上问题之后，还剩最后一点。如何将内存复用？好像通过Bitmap的API或者文档看不出来能直接更改像素点阵的方法。好在有inBitmap这个玩意。详情请查阅文档：传送门。使用BitmapFactory.Option的这个字段，可以做到通过这个Option加载新的Bitmap的时候将bitmap内存复用。但是在Android4.4之上的版本使用的时候有些小限制：</p>
+<ul>
+<li>被加载的Bitmap必须是jpg或者png格式的图片</li>
+<li>inSampleSize字段必须是1</li>
+<li>两个Bitmap的Configuration（这里是size）必须相同</li>
+</ul>
+<p>所以完全可以看出来，google做的这个优化完全就是为了优化RV加载网络图片的。</p>
+<p>对。。还有最后一点，如何通过ImageView的size路由到上次被渲染的Bitmap的size？我反正是写了一些Ugly Code，我在BitmapDecode中做了一个“路由表”用来存储映射关系。</p>
+<p>实践</p>
+<p>  把以上的问题和思路都解决理清之后，就可以开始实践了！</p>
+<p>  先上core class BitmapPool的代码：</p>
+<pre><code><span class="comment">/**
+ * Created by Zane on 16/10/19.
+ * Email: zanebot96@gmail.com
+ * Blog: zane96.github.io
+ */</span>
+
+<span class="keyword">public</span> <span class="keyword">final</span> class BitmapPool {
+
+    <span class="comment">//Bitmap中的bitmap存储数据结构,需要在代码中进行线程安全的操作</span>
+    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Bitmap&gt; mBitmaps = <span class="keyword">new</span> LinkedList&lt;&gt;();
+
+    <span class="comment">//位图池是否正在销毁</span>
+    <span class="built_in">boolean</span> isRecycled;
+
+    <span class="keyword">private</span> BitmapPool(){
+        isRecycled = <span class="keyword">false</span>;
+    }
+
+    <span class="comment">//保持单例</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> class InstanceHolder{
+        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> BitmapPool instance = <span class="keyword">new</span> BitmapPool();
+    }
+
+    <span class="keyword">public</span> <span class="keyword">static</span> BitmapPool getInstance(){
+        <span class="keyword">return</span> InstanceHolder.instance;
+    }
+
+    <span class="comment">/**
+     * inBitmap这个字段从Android 3.0才添加,而4.4之后才要求我如下代码的要求。这里我们只要大于3.0的版本
+     * 我们都满足如下要求,因为本来这里就是为生成大量Bitmap的具有回收机制的控件而设计的(item中Bitmap的config相同)
+     * @param width
+     * @param height
+     * @return true 在Bitmap中找到了合适的Bitmap内存空间,false 没有找到合适的Bitmap,需要自己生成
+     */</span>
+    <span class="keyword">public</span> BitmapFactory.Options getReuseOption(<span class="built_in">int</span> <span class="variable">width</span>, <span class="built_in">int</span> <span class="variable">height</span>){
+        <span class="keyword">synchronized</span> (mBitmaps){
+            Log.i(<span class="string">"BitmapPool"</span>, <span class="string">"Prereuse "</span> + mBitmaps.<span class="built_in">size</span>()+ <span class="string">" size"</span>);
+            BitmapFactory.Options options = <span class="keyword">null</span>;
+            <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.HONEYCOMB){
+                Bitmap reuseBitmap = getBitmapBySize(<span class="variable">width</span>, <span class="variable">height</span>);
+                <span class="keyword">if</span> (reuseBitmap != <span class="keyword">null</span>) {
+                    Log.i(<span class="string">"BitmapPool"</span>, <span class="string">"reuse"</span>);
+                    options = <span class="keyword">new</span> BitmapFactory.Options();
+                    options.inBitmap = reuseBitmap;
+                    options.inSampleSize = <span class="number">1</span>;
+                    options.inMutable = <span class="keyword">true</span>;
+                }
+            }
+            <span class="keyword">return</span> options;
+        }
+    }
+
+    <span class="comment">/**
+     * 将Lru中
+     * @param bitmap
+     */</span>
+    <span class="keyword">void</span> putReuseBitmap(Bitmap bitmap){
+        <span class="keyword">synchronized</span> (mBitmaps){
+            Log.i(<span class="string">"BitmapPool"</span>, <span class="string">"putin"</span>);
+            mBitmaps.<span class="built_in">add</span>(bitmap);
+        }
+    }
+
+    <span class="comment">/**
+     * 根据传入的所需要的Bitmap的宽和高来返回Bitmap池中符合要求的Bitmap.
+     * 必须是宽高一致。不然无法复用
+     * 注意不要出现ConcurrentModificationException
+     * @param width
+     * @param height
+     * @return
+     */</span>
+    <span class="keyword">private</span> Bitmap getBitmapBySize(<span class="built_in">int</span> <span class="variable">width</span>, <span class="built_in">int</span> <span class="variable">height</span>){
+        List&lt;Bitmap&gt; removeBitmaps = <span class="keyword">new</span> LinkedList&lt;&gt;();
+        Bitmap returnBitmap = <span class="keyword">null</span>;
+            <span class="keyword">for</span> (Bitmap bitmap : mBitmaps){
+                <span class="keyword">if</span> (bitmap.isRecycled()) {
+                    removeBitmaps.<span class="built_in">add</span>(bitmap);
+                } <span class="keyword">else</span> {
+                    Log.i(<span class="string">"BitmapPool"</span>, <span class="string">"width height "</span> + <span class="variable">width</span> + <span class="string">" "</span> + <span class="variable">height</span> + <span class="string">" bitmap: "</span> + bitmap.getWidth() + <span class="string">" "</span> + bitmap.getHeight());
+                    <span class="keyword">if</span> (bitmap.getWidth() == <span class="variable">width</span> &amp;&amp; bitmap.getHeight() == <span class="variable">height</span>){
+
+                        removeBitmaps.<span class="built_in">add</span>(bitmap);
+                        returnBitmap = bitmap;
+                    }
+                }
+            }
+            mBitmaps.removeAll(removeBitmaps);
+            <span class="keyword">return</span> returnBitmap;
+    }
+
+    <span class="comment">/**
+     * 清空BitmapPool缓存的Bitmap内存空间
+     */</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> clearBitmapPool(){
+        <span class="keyword">synchronized</span> (mBitmaps){
+            isRecycled = <span class="keyword">true</span>;
+            <span class="built_in">int</span> i = <span class="number">0</span>;
+            <span class="keyword">while</span> (!mBitmaps.isEmpty()){
+                Bitmap bitmap = mBitmaps.remove(i);
+                i++;
+                <span class="keyword">if</span> (!bitmap.isRecycled()){
+                    bitmap.recycle();
+                }
+            }
+        }
+    }
+}
+</code></pre><p>再看和BitmapPool有着PY交易的LeasedDrawable类：</p>
+<pre><code><span class="comment">/**LeasedDrawable作为和BitmapPool进行交易的中间层
+ * 通过引用计数来管理Bitmap的回收/销毁 与否
+ *
+ * Created by Zane on 16/10/20.
+ * Email: zanebot96<span class="doctag">@gmail</span>.com
+ * Blog: zane96.github.io
+ */</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LeasedDrawable</span> <span class="keyword">extends</span> <span class="title">BitmapDrawable</span> <span class="keyword">implements</span> <span class="title">ILeasedDrawable</span> </span>{
+
+    <span class="keyword">private</span> AtomicInteger mReferenceCount;
+    <span class="keyword">private</span> AtomicBoolean isRecycle = <span class="keyword">new</span> AtomicBoolean(<span class="keyword">false</span>);
+    <span class="keyword">private</span> <span class="keyword">final</span> BitmapPool bitmapPool = BitmapPool.getInstance();
+
+    <span class="function"><span class="keyword">public</span> <span class="title">LeasedDrawable</span><span class="params">(Bitmap bitmap)</span></span>{
+        <span class="keyword">super</span>(bitmap);
+        mReferenceCount = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">retain</span><span class="params">()</span> </span>{
+        mReferenceCount.incrementAndGet();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">recycle</span><span class="params">()</span> </span>{
+        <span class="keyword">if</span> (!isRecycle.get()){
+            mReferenceCount.decrementAndGet();
+            Bitmap bitmap = getBitmap();
+            Log.i(<span class="string">"LeasedDrawable"</span>, <span class="string">"reference count: "</span> + mReferenceCount);
+            <span class="keyword">if</span> (mReferenceCount.get() &lt; <span class="number">0</span>){
+                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"reference to bitmap can't smaller than 0"</span>);
+            } <span class="keyword">else</span> <span class="keyword">if</span> (mReferenceCount.get() == <span class="number">0</span>){
+                isRecycle.set(<span class="keyword">true</span>);
+                <span class="keyword">if</span> (bitmapPool.isRecycled){
+                    bitmap.recycle();
+                } <span class="keyword">else</span> {
+                    <span class="comment">//回收内存</span>
+                    Log.i(<span class="string">"LeasedDrawable"</span>, <span class="string">"recycle"</span>);
+                    bitmapPool.putReuseBitmap(bitmap);
+                }
+            }
+        }
+    }
+}
+</code></pre><p>我觉得。。代码真的不复杂。并且如果实在开发中自己去做一个BitmapPool（如果你傻x的不用优秀的图片加载库）去优化性能，这一点都不难。</p>
+<p>总结</p>
+<p>自己也快到了找实习的时候了。思想上跟不上，基础上跟不上我觉得会很糟糕。这个库本来就是写来练习设计模式的，基本上没有实践的用处。。不过，好在做完了，并且可以用。</p>
+<p>最后一句话，朱大告诉我的：面试中，基础比深度重要。互勉。</p>
+
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+        </div>
+        <nav class="pagination" role="pagination">
+    
+    
+    <a class="pull-right" href="/2016/09/20/单元测试总结/">
+        单元测试总结 →
+    </a>
+    
+</nav>
+
+        <div class="duoshuo">
+<div class="ds-thread" data-thread-key="2016/10/26/BitmapPool的设计与实践/" data-title="BitmapPool的设计与实践" data-url="http://yoursite.com/2016/10/26/BitmapPool的设计与实践/"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"Zane"};
+(function() {
+	var ds = document.createElement('script');
+	ds.type = 'text/javascript';ds.async = true;
+	ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	ds.charset = 'UTF-8';
+	(document.getElementsByTagName('head')[0] 
+	 || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+</div>
+    </div>
+</section>
+
+
+      
+<!-- ============================ Footer =========================== -->
+
+<footer>
+    <div class="container">
+            <div class="copy">
+                <p>
+                    &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By Zane Xu. All Rights Reserved.
+                </p>
+                <p>Theme By <a href="//go.kieran.top" style="color: #767D84">Kieran</a></p>
+            </div>
+            <div class="social">
+                <ul>
+                    
+                    <li><a href="https://github.com/Zane96" title="Github" target="_blank"><i class="icon-github"></i></a>&nbsp;</li>
+                    
+                    
+                    
+                    
+                    
+                    <li><a href="http://www.weibo.com/2643215417" title="Sina-Weibo" target="_blank"><i class="icon-sina-weibo"></i></a>&nbsp;</li>
+                    
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+</footer>
+
+<!-- ============================ END Footer =========================== -->
+      <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+    
+    var resizeHero = function () {
+        var hero = $(".cover,.heightblock"),
+            window1 = $(window);
+        hero.css({
+            "height": window1.height()
+        });
+    };
+    
+    resizeHero();
+    
+    $(window).resize(function () {
+        resizeHero();
+    });
+</script>
+<script src="/js/plugins.min.js"></script><!-- Bootstrap core and concatenated plugins always load here -->
+<script src="/js/jquery.flexslider-min.js"></script><!-- Flexslider plugin -->
+<script src="/js/scripts.js"></script><!-- Theme scripts -->
+
+<!-- Initiate flexslider plugin -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+      $('.flexslider').flexslider({
+        animation: "fade",
+        prevText: "",
+        nextText: "",
+        directionNav: true
+      });
+    });
+</script>
+
+</body>
+</html>

@@ -231,6 +231,45 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2016/10/26/BitmapPool的设计与实践/">BitmapPool的设计与实践</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2016-10-26T13:46:48.000Z" itemprop="datePublished">
+          2016-10-26
+      </time>
+    
+    
+    | 
+    <a href='/tags/android/'>android</a>
+    
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        未经博主同意，不得转载该篇文章
+前言
+  前一段时间在重新做自己的图片提供器的开发库EasyImage, 把加载网络图片的这块的功能完成了。主要也是在练习一下Java并发的东西。在完成了基本的架构之后，我发现RecycleView加载图片的时候，快速滑动列表的时候卡顿非常的明显。和Glide比起来差太远。虽然完全不是一个量级的东西。但是还是想做点什么让卡顿降低一点。
+问题
+  如果要问卡顿出现的原理，不是本文的讨论的重点。总之来说，就是
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2016/10/26/BitmapPool的设计与实践/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2016/09/20/单元测试总结/">单元测试总结</a></h3>
                     <span>
                         <span class="post-meta">
@@ -407,39 +446,6 @@
                     
                     <p class="pull-right readMore">
                         <a href="/2016/07/09/Web缓存的分析/">Read More...</a>
-                    </p>
-                    
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">《深入理解jvm》读书笔记——类加载机制</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2016-05-28T13:46:26.000Z" itemprop="datePublished">
-          2016-05-28
-      </time>
-    
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p>
-                      
-                        <h2 id="概述">概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
-<h2 id="动态性">动态性</h2><p>​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗，但是Java的动态性带来的灵活性却是很重要的一部分。比如面向接口编程，反射等等。</p>
-<h2 id="何时开始加载">何时开始加载</h2><p> <img src="/img/classloader_1.png" alt="classloader_1"></p>
-<p>​ 其中 <strong>验证，准备，解析</strong> 称为连接状态。<br>
-                      
-                    </p>
-                    
-                    <p class="pull-right readMore">
-                        <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">Read More...</a>
                     </p>
                     
                 </div>

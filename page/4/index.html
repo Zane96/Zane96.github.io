@@ -231,6 +231,51 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2015/12/06/MVP模式的一种新尝试/">MVP模式的一种新尝试</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2015-12-06T11:54:22.000Z" itemprop="datePublished">
+          2015-12-06
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        <h1 id="前言">前言</h1><p>  在暑假的时候学习了一遍mvp开发模式在android中的运用。那个时候学的时候确实觉得mvp模式做安卓开发特别清晰，代码模块分的特别清楚。但是在自己写demo的时候还是把自己有点绕晕了。因为mvp模式运用了大量的接口（面向接口编程）来实现view和model层的解耦。那时候甚至连设计模式都没看，所以一下子接触这种抽象的设计模式有点不适应。虽然说google的data-binding的不断完善会导致安卓上面mvvm模式越来越火，但是我觉得设计模式嘛，学习一下没有坏处，可以提升自己的理解力。这篇博客主要讲一种mvp的一种新尝试（将activity, fragment, adapter作为presenter）。</p>
+<h2 id="MVP">MVP</h2><blockquote>
+<p>  mvp模式与mvc模式最大的差别就是，它将view层跟model实现完全解耦。所有的数据交互都在presenter层中。view,model和presenter的交互通过接口，view和model的交互通过presenter。解耦的好处就是视图层和数据层两者互不影响，所有的逻辑都在presenter中，他作为一个中间层可以给多个view来使用。完全通过接口来解耦可以提高代码维护度。</p>
+<p>  而mvc模式则是视图层可以通过control与数据层交互也可以直接跳过control和数据层直接交互。这样大多数时候会在view层里面new出model／bean的对象来。这样就把两者耦合在了一起。</p>
+</blockquote>
+<h3 id="传统mvp">传统mvp</h3><blockquote>
+<p>  传统的mvp模式是将activity或者fragment作为view层，将所有的逻辑代码抽出到presenter（一个java类）。这是我暑假写的一个demo源码 <a href="https://github.com/Zane96/mvp-test-login">传统mvp demo</a> 。</p>
+</blockquote>
+<p><img src="/img/mvp1.png" alt=""></p>
+<blockquote>
+<p>可以通过我的项目分包看出来，每一个类实现接口，通过接口来进行抽象解耦，以及数据交互。</p>
+</blockquote>
+<h3 id="一种新思想">一种新思想</h3><blockquote>
+<p>  这个思想也是通过github上面一个翻译的文章看来的。因为activity中包含着context， intent，获得系统服务等等，如果把activity作为视图层就应该避免这些业务逻辑。所以将activity仅仅作为视图层有点发挥不出他的真正价值。所以我们考虑把activity，fragment，adapter来作为presenter处理逻辑，用java类文件来作为视图层。并且这样做了之后，我感觉代码的清晰度是有提升的。这是我写的demo源码：<a href="https://github.com/Zane96/MVPLogin">新mvp demo</a> 。</p>
+</blockquote>
+<p><img src="/img/mvp2.png" alt=""><br>
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2015/12/06/MVP模式的一种新尝试/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/">关于RecycleView显示异步加载图片乱序的问题</a></h3>
                     <span>
                         <span class="post-meta">

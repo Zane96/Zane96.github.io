@@ -1,11 +1,101 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>Zane&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Talk is Cheap, Show me The Code">
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Talk is Cheap, Show me The Code">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Zane&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/index.html">
@@ -14,229 +104,252 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zane&#39;s Blog">
 <meta name="twitter:description" content="Talk is Cheap, Show me The Code">
-  
-    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+
+
+
+
+  <title>Zane's Blog</title>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
-			
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
-		</hgroup>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		
-		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
-		
+  
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						<div class="icon-wrap icon-link hide" data-idx="2">
-							<div class="loopback_l"></div>
-							<div class="loopback_r"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						<li>友情链接</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/tags/随笔">随笔</a></li>
-				        
-							<li><a href="/tags/android">android</a></li>
-				        
-							<li><a href="/tags/java">java</a></li>
-				        
-							<li><a href="/tags/web">web</a></li>
-				        
-							<li><a href="/tags/python">python</a></li>
-				        
-							<li><a href="/tags/sql">sql</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
-					        
-								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
-					        
-								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
-					        
-								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						
-					</div>
-				</section>
-				
-				
-				
-				<section class="switch-part switch-part3">
-					<div id="js-friends">
-					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
-			        
-			        </div>
-				</section>
-				
 
-				
-				
-				<section class="switch-part switch-part4">
-				
-					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zane's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Zane Xu</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/tags/随笔">随笔</a></li>
-		        
-					<li><a href="/tags/android">android</a></li>
-		        
-					<li><a href="/tags/java">java</a></li>
-		        
-					<li><a href="/tags/web">web</a></li>
-		        
-					<li><a href="/tags/python">python</a></li>
-		        
-					<li><a href="/tags/sql">sql</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
-			        
-						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
-			        
-						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap">
-  
-    <article id="post-BitmapPool的设计与实践" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/26/BitmapPool的设计与实践/" class="article-date">
-  	<time datetime="2016-10-26T13:46:48.000Z" itemprop="datePublished">2016-10-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/26/BitmapPool的设计与实践/">BitmapPool的设计与实践</a>
-    </h1>
+
+<nav class="site-nav">
   
 
-      </header>
+  
+    <ul id="menu" class="menu">
       
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
     
-    <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>未经博主同意，不得转载该篇文章</strong></p>
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/26/BitmapPool的设计与实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/26/BitmapPool的设计与实践/" itemprop="url">BitmapPool的设计与实践</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-26T21:46:48+08:00">
+                2016-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>未经博主同意，不得转载该篇文章</strong></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​   前一段时间在重新做自己的图片提供器的开发库<a href="https://github.com/Zane96/EasyImage" target="_blank" rel="external">EasyImage</a>, 把加载网络图片的这块的功能完成了。主要也是在练习一下Java并发的东西。在完成了基本的架构之后，我发现RecycleView加载图片的时候，快速滑动列表的时候卡顿非常的明显。和<strong>Glide</strong>比起来差太远。虽然完全不是一个量级的东西。但是还是想做点什么让卡顿降低一点。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>​   如果要问卡顿出现的原理，不是本文的讨论的重点。总之来说，就是手机超过了16ms才去刷新一个帧，就会导致界面卡顿。我通过Monitor跟踪分析了RecycleView快速滑动的时候的内存占用。发现Bitmap在疯狂的产生，清除。在图像上产生了大量的强制gc的信号。嗯，虽然RecycleView的ImageView重用了，但是Bitmap的内存是不停的根据适配进来的数据生成，释放，生成，释放…。所以造成大量的虚拟机强制GC，导致界面卡顿。所以，很简单的道理，应该想到将Bitmap的内存复用起来。毕竟RecycleView中重复加载的的Bitmap的Config都是一致的。</p>
 <p>​   并且<strong>Glide</strong>， <strong>Fresco</strong>都是使用了Bitmap复用技术。总的来说，解决方式找到了，但是如何解决还是遇到了很多问题。</p>
@@ -276,60 +389,139 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>自己也快到了找实习的时候了。思想上跟不上，基础上跟不上我觉得会很糟糕。这个库本来就是写来练习设计模式的，基本上没有实践的用处。。不过，好在做完了，并且可以用。</p>
 <p>最后一句话，朱大告诉我的：<strong>面试中，基础比深度重要</strong>。互勉。</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-单元测试总结" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/20/单元测试总结/" class="article-date">
-  	<time datetime="2016-09-20T05:05:15.000Z" itemprop="datePublished">2016-09-20</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/20/单元测试总结/">单元测试总结</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/20/单元测试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/20/单元测试总结/" itemprop="url">单元测试总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-20T13:05:15+08:00">
+                2016-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="单元测试小总结"><a href="#单元测试小总结" class="headerlink" title="单元测试小总结"></a>单元测试小总结</h2><p>​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。</p>
+      
+
+      
+        
+          
+            <h2 id="单元测试小总结"><a href="#单元测试小总结" class="headerlink" title="单元测试小总结"></a>单元测试小总结</h2><p>​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。</p>
 <h3 id="单元测试是什么"><a href="#单元测试是什么" class="headerlink" title="单元测试是什么"></a>单元测试是什么</h3><p>​ 不关有单元测试，还有UI测试，集成测试等等。单元测试简单的来说就是来验证某个类里面的某个方法能不能传入一个参数然后返回一个我们预期的值，如果没有返回值就去验证函数中代码能不能正常按预期跑一遍。实际上是如何测试是个非常灵活的事情。常用的单元测试框架有：JUnit，Mockito，Robolectric，DaggerMock等等</p>
 <h3 id="最简单的示例"><a href="#最简单的示例" class="headerlink" title="最简单的示例"></a>最简单的示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Add</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> num1 + num2;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>​ 对上述代码进行单元测试只需要最基本的JUnit框架就够了，没错，就是AS给你自动引入的JUnit。</p>
@@ -393,60 +585,139 @@
 <p>官方文档：<a href="https://google.github.io/android-testing-support-library/" target="_blank" rel="external">官方文档</a></p>
 <p>官方代码示例：<a href="https://github.com/googlesamples/android-testing" target="_blank" rel="external">android-test</a></p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Android系统安全学习（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/16/Android系统安全学习（二）/" class="article-date">
-  	<time datetime="2016-09-16T07:31:02.000Z" itemprop="datePublished">2016-09-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/16/Android系统安全学习（二）/">Android系统安全学习（二）</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/16/Android系统安全学习（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/16/Android系统安全学习（二）/" itemprop="url">Android系统安全学习（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-16T15:31:02+08:00">
+                2016-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="Android中系统Service的安全"><a href="#Android中系统Service的安全" class="headerlink" title="Android中系统Service的安全"></a>Android中系统Service的安全</h2><h3 id="Binder的安全"><a href="#Binder的安全" class="headerlink" title="Binder的安全"></a>Binder的安全</h3><ul>
+      
+
+      
+        
+          
+            <h2 id="Android中系统Service的安全"><a href="#Android中系统Service的安全" class="headerlink" title="Android中系统Service的安全"></a>Android中系统Service的安全</h2><h3 id="Binder的安全"><a href="#Binder的安全" class="headerlink" title="Binder的安全"></a>Binder的安全</h3><ul>
 <li>RPC的server端里面的bind thread里面bind会调用getCallingUID()方法来进行对调用远程服务的客户端的check，bind自然是运行在bind thread pool里面的。</li>
 <li>ServiceManager是一个远程服务名字管理（注册）器，服务可以通过向ServiceManager注册来使自己晋升为系统服务。提供一个AddService和getService两种服务。他自己的binder是0，在自己这个process fork出来的时候就已经被注册了。</li>
 </ul>
@@ -477,60 +748,139 @@
 <li>RootExplorer在做了上述的启动过程之后，就可以通过IO流向 shell中写命令，然后这些命令都会在SU中去运行。所以Android中App获得Root权限不是自身的UID升级为Root，而是通过具有Root权限的sh流在执行shell命令。</li>
 </ul>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Android系统安全学习（一）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/29/Android系统安全学习（一）/" class="article-date">
-  	<time datetime="2016-08-29T11:54:14.000Z" itemprop="datePublished">2016-08-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/29/Android系统安全学习（一）/">Android系统安全学习（一）</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/29/Android系统安全学习（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/29/Android系统安全学习（一）/" itemprop="url">Android系统安全学习（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-29T19:54:14+08:00">
+                2016-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>进程：一个可执行文件的活动表现，一次生命的历练</p>
+      
+
+      
+        
+          
+            <p>进程：一个可执行文件的活动表现，一次生命的历练</p>
 <p>进程的地址空间界限，虚拟内存0到4g（32位）,物理内存实际就0到1g</p>
 <p>3到4g是内核态，所有进程共享，0到3g是进程的私有空间</p>
 <p>这种边界围栏可以防止某一个进程的Crash不会扩延到其他的进程</p>
@@ -632,60 +982,139 @@
 <p>还有，服务端的服务将会通过Binder运行时的注册到ServiceManager里面，这时，ServiceManager将会检查这个系统服务的UID，来判断是否是可以被注册的服务</p>
 <p> ActivityThread-&gt;ActivityManagerService-&gt;请求Zygote fork子进程-&gt;返回到ActivityThread</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-利用redis构建多消费者请求队列" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/26/利用redis构建多消费者请求队列/" class="article-date">
-  	<time datetime="2016-08-26T14:40:16.000Z" itemprop="datePublished">2016-08-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/26/利用redis构建多消费者请求队列/">利用redis构建多消费者请求队列</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/26/利用redis构建多消费者请求队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/26/利用redis构建多消费者请求队列/" itemprop="url">利用redis构建多消费者请求队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-26T22:40:16+08:00">
+                2016-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h3 id="原文：http-peiqiang-net-2014-12-31-python-simple-queue-redis-queue-html"><a href="#原文：http-peiqiang-net-2014-12-31-python-simple-queue-redis-queue-html" class="headerlink" title="原文：http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html"></a>原文：<a href="http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html" target="_blank" rel="external">http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html</a></h3><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​ 最近在捣腾爬虫，用python去爬取知乎的用户信息，项目地址：<a href="https://github.com/Zane96/Script_Set/tree/master/ZHIHU_Crawler" target="_blank" rel="external">ZHIHU_Crawler</a>（Mongodb+requests+xpath+redis）。由于是年轻的python司机，开始用进程池进行爬取遇到了很多无法解决的问题。后来看到了这篇文章，利用redis的数据存储结构构建一个简单的请求队列，完整地说是一个多消费者请求阻塞队列。这个思想跟Android诸多图片请求库的思想都是相同的，只不过Android多是用Java的并发Api实现（通过Future＋BlockingQueue，我的想法以后是这样去构建），本人上学期也正想自己去造个重复的轮子，但是半路看《Java并发编程》看的有点懵逼，不过下学期一定会补起来。<a href="https://github.com/Zane96/EasyImageProvider" target="_blank" rel="external">EasyImageProvider</a>。<strong>（Zane写）</strong></p>
+      
+
+      
+        
+          
+            <h3 id="原文：http-peiqiang-net-2014-12-31-python-simple-queue-redis-queue-html"><a href="#原文：http-peiqiang-net-2014-12-31-python-simple-queue-redis-queue-html" class="headerlink" title="原文：http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html"></a>原文：<a href="http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html" target="_blank" rel="external">http://peiqiang.net/2014/12/31/python-simple-queue-redis-queue.html</a></h3><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​ 最近在捣腾爬虫，用python去爬取知乎的用户信息，项目地址：<a href="https://github.com/Zane96/Script_Set/tree/master/ZHIHU_Crawler" target="_blank" rel="external">ZHIHU_Crawler</a>（Mongodb+requests+xpath+redis）。由于是年轻的python司机，开始用进程池进行爬取遇到了很多无法解决的问题。后来看到了这篇文章，利用redis的数据存储结构构建一个简单的请求队列，完整地说是一个多消费者请求阻塞队列。这个思想跟Android诸多图片请求库的思想都是相同的，只不过Android多是用Java的并发Api实现（通过Future＋BlockingQueue，我的想法以后是这样去构建），本人上学期也正想自己去造个重复的轮子，但是半路看《Java并发编程》看的有点懵逼，不过下学期一定会补起来。<a href="https://github.com/Zane96/EasyImageProvider" target="_blank" rel="external">EasyImageProvider</a>。<strong>（Zane写）</strong></p>
 <h2 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h2><p>​ 本文展示了如何使用<a href="http://redis.io/" target="_blank" rel="external">redis</a>构建一个简单的多生产者，多消费者队列并且提供类似python标准库<a href="http://docs.python.org/library/queue.html" target="_blank" rel="external">queue</a>一样的接口。你可以使用这个队列方便的从多个进程或者耗时的计算到多个消费者进程之间共享数据。</p>
 <p>​ 我们使用redis<a href="http://redis.io/topics/data-types#lists" target="_blank" rel="external">列表</a>来保存数据。redis列表按照字符串插入的顺序保存数据。</p>
 <p>​ 下面的redis命令会被用到：</p>
@@ -715,60 +1144,139 @@
 <li><a href="https://github.com/binarydud/pyres" target="_blank" rel="external">pyres</a> python下resque的克隆版。</li>
 </ul>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/python/">python</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Web缓存的分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/09/Web缓存的分析/" class="article-date">
-  	<time datetime="2016-07-09T06:39:36.000Z" itemprop="datePublished">2016-07-09</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/09/Web缓存的分析/">Web缓存的分析</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/09/Web缓存的分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/09/Web缓存的分析/" itemprop="url">Web缓存的分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-09T14:39:36+08:00">
+                2016-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web/" itemprop="url" rel="index">
+                    <span itemprop="name">web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
 <h3 id="Web缓存的好处"><a href="#Web缓存的好处" class="headerlink" title="Web缓存的好处"></a>Web缓存的好处</h3><ul>
 <li>缓存可以减少手机流量的消耗</li>
 <li>可以更快的响应用户的操作，提升用户体验度</li>
@@ -877,60 +1385,139 @@
 </ul>
 <p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/web/">web</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-《深入理解jvm》读书笔记——类加载机制" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/" class="article-date">
-  	<time datetime="2016-05-28T13:46:26.000Z" itemprop="datePublished">2016-05-28</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">《深入理解jvm》读书笔记——类加载机制</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/28/《深入理解jvm》读书笔记——类加载机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/" itemprop="url">《深入理解jvm》读书笔记——类加载机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-28T21:46:26+08:00">
+                2016-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>​ 我们的java文件在编译的过程中会从.java文件转变为.class文件，.class文件是一串二进制流。而类加载过程就是将编译好的.class文件加载到虚拟机内存中，并对数据进行效验，转换解析和初始化，最终可以形成虚拟机直接使用的java类型。</p>
 <h2 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h2><p>​ Java是一门强类型，静态类型的语言。但是Java的动态类加载机制成就了Java的动态性的特点，虽然类型的加载，连接和初始化过程都是在程序运行期间完成的，会造成一定的性能消耗，但是Java的动态性带来的灵活性却是很重要的一部分。比如面向接口编程，反射等等。</p>
 <h2 id="何时开始加载"><a href="#何时开始加载" class="headerlink" title="何时开始加载"></a>何时开始加载</h2><p> <img src="/img/classloader_1.png" alt="classloader_1"></p>
 <p>​ 其中 <strong>验证，准备，解析</strong> 称为连接状态。</p>
@@ -1087,60 +1674,139 @@
 <p>有点类似Android中的view绘制和消息传递机制，不同的是消息机制里面viewgroup先将event传递到view视图底层，如果所有的底层视图都对event不感兴趣才会返回到viewgroup的onTouchEvent和onTouch中。</p>
 <p>之前说了，一个全限定名的类如果被一个类加载器加载了之后才会称为同一个类。之所以虚拟机团队要设计这样的模式，就是因为防止这种类型错误的问题。比如Object类是默认被系统的最顶层类加载器加载的，所以所有的程序里面Object都是相同类型的，不会出现Object被其他类加载器加载然后导致Object类型错误的问题。</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/java/">java</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-《深入理解jvm》读书笔记——垃圾回收以及内存分配" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/" class="article-date">
-  	<time datetime="2016-05-24T14:34:40.000Z" itemprop="datePublished">2016-05-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/">《深入理解jvm》读书笔记——垃圾回收以及内存分配</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/24/《深入理解jvm》读书笔记——垃圾回收以及内存分配/" itemprop="url">《深入理解jvm》读书笔记——垃圾回收以及内存分配</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-24T22:34:40+08:00">
+                2016-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
 <li>JVM的垃圾回收主要发生在java堆，因为线程的私有内存（程序计数器， 虚拟机栈， 本地方法栈）会随着线程的销毁而释放内存，并且栈的内存大小在运行之前就已经根据类结构确定了内存的大小。java堆和方法区（常量池比较特殊）和上面的就不同了，一个接口总的多个实现类需要的内存可能不同，一个方法中的多个分支需要的内存也可能不一样，我们只能在程序运行的时候才知道要去创建哪些对象。</li>
 </ul>
 <h2 id="对象生命"><a href="#对象生命" class="headerlink" title="对象生命"></a>对象生命</h2><ul>
@@ -1200,60 +1866,139 @@
 </ul>
 <p>​ 在年轻代发生Minor GC之前，虚拟机会先检查老年代最大的连续空间是否大于新生代里面所有对象的总和，如果成立那么刻意确保Minor GC是安全的。如果不成立就看能否允许担保失败的参数设置，如果是允许的话，就会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于就进行Minor GC，如果在这里担保失败的话，就会在老年代进行一次Full GC，如果小于或者不允许担保失败，那么就在老年代进行一次Full GC</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/java/">java</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-关于Activity的工作原理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/23/关于Activity的工作原理/" class="article-date">
-  	<time datetime="2016-04-22T16:13:16.000Z" itemprop="datePublished">2016-04-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/23/关于Activity的工作原理/">关于Activity的工作原理</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/23/关于Activity的工作原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/23/关于Activity的工作原理/" itemprop="url">关于Activity的工作原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-23T00:13:16+08:00">
+                2016-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​ 我还记得上个学期意外看到一篇文章，是凯子哥的一篇博客，讲的是app第一个activity启动的底层过程(java)，我当时几乎没接触过这块的源码，好像看了一半就放弃。还有一次刷知乎，看到一个人回答为什么ActivityThread里面Loop不会造成ANR，但是也是一脸萌比。这个学期开始刷艺术探索，已经看完了第十章，每一章都对着源码自己又看了一遍，再加上之前对Binder,IPC的浅显的研究。今天重新再来看这篇文章[<a href="http://blog.csdn.net/zhaokaiqiang1992/article/details/49428287" target="_blank" rel="external">【凯子哥带你学Framework】Activity启动过程全解析</a>]，发现基本上是看小说一样的轻松看完了。。这是一种进步！！感觉挺好的。感谢大神的知识分享，下面我用自己的方式来总结一下Activity启动的过程，但是我跟凯子哥不同，他讲的那个其实就多了一点Launcher和applicaiton创建的知识。</p>
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​ 我还记得上个学期意外看到一篇文章，是凯子哥的一篇博客，讲的是app第一个activity启动的底层过程(java)，我当时几乎没接触过这块的源码，好像看了一半就放弃。还有一次刷知乎，看到一个人回答为什么ActivityThread里面Loop不会造成ANR，但是也是一脸萌比。这个学期开始刷艺术探索，已经看完了第十章，每一章都对着源码自己又看了一遍，再加上之前对Binder,IPC的浅显的研究。今天重新再来看这篇文章[<a href="http://blog.csdn.net/zhaokaiqiang1992/article/details/49428287" target="_blank" rel="external">【凯子哥带你学Framework】Activity启动过程全解析</a>]，发现基本上是看小说一样的轻松看完了。。这是一种进步！！感觉挺好的。感谢大神的知识分享，下面我用自己的方式来总结一下Activity启动的过程，但是我跟凯子哥不同，他讲的那个其实就多了一点Launcher和applicaiton创建的知识。</p>
 <p>​ 说一点自己的学习感受。首先：</p>
 <ul>
 <li>源码海洋里面不要太追求了解每一个细节，不然分分钟迷失自我。</li>
@@ -1353,60 +2098,139 @@
 <h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>​ 系统源码看起来确实感觉自己置身茫茫大海一样，特别是要去找一些不理解的问题的时候。比如到底是被启动的activity的ActivityRecord实例先添加进去还是在实例创建了之后才添加进去，这个问题我看源码着了一天才还没有什么结果，后来在别人的帮助和查阅老罗的资料才找到问题所在。挺不错的一次过程，确实细节不必死扣，但是有些基本问题不懂的话还是应该去探究一下。</p>
 <p><strong>版权声明：本文为博主原创文章，未经博主允许不得转载。</strong></p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Android-IPC系列（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/06/Android-IPC系列（二）/" class="article-date">
-  	<time datetime="2016-04-06T05:48:51.000Z" itemprop="datePublished">2016-04-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+          
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/06/Android-IPC系列（二）/">Android-IPC系列（二）</a>
-    </h1>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
-      </header>
-      
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/06/Android-IPC系列（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zane Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zane's Blog">
+    </span>
+
     
-    <div class="article-entry" itemprop="articleBody">
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/06/Android-IPC系列（二）/" itemprop="url">Android-IPC系列（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-06T13:48:51+08:00">
+                2016-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。<strong>虽然我学的很浅，但是我尽量保证自己写的都是对的！</strong> 来一波binder的最新认识总结吧！～</p>
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。<strong>虽然我学的很浅，但是我尽量保证自己写的都是对的！</strong> 来一波binder的最新认识总结吧！～</p>
 <p><a href="http://zane96.github.io/2016/03/19/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">Android_IPC系列(一)</a></p>
 <p>上一篇文章主要是介绍一些简单的linux知识，通过AIDL中的生成代码来理解binder实现跨进程的原理。</p>
 <p>任务：</p>
@@ -1450,98 +2274,308 @@
 <p>  总之，binder要学习的东西还是很多。比如binder协议，binder传输数据包类型，binder在驱动里面的数据结构，缓存和线程池管理等等…<strong>Binder在安全性，效率性都优于Linux系统默认支持的IPC通信方式,拥有面向对象的设计原理。</strong></p>
 <p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
+          
+        
       
     </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
 
-
+    <div>
       
-      <div class="clearfix"></div>
     </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
+  </section>
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
   </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Zane Xu" />
+          <p class="site-author-name" itemprop="name">Zane Xu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me The Code</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-</article>
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
 </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2017 Zane Xu
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
-    </div>
-  </div>
-</footer>
-    </div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
     
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: true,
-		isPost: false,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
-<script src="/js/main.js"></script>
-
-
-
-
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
 
   </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

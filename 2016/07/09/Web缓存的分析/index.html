@@ -1,340 +1,261 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
-Web缓存的好处
-缓存可以减少手机流量的消耗
-可以更快的响应用户的操作">
+  <title>Web缓存的分析 | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。 Web缓存的好处 缓存可以减少手机流量的消耗 可以更快的响应用户的操作">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Web缓存的分析">
 <meta property="og:url" content="http://yoursite.com/2016/07/09/Web缓存的分析/index.html">
-<meta property="og:site_name" content="Zane's Blog">
-<meta property="og:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
-Web缓存的好处
-缓存可以减少手机流量的消耗
-可以更快的响应用户的操作">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。 Web缓存的好处 缓存可以减少手机流量的消耗 可以更快的响应用户的操作">
 <meta property="og:image" content="http://yoursite.com/img/web.png">
 <meta property="og:image" content="http://yoursite.com/img/web2.png">
 <meta property="og:updated_time" content="2016-10-26T13:53:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web缓存的分析">
-<meta name="twitter:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。
-Web缓存的好处
-缓存可以减少手机流量的消耗
-可以更快的响应用户的操作">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2016/07/09/Web缓存的分析/"/>
-
-
-  <title> Web缓存的分析 | Zane's Blog </title>
+<meta name="twitter:description" content="前言不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过新鲜度和校验来给客户端提供缓存资源。 Web缓存的好处 缓存可以减少手机流量的消耗 可以更快的响应用户的操作">
+<meta name="twitter:image" content="http://yoursite.com/img/web.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-Web缓存的分析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/09/Web缓存的分析/" class="article-date">
+  	<time datetime="2016-07-09T06:39:36.000Z" itemprop="datePublished">2016-07-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Web缓存的分析
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      Web缓存的分析
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-09T14:39:36+08:00" content="2016-07-09">
-              2016-07-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/web/" itemprop="url" rel="index">
-                    <span itemprop="name">web</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/09/Web缓存的分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/09/Web缓存的分析/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/web/">web</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h2 id="前言">前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
-<h3 id="Web缓存的好处">Web缓存的好处</h3><ul>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不论是在移动端还是前端，web缓存（Http缓存）都是很重要的一部分。在移动端，对于用户流量控制的优化，web缓存就起到了决定性的作用。最开始接触这块是在使用OkHttp的拦截器修改Http请求头进行web缓存，后来仔细研究了一下这块。而Web缓存就是客户端和服务端之间通过一种约束，通过<strong>新鲜度</strong>和<strong>校验</strong>来给客户端提供缓存资源。</p>
+<h3 id="Web缓存的好处"><a href="#Web缓存的好处" class="headerlink" title="Web缓存的好处"></a>Web缓存的好处</h3><ul>
 <li>缓存可以减少手机流量的消耗</li>
 <li>可以更快的响应用户的操作，提升用户体验度</li>
 <li>降低资源服务器的压力，减少并发量</li>
 </ul>
-<h3 id="Web缓存的分类">Web缓存的分类</h3><ul>
+<h3 id="Web缓存的分类"><a href="#Web缓存的分类" class="headerlink" title="Web缓存的分类"></a>Web缓存的分类</h3><ul>
 <li><p>手机文件缓存</p>
 <p>由于移动端不像前端，前端开发中浏览器都默认实现了Web缓存，所以我们可以通过请求头的控制来让浏览器自动为我们进行缓存。但是移动端没有这种默认实现Web缓存的容器，所以需要我们自己手动通过文件缓存网络请求过来的报文。Okhttp或者结合Retrofit（一样）都是可以通过OkhttpClient添加一个构造好的Cache实例，其中Cache实例我们需要指定文件路径和大小。具体可以看我这个代码<a href="https://github.com/Zane96/ICY-ClaTable" target="_blank" rel="external">Demo</a>。</p>
 </li>
@@ -350,17 +271,17 @@ Web缓存的好处
 <p>这是后台开发的时候，缓存从数据库中查找的数据，减少数据库的并发（比如NoSQL）。</p>
 </li>
 </ul>
-<h3 id="共有缓存和私有缓存">共有缓存和私有缓存</h3><ul>
+<h3 id="共有缓存和私有缓存"><a href="#共有缓存和私有缓存" class="headerlink" title="共有缓存和私有缓存"></a>共有缓存和私有缓存</h3><ul>
 <li>共有缓存(Cache-Control: public)：这种缓存常见的就是代理缓存，意思就是一个用户群体都可以访问这个缓存服务器，这个缓存服务器缓存了所有群体的报文缓存</li>
 <li>私有缓存(Cache-Control: private)：这种缓存常见的就是文件缓存（本地缓存），只允许一个用户个体去访问。</li>
 </ul>
-<h3 id="Web缓存的层次结构">Web缓存的层次结构</h3><p>一般来说，安卓中的图片多级缓存和这个概念不大相同，这里的多级缓存的意思是在客户端和服务端之间部署多级缓存。常见部署如下：</p>
+<h3 id="Web缓存的层次结构"><a href="#Web缓存的层次结构" class="headerlink" title="Web缓存的层次结构"></a>Web缓存的层次结构</h3><p>一般来说，安卓中的图片多级缓存和这个概念不大相同，这里的多级缓存的意思是在客户端和服务端之间部署多级缓存。常见部署如下：</p>
 <ul>
 <li>手机文件缓存（浏览器缓存）: <strong>一级缓存</strong></li>
 <li>小型的局域网内缓存：<strong>二级缓存</strong>，小型的，代价小，容量小的缓存代理</li>
 <li>大型的广域网内缓存：<strong>三级缓存</strong> ，大型的，代价高，容量大的缓存代理</li>
 </ul>
-<h3 id="Web缓存的流程">Web缓存的流程</h3><p>先上张图：</p>
+<h3 id="Web缓存的流程"><a href="#Web缓存的流程" class="headerlink" title="Web缓存的流程"></a>Web缓存的流程</h3><p>先上张图：</p>
 <p><img src="/img/web.png" alt="流程"></p>
 <ol>
 <li>在客户端发起一次请求的时候，首先一层一层的缓存会根据算法判断缓存中是否存在文档副本，如果不存在的话就会像资源服务器或者父代理缓存服务器（上一级缓存服务器）继续请求客户端需要的资源。</li>
@@ -369,7 +290,7 @@ Web缓存的好处
 <li>如果资源发生改变，那么由资源服务器来返回资源给客户端，并且用这份资源存入缓存中。</li>
 </ol>
 <p>大致流程就是这样，请求－检验－在验证，下面对于过程的细节详细说说：</p>
-<h4 id="文档过期的判断">文档过期的判断</h4><p>缓存数据是否过期是由数据的使用期和过期日期共同决定的。</p>
+<h4 id="文档过期的判断"><a href="#文档过期的判断" class="headerlink" title="文档过期的判断"></a>文档过期的判断</h4><p>缓存数据是否过期是由数据的使用期和过期日期共同决定的。</p>
 <ul>
 <li><p>过期时期(新鲜生存期)</p>
 <p>过期时期可以通过Cache-Control的max-age和max-stale或者Expires来设置。其中，Cache-Control中指定的是相对时间，而Expries指定的是数据过期的绝对时间。但是资源服务器的时间经常会出现与客户端不同步的情况（我就遇到过这种坑。。）所以用相对时间更加合理，并且Cache-Control的优先级要高于Expries。</p>
@@ -430,354 +351,141 @@ Web缓存的好处
 <p>所以我们可以看出，完整的使用时期计算应该是如下图：</p>
 <p><img src="/img/web2.png" alt=""></p>
 <p>可以看出其实是忽略了客户端到缓存的网络传输时间，多算了缓存到资源服务器的网络传输时间。</p>
-<h3 id="再验证">再验证</h3><p>如果第一次缓存未命中的话，就会进行服务器再验证。用来判断服务器的资源是否发生改变。</p>
-<h4 id="If-Modified-Since与Last-Modified（基于Date的再验证）">If-Modified-Since与Last-Modified（基于Date的再验证）</h4><p>  If-Modified-Since是请求字段，值为一个绝对时间，用于通知服务器在这个时间之前，默认资源是未被修改的（不去进行再验证），如果超过了这个时间，就会将这个时间和资源最后修改的时间进行对比，如果小于资源最后修改的时间，那么Last-Modified响应首部会返回资源最后被修改的时间，并且返回200.如果大于最后修改的时间，那么Last-Modified响应首部会返回304表示资源未被修改。</p>
-<h4 id="If-None-Match和ETag（基于实体标签的再验证）">If-None-Match和ETag（基于实体标签的再验证）</h4><p>  ETag可以看作是资源的版本号，并且在强验证器下，资源发生细微的变化都会导致ETag的变化，在弱验证器下，资源发生细微的变化都不会导致ETag的变化，这个“细微”度量标准是由后台开发人员来确定的。客户端可以根据If-Modified-Since来添加你现在所拥有的ETag版本号，发送给服务器，然后服务器进行比较。如果版本号不同，那么就会返回200，并且将最新的ETag值添加到ETag响应头里面。如果相同，返回304。<br>  两者之间并没有优先级之分，如果同时存在，那么客户端和服务端应该将两者综合起来考量。</p>
+<h3 id="再验证"><a href="#再验证" class="headerlink" title="再验证"></a>再验证</h3><p>如果第一次缓存未命中的话，就会进行服务器再验证。用来判断服务器的资源是否发生改变。</p>
+<h4 id="If-Modified-Since与Last-Modified（基于Date的再验证）"><a href="#If-Modified-Since与Last-Modified（基于Date的再验证）" class="headerlink" title="If-Modified-Since与Last-Modified（基于Date的再验证）"></a>If-Modified-Since与Last-Modified（基于Date的再验证）</h4><p>  If-Modified-Since是请求字段，值为一个绝对时间，用于通知服务器在这个时间之前，默认资源是未被修改的（不去进行再验证），如果超过了这个时间，就会将这个时间和资源最后修改的时间进行对比，如果小于资源最后修改的时间，那么Last-Modified响应首部会返回资源最后被修改的时间，并且返回200.如果大于最后修改的时间，那么Last-Modified响应首部会返回304表示资源未被修改。</p>
+<h4 id="If-None-Match和ETag（基于实体标签的再验证）"><a href="#If-None-Match和ETag（基于实体标签的再验证）" class="headerlink" title="If-None-Match和ETag（基于实体标签的再验证）"></a>If-None-Match和ETag（基于实体标签的再验证）</h4><p>  ETag可以看作是资源的版本号，并且在强验证器下，资源发生细微的变化都会导致ETag的变化，在弱验证器下，资源发生细微的变化都不会导致ETag的变化，这个“细微”度量标准是由后台开发人员来确定的。客户端可以根据If-Modified-Since来添加你现在所拥有的ETag版本号，发送给服务器，然后服务器进行比较。如果版本号不同，那么就会返回200，并且将最新的ETag值添加到ETag响应头里面。如果相同，返回304。<br>  两者之间并没有优先级之分，如果同时存在，那么客户端和服务端应该将两者综合起来考量。</p>
 </li>
 </ul>
 <p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/" rel="next" title="《深入理解jvm》读书笔记——类加载机制">
-                <i class="fa fa-chevron-left"></i> 《深入理解jvm》读书笔记——类加载机制
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/26/利用redis构建多消费者请求队列/" rel="prev" title="利用redis构建多消费者请求队列">
-                利用redis构建多消费者请求队列 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2016/07/09/Web缓存的分析/"
-           data-title="Web缓存的分析" data-url="http://yoursite.com/2016/07/09/Web缓存的分析/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/26/利用redis构建多消费者请求队列/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存的好处"><span class="nav-number">1.1.</span> <span class="nav-text">Web缓存的好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存的分类"><span class="nav-number">1.2.</span> <span class="nav-text">Web缓存的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共有缓存和私有缓存"><span class="nav-number">1.3.</span> <span class="nav-text">共有缓存和私有缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存的层次结构"><span class="nav-number">1.4.</span> <span class="nav-text">Web缓存的层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存的流程"><span class="nav-number">1.5.</span> <span class="nav-text">Web缓存的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文档过期的判断"><span class="nav-number">1.5.1.</span> <span class="nav-text">文档过期的判断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再验证"><span class="nav-number">1.6.</span> <span class="nav-text">再验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#If-Modified-Since与Last-Modified（基于Date的再验证）"><span class="nav-number">1.6.1.</span> <span class="nav-text">If-Modified-Since与Last-Modified（基于Date的再验证）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#If-None-Match和ETag（基于实体标签的再验证）"><span class="nav-number">1.6.2.</span> <span class="nav-text">If-None-Match和ETag（基于实体标签的再验证）</span></a></li></ol></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          利用redis构建多消费者请求队列
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2016/05/28/《深入理解jvm》读书笔记——类加载机制/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《深入理解jvm》读书笔记——类加载机制</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Web缓存的分析" data-title="Web缓存的分析" data-url="http://yoursite.com/2016/07/09/Web缓存的分析/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

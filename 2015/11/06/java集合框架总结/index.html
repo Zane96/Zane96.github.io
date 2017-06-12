@@ -1,329 +1,255 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="前言
-java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
+  <title>java集合框架总结 | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java集合框架总结">
 <meta property="og:url" content="http://yoursite.com/2015/11/06/java集合框架总结/index.html">
-<meta property="og:site_name" content="Zane's Blog">
-<meta property="og:description" content="前言
-java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="前言 java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
 <meta property="og:updated_time" content="2016-10-26T13:51:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java集合框架总结">
-<meta name="twitter:description" content="前言
-java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2015/11/06/java集合框架总结/"/>
-
-
-  <title> java集合框架总结 | Zane's Blog </title>
+<meta name="twitter:description" content="前言 java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-java集合框架总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/06/java集合框架总结/" class="article-date">
+  	<time datetime="2015-11-06T14:16:37.000Z" itemprop="datePublished">2015-11-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                java集合框架总结
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      java集合框架总结
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-11-06T22:16:37+08:00" content="2015-11-06">
-              2015-11-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/11/06/java集合框架总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/06/java集合框架总结/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/java/">java</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h1 id="前言">前言</h1><blockquote>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
 <p>java的集合框架基本上是必备的知识，也感觉是面试的重灾区吧，，虽然我没有去面试过。集合框架确实是一个值得理解很多遍的东西，由于由Collection接口衍生出来的类特别多，以及Map（没有实现collection接口）。所以不经常用的话会生疏。这类知识到处都有，这里只是我自己的一些总结。最初学习这些知识的时候，并不会数据结构。对于数据的存储方式等等完全不了解。而现在学习了数据结构之后，感觉有些知识不用再去单纯的去背了。</p>
 </blockquote>
-<h2 id="图列">图列</h2><p>Collection</p>
+<h2 id="图列"><a href="#图列" class="headerlink" title="图列"></a>图列</h2><p>Collection</p>
 <p>├List</p>
 <p>│├LinkedList</p>
 <p>│├ArrayList</p>
@@ -334,48 +260,48 @@ java的集合框架基本上是必备的知识，也感觉是面试的重灾区�
 <p>├Hashtable</p>
 <p>├HashMap</p>
 <p>└WeakHashMap</p>
-<h3 id="Interface_Collection">Interface Collection</h3><blockquote>
+<h3 id="Interface-Collection"><a href="#Interface-Collection" class="headerlink" title="Interface Collection"></a>Interface Collection</h3><blockquote>
 <p>第一个就要提到<strong>Collection</strong>接口。java sdk不提供这个最基本的集合接口，而是只提供实现了Collection接口的set和list接口。所有实现Collection接口的类都必须提供两个标准的构造函数：无参数的构造函数用于创建一个空的Collection，有一个 Collection参数的构造函数用于创建一个新的Collection，这个新的Collection与传入的Collection有相同的元素。后 一个构造函数允许用户复制一个Collection。实现Collection里面接口的实现需要使用一种叫迭代器的东西（Iterator)，方法：</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子</span></span><br><span class="line">　　　　<span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">　　　　　　Object obj = it.next(); <span class="comment">// 得到下一个元素</span></span><br><span class="line">　　　　&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子</span></div><div class="line">　　　　<span class="keyword">while</span>(it.hasNext()) &#123;</div><div class="line">　　　　　　Object obj = it.next(); <span class="comment">// 得到下一个元素</span></div><div class="line">　　　　&#125;</div></pre></td></tr></table></figure>
 <hr>
-<h3 id="Interface_Set">Interface Set</h3><blockquote>
+<h3 id="Interface-Set"><a href="#Interface-Set" class="headerlink" title="Interface Set"></a>Interface Set</h3><blockquote>
 <p>set是一个不包含重复元素的实现了Collection接口的接口（e1.equals(e2) == false)，最多含有一个Null元素。</p>
 </blockquote>
 <hr>
-<h3 id="Interface_List">Interface List</h3><blockquote>
+<h3 id="Interface-List"><a href="#Interface-List" class="headerlink" title="Interface List"></a>Interface List</h3><blockquote>
 <p>List接口是实现了Collection接口的一个接口，叫列表。它是一个有序的Collection，它可以准确的记录下每个元素在列表中的位置，并且可以通过索引（相当于数组的下标）来对元素进行操作。这个接口比较类似数组，可以有重复的元素存在。除了具有Collection接口必备的iterator()方法外，List还提供一个listIterator()方法，返回一个 ListIterator接口，和标准的Iterator接口相比，ListIterator多了一些add()之类的方法，允许添加，删除，设定元素， 还能向前或向后遍历。</p>
 </blockquote>
-<h3 id="Class_ArrayList(非同步类，无同步方法）">Class ArrayList(非同步类，无同步方法）</h3><blockquote>
+<h3 id="Class-ArrayList-非同步类，无同步方法）"><a href="#Class-ArrayList-非同步类，无同步方法）" class="headerlink" title="Class ArrayList(非同步类，无同步方法）"></a>Class ArrayList(非同步类，无同步方法）</h3><blockquote>
 <p>我觉得应该是我们现在最常用的一个集合类，泛型数组，特点就是可以自动扩充大小，当元素数目大于当前数组大小的时候进行扩充，arraylist增长率为目前数组长度的50%。这个集合类实现了List接口，因为继承了List接口的一些特点，不用再多说了。当需要插入大量元素时，在插入前可以调用ensureCapacity方法(自己百度）来增加ArrayList的容量以提高插入效率。</p>
 </blockquote>
-<h3 id="Class_LinkList（非同步类，无同步方法）">Class LinkList（非同步类，无同步方法）</h3><blockquote>
+<h3 id="Class-LinkList（非同步类，无同步方法）"><a href="#Class-LinkList（非同步类，无同步方法）" class="headerlink" title="Class LinkList（非同步类，无同步方法）"></a>Class LinkList（非同步类，无同步方法）</h3><blockquote>
 <p>与Arraylist差别用法差别其实并不大，此外LinkedList提供额外的get，remove，insert方法在 LinkedList的首部或尾部。它与ArrayList的差别我们在总结里面提。</p>
 </blockquote>
 <hr>
-<h3 id="Class_Vector（线程安全，同步）">Class Vector（线程安全，同步）</h3><blockquote>
+<h3 id="Class-Vector（线程安全，同步）"><a href="#Class-Vector（线程安全，同步）" class="headerlink" title="Class Vector（线程安全，同步）"></a>Class Vector（线程安全，同步）</h3><blockquote>
 <p>Vector非常类似ArrayList，但是Vector是同步的。由Vector创建的Iterator，虽然和 ArrayList创建的Iterator是同一接口，但是，因为Vector是同步的，当一个Iterator被创建而且正在被使用，另一个线程改变了 Vector的状态（例如，添加或删除了一些元素），这时调用Iterator的方法时将抛出ConcurrentModificationException，因此必须捕获该异常。当元素数目大于当前数组大小的时候进行扩充，Vector增长率为目前数组长度的100%。</p>
 </blockquote>
-<h3 id="Class_Stack">Class Stack</h3><blockquote>
+<h3 id="Class-Stack"><a href="#Class-Stack" class="headerlink" title="Class Stack"></a>Class Stack</h3><blockquote>
 <p>Stack继承自Vector，实现一个栈（先进后出）。Stack提供5个额外的方法使得Vector得以被当作堆栈使用。基本的push和pop 方法，还有peek方法得到栈顶的元素，empty方法测试堆栈是否为空，search方法检测一个元素在堆栈中的位置。Stack刚创建后是空栈。</p>
 </blockquote>
 <hr>
-<h3 id="Interface_Map(映射)">Interface Map(映射)</h3><blockquote>
+<h3 id="Interface-Map-映射"><a href="#Interface-Map-映射" class="headerlink" title="Interface Map(映射)"></a>Interface Map(映射)</h3><blockquote>
 <p>Map这个接口你可以从最开始的那个图中看出来，她是没有实现Collection这个接口的，它是一种“键值对”的形式来存储元素。（key-value)Map接口实现的就是形成key到value的映射。不许有重复的key，因为它是一一对应的关系，value可以重复。Map的内容可以被当作一组key集合，一组value集合，或者一组key-value映射。</p>
 </blockquote>
-<h3 id="Class_HashMap(同步)">Class HashMap(同步)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">　　　　Hashtable numbers = <span class="keyword">new</span> Hashtable();</span><br><span class="line">　　　　numbers.put(“one”, <span class="keyword">new</span> Integer(<span class="number">1</span>));</span><br><span class="line">　　　　numbers.put(“two”, <span class="keyword">new</span> Integer(<span class="number">2</span>));</span><br><span class="line">　　　　numbers.put(“three”, <span class="keyword">new</span> Integer(<span class="number">3</span>));</span><br><span class="line">　　<span class="comment">//要取出一个数，比如2，用相应的key：</span></span><br><span class="line">　　　　Integer n = (Integer)numbers.get(“two”);</span><br><span class="line">　　　　System.out.println(“two = ” + n);</span><br></pre></td></tr></table></figure>
+<h3 id="Class-HashMap-同步"><a href="#Class-HashMap-同步" class="headerlink" title="Class HashMap(同步)"></a>Class HashMap(同步)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">　　　　Hashtable numbers = <span class="keyword">new</span> Hashtable();</div><div class="line">　　　　numbers.put(“one”, <span class="keyword">new</span> Integer(<span class="number">1</span>));</div><div class="line">　　　　numbers.put(“two”, <span class="keyword">new</span> Integer(<span class="number">2</span>));</div><div class="line">　　　　numbers.put(“three”, <span class="keyword">new</span> Integer(<span class="number">3</span>));</div><div class="line">　　<span class="comment">//要取出一个数，比如2，用相应的key：</span></div><div class="line">　　　　Integer n = (Integer)numbers.get(“two”);</div><div class="line">　　　　System.out.println(“two = ” + n);</div></pre></td></tr></table></figure>
 <blockquote>
 <p>HashMap里面元素的key和value都分别算作是一个个的对象，然后key对象不重复是通过它的hashcode不同，equals结果返回false来实现的，两者不可或缺，缺一不可。如图，String类是SDK提供的类，所以不用管它的hashcode(),equals()函数，<em>但是如果这里是个Person类，Student类，你就需要重写它的hashcode()和equals()类，因为不同的对象的hashcode值可能是相同的！然后不同对象equals结果肯定是false，多以容易引起冲突，所以两个函数必须全部重写。</em></p>
 </blockquote>
-<h3 id="Class_TreeMap（二叉树结构）">Class TreeMap（二叉树结构）</h3><blockquote>
+<h3 id="Class-TreeMap（二叉树结构）"><a href="#Class-TreeMap（二叉树结构）" class="headerlink" title="Class TreeMap（二叉树结构）"></a>Class TreeMap（二叉树结构）</h3><blockquote>
 <p>（实现SortMap接口)里面的元素也是不重复，并且是按照一种自然顺序或者是特定的自定义顺序来排序的映射类，并且顺序固定不变</p>
 </blockquote>
-<h3 id="Class_WeakHashMap">Class WeakHashMap</h3><blockquote>
+<h3 id="Class-WeakHashMap"><a href="#Class-WeakHashMap" class="headerlink" title="Class WeakHashMap"></a>Class WeakHashMap</h3><blockquote>
 <p>WeakHashMap是一种改进的HashMap，它对key实行“弱引用”，如果一个key不再被外部所引用，那么该key可以被GC回收。</p>
 <p><strong>弱引用（WeakReference）和强引用(StrongReference)以及软引用(SoftReference)和虚引用(PhantomReference)的用法以及区别以后再谈吧</strong></p>
 </blockquote>
 <hr>
-<h1 id="总结">总结</h1><blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
 <p><strong>1.</strong>如果需要快速插入，删除元素，应该使用LinkedList（链式存储结构），如 果需要快速随机访问元素，应该使用ArrayList（顺序存储结构）。至于原因，大家学了数据结构就会很清楚了。</p>
 <p><strong>2.</strong>如果程序在单线程环境中，或者访问仅仅在一个线程中进行，考虑非同步的类，其效率较高，如果多个线程可能同时操作一个类，应该使用同步的类。</p>
 <p><strong>3.</strong>要特别注意对哈希表的操作，作为key的对象要正确复写equals和hashCode方法。</p>
@@ -388,345 +314,132 @@ java的集合框架基本上是必备的知识，也感觉是面试的重灾区�
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/11/06/自定义widget（组合view和自定义属性）/" rel="next" title="自定义widget（组合view和自定义属性）">
-                <i class="fa fa-chevron-left"></i> 自定义widget（组合view和自定义属性）
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" rel="prev" title="Github+node.js+hexo搭建我的个人博客">
-                Github+node.js+hexo搭建我的个人博客 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2015/11/06/java集合框架总结/"
-           data-title="java集合框架总结" data-url="http://yoursite.com/2015/11/06/java集合框架总结/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#图列"><span class="nav-number">1.1.</span> <span class="nav-text">图列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Interface_Collection"><span class="nav-number">1.1.1.</span> <span class="nav-text">Interface Collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interface_Set"><span class="nav-number">1.1.2.</span> <span class="nav-text">Interface Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interface_List"><span class="nav-number">1.1.3.</span> <span class="nav-text">Interface List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_ArrayList(非同步类，无同步方法）"><span class="nav-number">1.1.4.</span> <span class="nav-text">Class ArrayList(非同步类，无同步方法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_LinkList（非同步类，无同步方法）"><span class="nav-number">1.1.5.</span> <span class="nav-text">Class LinkList（非同步类，无同步方法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_Vector（线程安全，同步）"><span class="nav-number">1.1.6.</span> <span class="nav-text">Class Vector（线程安全，同步）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_Stack"><span class="nav-number">1.1.7.</span> <span class="nav-text">Class Stack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interface_Map(映射)"><span class="nav-number">1.1.8.</span> <span class="nav-text">Interface Map(映射)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_HashMap(同步)"><span class="nav-number">1.1.9.</span> <span class="nav-text">Class HashMap(同步)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_TreeMap（二叉树结构）"><span class="nav-number">1.1.10.</span> <span class="nav-text">Class TreeMap（二叉树结构）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class_WeakHashMap"><span class="nav-number">1.1.11.</span> <span class="nav-text">Class WeakHashMap</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          Github+node.js+hexo搭建我的个人博客
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2015/11/06/自定义widget（组合view和自定义属性）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">自定义widget（组合view和自定义属性）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="java集合框架总结" data-title="java集合框架总结" data-url="http://yoursite.com/2015/11/06/java集合框架总结/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

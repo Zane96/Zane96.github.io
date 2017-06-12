@@ -1,344 +1,259 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="前言
-之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。
-
-
-Android如何处理触摸事件MotionEvent
-我相信MotionE">
+  <title>Android Touch System(一) | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。   Android如何处理触摸事件MotionEvent 我相信MotionE">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Touch System(一)">
 <meta property="og:url" content="http://yoursite.com/2015/11/13/Android-Touch-System/index.html">
-<meta property="og:site_name" content="Zane's Blog">
-<meta property="og:description" content="前言
-之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。
-
-
-Android如何处理触摸事件MotionEvent
-我相信MotionE">
-<meta property="og:image" content="http://yoursite.com/img/touch event.png">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="前言 之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。   Android如何处理触摸事件MotionEvent 我相信MotionE">
+<meta property="og:image" content="http://yoursite.com/img/touch%20event.png">
 <meta property="og:image" content="http://yoursite.com/img/test.png">
 <meta property="og:updated_time" content="2016-10-26T13:52:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Touch System(一)">
-<meta name="twitter:description" content="前言
-之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。
-
-
-Android如何处理触摸事件MotionEvent
-我相信MotionE">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2015/11/13/Android-Touch-System/"/>
-
-
-  <title> Android Touch System(一) | Zane's Blog </title>
+<meta name="twitter:description" content="前言 之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。   Android如何处理触摸事件MotionEvent 我相信MotionE">
+<meta name="twitter:image" content="http://yoursite.com/img/touch%20event.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-Android-Touch-System" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/13/Android-Touch-System/" class="article-date">
+  	<time datetime="2015-11-13T12:28:08.000Z" itemprop="datePublished">2015-11-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Android Touch System(一)
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Touch System(一)
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-11-13T20:28:08+08:00" content="2015-11-13">
-              2015-11-13
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/11/13/Android-Touch-System/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/13/Android-Touch-System/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h1 id="前言">前言</h1><blockquote>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
 <p>之前写了一篇文章是关于自定义控件的。在学习自定义view的时候顺便把安卓的touch system（安卓触摸机制）也给系统学习了一遍。学习过程就是看了一个老外两个多小时的视频，是一位叫Dave Smith的大牛（安卓系统开发工程师）。不得不说，最新最好的东西来自国外。这篇文章算我对两个月前看这个视频之后的总结吧。</p>
 </blockquote>
 <hr>
-<h2 id="Android如何处理触摸事件">Android如何处理触摸事件</h2><h4 id="MotionEvent">MotionEvent</h4><blockquote>
+<h2 id="Android如何处理触摸事件"><a href="#Android如何处理触摸事件" class="headerlink" title="Android如何处理触摸事件"></a>Android如何处理触摸事件</h2><h4 id="MotionEvent"><a href="#MotionEvent" class="headerlink" title="MotionEvent"></a>MotionEvent</h4><blockquote>
 <p>我相信MotionEvent这个sdk提供的常量大家应该不陌生吧。这是android系统给我们封装好的用来存储touch事件的东西。它包含了很多你感兴趣的东西。比如触摸的时间，触摸的手指数，触摸的地点等等。。。而它又分为action_down, action_up等等很多类型。开发者可以通过这些名字来分别触摸事件的类别，我相信大家也用到过这些。</p>
 </blockquote>
 <ul>
@@ -351,7 +266,7 @@ Android如何处理触摸事件MotionEvent
 <p>以上时最基本的，也就是说，一个完整的手势定义就是开始于down，然后接受其他的事件，然后终止于up。周而复始。你自己新定义的手势必须遵循这个原则。</p>
 </blockquote>
 <hr>
-<h4 id="Android的事件分发机制">Android的事件分发机制</h4><blockquote>
+<h4 id="Android的事件分发机制"><a href="#Android的事件分发机制" class="headerlink" title="Android的事件分发机制"></a>Android的事件分发机制</h4><blockquote>
 <p>首先，清楚一点，你的activity优先于所有你的activity里面的view获得触摸事件。因为他是你的可视图的顶层。然后这个事件流会被activity的<strong>dispatchTouchEvent()</strong> 方法分发给自己的子view。这是系统框架自己做的事情。我们知道就好。如果子view里面又有viewgroup，那么这个viewgroup又会把事件流拿到分发给自己的子view。这就是一个视图结构树。</p>
 </blockquote>
 <p><img src="/img/touch event.png" alt=""></p>
@@ -359,11 +274,11 @@ Android如何处理触摸事件MotionEvent
 <p>事件流会呈现一种从上到下，再从下到上的传递形式。我们讲到事件流会从activity由dispatchtouchevent向下传递。如果在传递在最底部的view的过程中还没有一个view宣布对这个事件感兴趣，那么事件将会从下到上又把这个事件传递给activity。但是如果这个过程中，某个view比如button宣布对这个action_down这个事件感兴趣了，那么这个事件流将不会再往下传递。这个时候如果你的手指拿开，就产生了一个action_up的事件。这个流就会直接传到当初你对action_down感兴趣的view去。这样极大的提高了安卓的效率。</p>
 </blockquote>
 <hr>
-<h4 id="Android的事件消费">Android的事件消费</h4><blockquote>
+<h4 id="Android的事件消费"><a href="#Android的事件消费" class="headerlink" title="Android的事件消费"></a>Android的事件消费</h4><blockquote>
 <p>这里说的事件消费也就是上面提到的view对某个事件是否感兴趣。实现机制就是在view里面调用onTouchEvent()方法，这个方法我相信很多人都遇到过的，它其实是对整个手势的事件流的监听。如果你想让一个view对某个事件感兴趣，那么判断如果遇到了这个事件，return true。表示你对这个事件感兴趣，那么事件的传递将会停止。并且需要记住的一点是<strong>activity的onTouchEvent()</strong> 方法是最后调用的。并不是第一个。</p>
 <p><strong>ViewGroup</strong> 对于事件分发给子view要复杂一点。如果你写过自定义view group，那你知道view group会对子view进行位置安排（on layout()）。而当事件传到某个view group的时候，他会根据子view的位置来确定哪些子view对这个事件感兴趣。如果多个子view重叠，那viewgroup会根据子view加入view group的逆序来分发事件。</p>
 </blockquote>
-<h4 id="Android事件的窃取与反窃取">Android事件的窃取与反窃取</h4><blockquote>
+<h4 id="Android事件的窃取与反窃取"><a href="#Android事件的窃取与反窃取" class="headerlink" title="Android事件的窃取与反窃取"></a>Android事件的窃取与反窃取</h4><blockquote>
 <p>这里说的窃取是定义在viewgroup和他的子view之间的。举个例子</p>
 </blockquote>
 <p><img src="/img/test.png" alt=""></p>
@@ -380,362 +295,149 @@ Android如何处理触摸事件MotionEvent
 </blockquote>
 <p>来看一下源码吧。</p>
 <p><strong>onInterceptTouchEvent(Motion m)</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ViewGroup中</span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onInterceptTouchEvent(ev);</span><br><span class="line">    &#125;</span><br><span class="line">源码中：</span><br><span class="line">  * <span class="annotation">@param</span> ev The motion event being dispatched down the hierarchy.</span><br><span class="line">     * <span class="annotation">@return</span> Return <span class="keyword">true</span> to steal motion events from the children and have</span><br><span class="line">     * <span class="function">them dispatched to <span class="keyword">this</span> ViewGroup through <span class="title">onTouchEvent</span><span class="params">()</span>.</span><br><span class="line">     * The current target will receive an ACTION_CANCEL event, and no further</span><br><span class="line">     * messages will be delivered here.</span><br><span class="line">     */</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">ViewGroup中</div><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onInterceptTouchEvent(ev);</div><div class="line">    &#125;</div><div class="line">源码中：</div><div class="line">  * <span class="meta">@param</span> ev The motion event being dispatched down the hierarchy.</div><div class="line">     * <span class="meta">@return</span> Return <span class="keyword">true</span> to steal motion events from the children and have</div><div class="line">     * <span class="function">them dispatched to <span class="keyword">this</span> ViewGroup through <span class="title">onTouchEvent</span><span class="params">()</span>.</span></div><div class="line">     * The current target will receive an ACTION_CANCEL event, and no further</div><div class="line">     * messages will be delivered here.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent ev)</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>很清楚了吧。大家可以再看一遍源码的注视！一目了然。默认是false，如果重写return true就可以窃取了。</p>
 </blockquote>
 <p><strong>requestDisallowIntercept(Boolean is)</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Called when a child does not want this parent and its ancestors to</span><br><span class="line">     * intercept touch events with</span><br><span class="line">     * &#123;<span class="doctag">@link</span> ViewGroup#onInterceptTouchEvent(MotionEvent)&#125;.</span><br><span class="line">     *</span><br><span class="line">     * &lt;p&gt;This parent should pass this call onto its parents. This parent must obey</span><br><span class="line">     * this request for the duration of the touch (that is, only clear the flag</span><br><span class="line">     * after this parent has received an up or a cancel.&lt;/p&gt;</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> disallowIntercept True if the child does not want the parent to</span><br><span class="line">     *            intercept touch events.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDisallowInterceptTouchEvent</span><span class="params">(<span class="keyword">boolean</span> disallowIntercept)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Called when a child does not want this parent and its ancestors to</div><div class="line">     * intercept touch events with</div><div class="line">     * &#123;<span class="doctag">@link</span> ViewGroup#onInterceptTouchEvent(MotionEvent)&#125;.</div><div class="line">     *</div><div class="line">     * &lt;p&gt;This parent should pass this call onto its parents. This parent must obey</div><div class="line">     * this request for the duration of the touch (that is, only clear the flag</div><div class="line">     * after this parent has received an up or a cancel.&lt;/p&gt;</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> disallowIntercept True if the child does not want the parent to</div><div class="line">     *            intercept touch events.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestDisallowInterceptTouchEvent</span><span class="params">(<span class="keyword">boolean</span> disallowIntercept)</span></span>;</div></pre></td></tr></table></figure>
 <blockquote>
 <p>在源码中可以看到，一旦对一个事件表示了不允许parent窃取（注意我说的是一个事件，而不是事件流），那么会设置一个flag，标志知识这个事件不允许parent窃取。但是这个flag会在parent收到这个事件的up活着cancel的时候，就会重置flag。onInterceptTouchEvent()是一样的道理，不同的是这个方法是需要传入一个具体的MotionEvent的。还有一点值得提的是，如果你的viewgroup里面的所有子view都对down这个事件不感兴趣，但是某个view却对up感兴趣。那么你一定要在viewgroup的onTouchEvent()方法里面返回true。不然viewgroup的parent不会再把之后的事件传给viewgroup了哦！！</p>
 </blockquote>
 <hr>
-<h1 id="总结">总结</h1><blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
 <p>好啦，对于android触摸事件的基础知识也了解的差不多可以了。未完待续！～</p>
 </blockquote>
 <p><strong>版权声明：本文为博主原创文章，未经博主允许不得转载。</strong></p>
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" rel="next" title="Github+node.js+hexo搭建我的个人博客">
-                <i class="fa fa-chevron-left"></i> Github+node.js+hexo搭建我的个人博客
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/" rel="prev" title="关于RecycleView显示异步加载图片乱序的问题">
-                关于RecycleView显示异步加载图片乱序的问题 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2015/11/13/Android-Touch-System/"
-           data-title="Android Touch System(一)" data-url="http://yoursite.com/2015/11/13/Android-Touch-System/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android如何处理触摸事件"><span class="nav-number">1.1.</span> <span class="nav-text">Android如何处理触摸事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MotionEvent"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">MotionEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android的事件分发机制"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">Android的事件分发机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android的事件消费"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">Android的事件消费</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android事件的窃取与反窃取"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">Android事件的窃取与反窃取</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          关于RecycleView显示异步加载图片乱序的问题
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Github+node.js+hexo搭建我的个人博客</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Android-Touch-System" data-title="Android Touch System(一)" data-url="http://yoursite.com/2015/11/13/Android-Touch-System/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

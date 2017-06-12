@@ -1,333 +1,257 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
-
-概述 Handler是android">
+  <title>Handler | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客  概述 Handler是android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Handler">
 <meta property="og:url" content="http://yoursite.com/2015/12/15/Handler/index.html">
-<meta property="og:site_name" content="Zane's Blog">
-<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
-
-概述 Handler是android">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客  概述 Handler是android">
 <meta property="og:image" content="http://yoursite.com/img/Handler.png">
 <meta property="og:updated_time" content="2016-10-26T13:52:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler">
-<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客
-
-概述 Handler是android">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2015/12/15/Handler/"/>
-
-
-  <title> Handler | Zane's Blog </title>
+<meta name="twitter:description" content="前言Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文王凯的博客  概述 Handler是android">
+<meta name="twitter:image" content="http://yoursite.com/img/Handler.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-Handler" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/12/15/Handler/" class="article-date">
+  	<time datetime="2015-12-15T11:57:16.000Z" itemprop="datePublished">2015-12-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Handler
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      Handler
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-12-15T19:57:16+08:00" content="2015-12-15">
-              2015-12-15
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/12/15/Handler/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/15/Handler/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h1 id="前言">前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">王凯的博客</a></p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Handler是安卓内置的消息处理机制。虽然后来安卓又封装了handler推出了AsyncTask，并且现在又出了很多异步消息处理机制比如EventBus, RxJava等等。Eventbus内部都是使用了handler了的。所以我觉得学习这个还是很重要的。这篇文章是我转自一个朋友的博客,在这个基础上我做了一点补充,最后配上一张我做的图解。原文<a href="http://kermit95.github.io/2015/08/28/handler%E6%80%BB%E7%BB%93/" target="_blank" rel="external">王凯的博客</a></p>
 <hr>
-<h3 id="概述">概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
-<h3 id="使用线程和Handler更新UI">使用线程和Handler更新UI</h3><ul>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p> Handler是android用来更新UI，处理消息的机制。</p>
+<h3 id="使用线程和Handler更新UI"><a href="#使用线程和Handler更新UI" class="headerlink" title="使用线程和Handler更新UI"></a>使用线程和Handler更新UI</h3><ul>
 <li>方法一</li>
 </ul>
 <p> 新建handler对象，并覆写handleMessage()，在主线程中开启一个子线程，进行耗时操作（比如下载图片），得到图片之后，利用handler的sendMessage()，将图片发送给handler，在handleMessage()中进行UI的更新。发送时有两种方式，一种是’handler.sendMessage()’，一种是’message.sendToTarge()’。</p>
@@ -335,377 +259,164 @@
 <li>方法二</li>
 </ul>
 <p> 用view的post方法，post方法接收一个runnable对象，该方法将这个runnable对象发送至主线程执行。</p>
-<h3 id="原理">原理</h3><p> 上述方法都是从非UI线程发送消息到UI线程，通知UI线程进行界面更新。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p> 上述方法都是从非UI线程发送消息到UI线程，通知UI线程进行界面更新。</p>
 <p> Android使用消息机制实现线程间的通信，线程通过Looper建立自己的消息循环，MessageQueue是FIFO的消息队列，Looper负责从MessageQueue中取出消息，并且分发到消息指定目标Handler对象。Handler对象绑定到线程的局部变量Looper，封装了发送消息和处理消息的接口。</p>
-<h3 id="实现一次线程通信的流程">实现一次线程通信的流程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        mHandler = <span class="keyword">new</span> Handler()&#123;</span><br><span class="line">            <span class="annotation">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">switch</span> (msg.what)&#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                        Log.i(<span class="string">"Test"</span>, <span class="string">"CustomThread recive message "</span> + (String)msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                 &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Looper.loop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现一次线程通信的流程"><a href="#实现一次线程通信的流程" class="headerlink" title="实现一次线程通信的流程"></a>实现一次线程通信的流程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        Looper.prepare();</div><div class="line">        mHandler = <span class="keyword">new</span> Handler()&#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">                <span class="keyword">switch</span> (msg.what)&#123;</div><div class="line">                    <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">                        Log.i(<span class="string">"Test"</span>, <span class="string">"CustomThread recive message "</span> + (String)msg.obj);</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                 &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">        Looper.loop();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在主线程中开启子线程，然后发送消息给目标handler。</p>
-<h4 id="Looper">Looper</h4><p> 要想理解子线程中发生了什么必须先理解Looper。在Looper.prepare()中，Looper被设置成了线程的局部变量’ThreadLocal.set(new Looper(…))’，并且在Looper的构造函数里获取了当前线程和一个消息队列。可以说Looper在哪个线程，handler的handleMessage()方法就在哪个线程执行，因为handleMessage()方法是在Loop.loop()方法中执行的。</p>
-<h6 id="ThreadLocal">ThreadLocal</h6><p> TreadLocal是为了解决线程安全的一个方案，与之对应的还有synchronized。但是本质区别是synchronized是为了数据共享，ThreadLocal是为了数据隔离。在android的handler机制中，TreadLocal维护了一个Looper对象，也就是说每个线程只能有各自的Looper，不可以共享。TreadLocal通过set和get方法存取维护的变量（这里是Looper）。关于ThreadLocal就说到这里。<strong>补充：多线程如果要访问共享数据的话，是需要做到同步的。共享数据是有很大风险的，比如不正当的操作导致所有的线程阻塞。而ThreadLocal则是给每个的线程提供了一个初始变量值，保证一个线程对应一个变量，这个变量称为局部变量。在线程中你是可以通过get来获得你set的局部变量的。</strong></p>
-<h4 id="Handler">Handler</h4><p> Handler中获得到了<strong>线程局部变量Looper</strong>的消息队列。为什么Handler要持有消息队列呢，因为在发送消息环节，Handler对象需要将消息对象放入消息队列中。分析Handler，就必须明确Looper所属的线程，如果我们是在主线程创建Handler，那么Looper就是主线程的’MainLooper’，但是Looper的创建和loop方法的调用都在底层执行了。每个Handler获取消息队列的途径是，每个handler都和一个Looper绑定，每个Looper都持有一个消息队列，这样每个handler就可以获取一个消息队列。</p>
+<h4 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h4><p> 要想理解子线程中发生了什么必须先理解Looper。在Looper.prepare()中，Looper被设置成了线程的局部变量’ThreadLocal.set(new Looper(…))’，并且在Looper的构造函数里获取了当前线程和一个消息队列。可以说Looper在哪个线程，handler的handleMessage()方法就在哪个线程执行，因为handleMessage()方法是在Loop.loop()方法中执行的。</p>
+<h6 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h6><p> TreadLocal是为了解决线程安全的一个方案，与之对应的还有synchronized。但是本质区别是synchronized是为了数据共享，ThreadLocal是为了数据隔离。在android的handler机制中，TreadLocal维护了一个Looper对象，也就是说每个线程只能有各自的Looper，不可以共享。TreadLocal通过set和get方法存取维护的变量（这里是Looper）。关于ThreadLocal就说到这里。<strong>补充：多线程如果要访问共享数据的话，是需要做到同步的。共享数据是有很大风险的，比如不正当的操作导致所有的线程阻塞。而ThreadLocal则是给每个的线程提供了一个初始变量值，保证一个线程对应一个变量，这个变量称为局部变量。在线程中你是可以通过get来获得你set的局部变量的。</strong></p>
+<h4 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h4><p> Handler中获得到了<strong>线程局部变量Looper</strong>的消息队列。为什么Handler要持有消息队列呢，因为在发送消息环节，Handler对象需要将消息对象放入消息队列中。分析Handler，就必须明确Looper所属的线程，如果我们是在主线程创建Handler，那么Looper就是主线程的’MainLooper’，但是Looper的创建和loop方法的调用都在底层执行了。每个Handler获取消息队列的途径是，每个handler都和一个Looper绑定，每个Looper都持有一个消息队列，这样每个handler就可以获取一个消息队列。</p>
 <p>关于Handler的构造方法：</p>
 <ul>
 <li>可以无参数</li>
 <li>可以传入一个callback，用于截断消息向handleMessage()传入</li>
 <li>可以传入一个Looper对象</li>
 </ul>
-<h4 id="loop()方法">loop()方法</h4><p> loop()方法用来从消息队列中取得方法。loop()方法所做的事：</p>
+<h4 id="loop-方法"><a href="#loop-方法" class="headerlink" title="loop()方法"></a>loop()方法</h4><p> loop()方法用来从消息队列中取得方法。loop()方法所做的事：</p>
 <ul>
 <li>获取Looper，从而获得消息队列</li>
 <li>从消息队列中取出消息，并通过消息对象中的”target”分发消息。（这里的target是一个Handler对象）</li>
 <li>将分发后的消息回收</li>
 </ul>
-<h4 id="HandlerThread">HandlerThread</h4><p> 通过这个Thread可以稳定的获取Looper，可以通过’Hander handler = new Handler(handlerThread.getLooper())’的方式得到一个handler。而这个handler是和handlerthread绑定的，这样就可以在handlerthread线程处理消息。</p>
+<h4 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h4><p> 通过这个Thread可以稳定的获取Looper，可以通过’Hander handler = new Handler(handlerThread.getLooper())’的方式得到一个handler。而这个handler是和handlerthread绑定的，这样就可以在handlerthread线程处理消息。</p>
 <p> 一般说来，都是在主线程建立handler对象，Looper是getMainLooper()，所以handleMessage都是在UI线程调用。handlerthread的目的就是能在非UI线程处理消息。</p>
-<h4 id="总结">总结</h4><p> Looper持有：currentThread, messagequeue, threadlocal。在Looper.prepare()方法中，threadlocal存储了一个Looper对象，并通过Looper的构造方法，使这个looper对象获得了当前线程的实例(Thread.currentThread())，从而实现了looper和线程的关联(底层实现，是将looper作为threadlocal的value，然后将threadlocal的value赋值给currentThread的value)，所以可以将这个方法看作将所在线程变成循环线程(looper线程)的标识；在Looper.loop()中，通过myLooper()得到threadlocal中的looper，也就是所在线程的looper,进行消息分发。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p> Looper持有：currentThread, messagequeue, threadlocal。在Looper.prepare()方法中，threadlocal存储了一个Looper对象，并通过Looper的构造方法，使这个looper对象获得了当前线程的实例(Thread.currentThread())，从而实现了looper和线程的关联(底层实现，是将looper作为threadlocal的value，然后将threadlocal的value赋值给currentThread的value)，所以可以将这个方法看作将所在线程变成循环线程(looper线程)的标识；在Looper.loop()中，通过myLooper()得到threadlocal中的looper，也就是所在线程的looper,进行消息分发。</p>
 <p> Message持有：target(一个handler)，message有obtain方法，有的方法可能少用，但是大多和target有关，即message可以和某个handler进行绑定。但是大多时候我们不会改变message的target，事实上我们根本就不需要改变，在handler的sendMessage方法中，最终调用的是这个方法，将message放入自己持有messagequeue中:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">enqueueMessage</span><span class="params">(MessageQueue queue, Message msg, <span class="keyword">long</span> uptimeMillis)</span> </span>&#123;</span><br><span class="line">  msg.target = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">if</span> (mAsynchronous) &#123;</span><br><span class="line">    msg.setAsynchronous(<span class="keyword">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> queue.enqueueMessage(msg, uptimeMillis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">enqueueMessage</span><span class="params">(MessageQueue queue, Message msg, <span class="keyword">long</span> uptimeMillis)</span> </span>&#123;</div><div class="line">  msg.target = <span class="keyword">this</span>;</div><div class="line">  <span class="keyword">if</span> (mAsynchronous) &#123;</div><div class="line">    msg.setAsynchronous(<span class="keyword">true</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> queue.enqueueMessage(msg, uptimeMillis);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>也就是把发送消息的Handler设置成了message的target(目标，就是这个msg将被这个target处理)。而常用的sendToTarget()方法必须设置target才能发送消息，如下代码会报空指针，必须先message.setTarget()。或者使用handler.send….方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler()&#123;</span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">    Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"hi~~"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">  setContentView(R.layout.activity_main);</span><br><span class="line">  Message message = Message.obtain();</span><br><span class="line">  message.sendToTarget();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler()&#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">    Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"hi~~"</span>, Toast.LENGTH_SHORT).show();</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">  setContentView(R.layout.activity_main);</div><div class="line">  Message message = Message.obtain();</div><div class="line">  message.sendToTarget();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p> Handler持有：messagequeue, callback。在Handler的构造方法中，获得当前线程的looper的messageqeue(这也是为什么要先Looper.prepare()后new Handler()的原因，必须先要有looper才会有messagequeue)，至于callback:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">    handleCallback(msg);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    handleMessage(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchMessage</span><span class="params">(Message msg)</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</div><div class="line">    handleCallback(msg);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    handleMessage(msg);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>##图解：<br><img src="/img/Handler.png" alt="图解"></p>
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/12/06/MVP模式的一种新尝试/" rel="next" title="MVP模式的一种新尝试">
-                <i class="fa fa-chevron-left"></i> MVP模式的一种新尝试
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/15/Context学习笔记/" rel="prev" title="Context学习笔记">
-                Context学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2015/12/15/Handler/"
-           data-title="Handler" data-url="http://yoursite.com/2015/12/15/Handler/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/15/Context学习笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.0.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用线程和Handler更新UI"><span class="nav-number">1.0.2.</span> <span class="nav-text">使用线程和Handler更新UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.0.3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现一次线程通信的流程"><span class="nav-number">1.0.4.</span> <span class="nav-text">实现一次线程通信的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Looper"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">Looper</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">1.0.4.1.0.1.</span> <span class="nav-text">ThreadLocal</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Handler"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">Handler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loop()方法"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">loop()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HandlerThread"><span class="nav-number">1.0.4.4.</span> <span class="nav-text">HandlerThread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.0.4.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          Context学习笔记
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2015/12/06/MVP模式的一种新尝试/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MVP模式的一种新尝试</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Handler" data-title="Handler" data-url="http://yoursite.com/2015/12/15/Handler/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

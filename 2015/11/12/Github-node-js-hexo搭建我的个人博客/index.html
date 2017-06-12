@@ -1,329 +1,255 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="前言
-几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
+  <title>Github+node.js+hexo搭建我的个人博客 | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github+node.js+hexo搭建我的个人博客">
 <meta property="og:url" content="http://yoursite.com/2015/11/12/Github-node-js-hexo搭建我的个人博客/index.html">
-<meta property="og:site_name" content="Zane's Blog">
-<meta property="og:description" content="前言
-几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="前言 几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
 <meta property="og:updated_time" content="2016-10-26T13:51:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github+node.js+hexo搭建我的个人博客">
-<meta name="twitter:description" content="前言
-几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2015/11/12/Github-node-js-hexo搭建我的个人博客/"/>
-
-
-  <title> Github+node.js+hexo搭建我的个人博客 | Zane's Blog </title>
+<meta name="twitter:description" content="前言 几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以window">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-Github-node-js-hexo搭建我的个人博客" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/" class="article-date">
+  	<time datetime="2015-11-12T12:22:53.000Z" itemprop="datePublished">2015-11-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Github+node.js+hexo搭建我的个人博客
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      Github+node.js+hexo搭建我的个人博客
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-11-12T20:22:53+08:00" content="2015-11-12">
-              2015-11-12
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/11/12/Github-node-js-hexo搭建我的个人博客/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/12/Github-node-js-hexo搭建我的个人博客/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/随笔/">随笔</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h1 id="前言">前言</h1><blockquote>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
 <p>几个星期前，想开始写个人博客。一般来说写个人博客有两种常用的方法吧，一种是把博客写在csdn，博客园，简书这些上面。相当于他来管理你的文章，网页的风格，管理模式已经给你控制好了。一种是自己买域名或者就用github提供给你的免费的域名去搭建一个博客。上个礼拜在简书上面写博客，感觉写着特别不爽，突发奇想就想自己搭建一个。然后一个晚上就很快的完成了个人博客的搭建。我用的是mac，所以windows的同学不用看了。。ok，开始！</p>
 </blockquote>
-<h2 id="环境和工具">环境和工具</h2><ul>
+<h2 id="环境和工具"><a href="#环境和工具" class="headerlink" title="环境和工具"></a>环境和工具</h2><ul>
 <li>Git</li>
 </ul>
 <ul>
@@ -338,412 +264,199 @@
 <blockquote>
 <p>写文章必须用markdown，如果不知道这个的话，推荐一个网站看看就会了，语法挺简单<a href="http://wowubuntu.com/markdown/basic.html" target="_blank" rel="external">MarkDown</a>，mac的话可以用sublime打开编辑文章，使字符编码为utf-8。写文章的话，推荐Typora，工作室的同学安利给我的，挺好用的。</p>
 </blockquote>
-<h3 id="安装Node-js">安装Node.js</h3><blockquote>
+<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><blockquote>
 <p>因为hexo是基于node.js开发的，所以，必须先下载这个。第一步安装homebrew，如果没有这个的话，去官网下载吧，终端输入一个命令行就ok了！<a href="http://brew.sh/" target="_blank" rel="external">HomeBrew</a> (osX的版本管理神器)。下载好了之后，建立一个文件夹，终端进入之后，输入：</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#23433;&#35013;&#21629;&#20196;&#10;brew install node&#10;&#20351;&#29992;&#20197;&#19979;&#21629;&#20196;&#39564;&#35777;&#26159;&#21542;&#23433;&#35013;&#25104;&#21151;&#10;node -v&#10;npm -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">安装命令</span></div><div class="line">brew install node</div><div class="line">使用以下命令验证是否安装成功</div><div class="line">node -v</div><div class="line">npm -v</div></pre></td></tr></table></figure>
 <blockquote>
 <p>npm在现在版本的node里面寂静集成了。</p>
 </blockquote>
-<h3 id="安装和配置Hexo">安装和配置Hexo</h3><blockquote>
+<h3 id="安装和配置Hexo"><a href="#安装和配置Hexo" class="headerlink" title="安装和配置Hexo"></a>安装和配置Hexo</h3><blockquote>
 <p>前面git, node.js, npm都已经安装好了。然后来搞hexo。介绍一下，hexo是一个基于node.js，用于搭建静态博客的框架。接着我们在终端输入:</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo -g</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g</div></pre></td></tr></table></figure>
 <blockquote>
 <p>安装好了之后，第一步初始化</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init &#60;folder&#62; #&#25191;&#34892;init&#21629;&#20196;&#21021;&#22987;&#21270;hexo&#21040;&#20320;&#25351;&#23450;&#30340;&#30446;&#24405;&#10;hexo generate       #&#33258;&#21160;&#26681;&#25454;&#24403;&#21069;&#30446;&#24405;&#19979;&#25991;&#20214;,&#29983;&#25104;&#38745;&#24577;&#32593;&#39029;&#10;hexo server         #&#36816;&#34892;&#26412;&#22320;&#26381;&#21153;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt; #执行init命令初始化hexo到你指定的目录</div><div class="line">hexo generate       #自动根据当前目录下文件,生成静态网页</div><div class="line">hexo server         #运行本地服务</div></pre></td></tr></table></figure>
 <blockquote>
 <p>其中 hexo generate用的很多。下面两个可以简化为</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g&#10;hexo s</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo s</div></pre></td></tr></table></figure>
 <blockquote>
 <p>然后就浏览器输入<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到你的默认主题（star）的网页了（hello world）</p>
 </blockquote>
-<h4 id="更改主题">更改主题</h4><blockquote>
+<h4 id="更改主题"><a href="#更改主题" class="headerlink" title="更改主题"></a>更改主题</h4><blockquote>
 <p>更改主题就是我最喜欢的地方了，有无数的主题在github上面任你选。当然，最好选个比较靠谱的开发者开发的主题,<a href="https://github.com/hexojs/hexo/wiki/Themes" target="_blank" rel="external">主题选择</a> 。然后选好了之后，star一下你选的主题，以便以后学习怎么使用你的这个主题。以我的博客主题为例，在终端输入：</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia</div></pre></td></tr></table></figure>
 <blockquote>
 <p>下载完了在根目录的 ./_config.yml文件（可以用sublime打开）修改主题为writing</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: yilia</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: yilia</div></pre></td></tr></table></figure>
 <blockquote>
 <p>这个文件就是你的hexo的配置文件</p>
 </blockquote>
-<h4 id="部署到github，使用username-github-io">部署到github，使用username.github.io</h4><blockquote>
+<h4 id="部署到github，使用username-github-io"><a href="#部署到github，使用username-github-io" class="headerlink" title="部署到github，使用username.github.io"></a>部署到github，使用username.github.io</h4><blockquote>
 <p>你需要在你的hexo的配置文件进行修改。</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Deployment&#10;## Docs: http://hexo.io/docs/deployment.html&#10;deploy:&#10;  type: git&#10;  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io&#10;  branch: master</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> Deployment</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Docs: http://hexo.io/docs/deployment.html</span></span></div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
 <blockquote>
 <p>前提是你要在你的github上面建立一个username.github.io的远程库！然后再在你的终端输入：</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy  #&#21487;&#20197;&#31616;&#20889;&#25104;hexo d,&#29992;&#30340;&#29305;&#21035;&#22810;&#12290;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo deploy  #可以简写成hexo d,用的特别多。</div></pre></td></tr></table></figure>
 <blockquote>
 <p>如果部署成功，那么就可以直接用你的github用户名.github.io来访问你的博客了！（注册github账号时候一定记得起好记美观一点的名字，忌讳中文。像我起的酒太丑了，Zane-cqupt。。。并且github还不能修改用户名！fuck，以前太年轻 ，too simple）。然后再把你的hexo配置修改一下吧～我上我的配置文件，我的是属于特别简单的。</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Hexo Configuration&#10;## Docs: http://hexo.io/docs/configuration.html&#10;## Source: https://github.com/hexojs/hexo/&#10;&#10;# Site&#10;title: &#24464;&#24535;&#30340;&#21338;&#23458;&#10;subtitle: &#29233;&#32534;&#31243;&#65292;&#29233;&#29983;&#27963;&#65292;&#19981;&#32641;&#25918;&#32437;&#29233;&#33258;&#30001;&#10;description: &#23398;&#20064;&#24635;&#32467; &#24605;&#32771;&#24863;&#24735; &#30693;&#35782;&#31649;&#29702;&#10;author: Zane Xu&#10;language: zh-CN&#10;email: wo1996zhi@vip.qq.com&#10;&#10;&#10;# URL&#10;## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39;&#10;url: http://yoursite.com&#10;root: /&#10;permalink: :year/:month/:day/:title/&#10;permalink_defaults:&#10;&#10;# Directory&#10;source_dir: source&#10;public_dir: public&#10;tag_dir: tags&#10;archive_dir: archives&#10;category_dir: categories&#10;code_dir: downloads/code&#10;i18n_dir: :lang&#10;skip_render:&#10;&#10;# Writing&#10;new_post_name: :title.md # File name of new posts&#10;default_layout: post&#10;titlecase: false # Transform title into titlecase&#10;external_link: true # Open external links in new tab&#10;filename_case: 0&#10;render_drafts: false&#10;post_asset_folder: false&#10;relative_link: false&#10;future: true&#10;highlight:&#10;  enable: true&#10;  line_number: true&#10;  auto_detect: true&#10;  tab_replace:&#10;&#10;# Category &#38; Tag&#10;default_category: uncategorized&#10;category_map:&#10;tag_map:&#10;&#10;# Date / Time format&#10;## Hexo uses Moment.js to parse and display date&#10;## You can customize the date format as defined in&#10;## http://momentjs.com/docs/#/displaying/format/&#10;date_format: YYYY-MM-DD&#10;time_format: HH:mm:ss&#10;&#10;# Pagination&#10;## Set per_page to 0 to disable pagination&#10;per_page: 10&#10;pagination_dir: page&#10;&#10;# Extensions&#10;## Plugins: http://hexo.io/plugins/&#10;## Themes: http://hexo.io/themes/&#10;theme: yilia&#10;&#10;# Deployment&#10;## Docs: http://hexo.io/docs/deployment.html&#10;deploy:&#10;  type: git&#10;  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io&#10;  branch: master&#10;&#10;# Markdown&#10;## https://github.com/chjj/marked&#10;markdown:&#10;  gfm: true&#10;  pedantic: false&#10;  sanitize: false&#10;  tables: true&#10;  breaks: true&#10;  smartLists: true&#10;  smartypants: true</span><br></pre></td></tr></table></figure>
-<h3 id="你的第一篇文章">你的第一篇文章</h3><blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> Hexo Configuration</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Docs: http://hexo.io/docs/configuration.html</span></span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Source: https://github.com/hexojs/hexo/</span></span></div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Site</span></div><div class="line">title: 徐志的博客</div><div class="line">subtitle: 爱编程，爱生活，不羁放纵爱自由</div><div class="line">description: 学习总结 思考感悟 知识管理</div><div class="line">author: Zane Xu</div><div class="line">language: zh-CN</div><div class="line">email: wo1996zhi@vip.qq.com</div><div class="line"><span class="meta"></span></div><div class="line"></div><div class="line">#<span class="bash"> URL</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></span></div><div class="line">url: http://yoursite.com</div><div class="line">root: /</div><div class="line">permalink: :year/:month/:day/:title/</div><div class="line">permalink_defaults:</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Directory</span></div><div class="line">source_dir: source</div><div class="line">public_dir: public</div><div class="line">tag_dir: tags</div><div class="line">archive_dir: archives</div><div class="line">category_dir: categories</div><div class="line">code_dir: downloads/code</div><div class="line">i18n_dir: :lang</div><div class="line">skip_render:</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Writing</span></div><div class="line">new_post_name: :title.md # File name of new posts</div><div class="line">default_layout: post</div><div class="line">titlecase: false # Transform title into titlecase</div><div class="line">external_link: true # Open external links in new tab</div><div class="line">filename_case: 0</div><div class="line">render_drafts: false</div><div class="line">post_asset_folder: false</div><div class="line">relative_link: false</div><div class="line">future: true</div><div class="line">highlight:</div><div class="line">  enable: true</div><div class="line">  line_number: true</div><div class="line">  auto_detect: true</div><div class="line">  tab_replace:</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Category &amp; Tag</span></div><div class="line">default_category: uncategorized</div><div class="line">category_map:</div><div class="line">tag_map:</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Date / Time format</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Hexo uses Moment.js to parse and display date</span></span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># You can customize the date format as defined in</span></span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># http://momentjs.com/docs/#/displaying/format/</span></span></div><div class="line">date_format: YYYY-MM-DD</div><div class="line">time_format: HH:mm:ss</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Pagination</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Set per_page to 0 to disable pagination</span></span></div><div class="line">per_page: 10</div><div class="line">pagination_dir: page</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Extensions</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Plugins: http://hexo.io/plugins/</span></span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Themes: http://hexo.io/themes/</span></span></div><div class="line">theme: yilia</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Deployment</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Docs: http://hexo.io/docs/deployment.html</span></span></div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repository: https://github.com/Zane-cqupt/Zane-cqupt.github.io</div><div class="line">  branch: master</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> Markdown</span></div><div class="line"><span class="meta">#</span><span class="bash"><span class="comment"># https://github.com/chjj/marked</span></span></div><div class="line">markdown:</div><div class="line">  gfm: true</div><div class="line">  pedantic: false</div><div class="line">  sanitize: false</div><div class="line">  tables: true</div><div class="line">  breaks: true</div><div class="line">  smartLists: true</div><div class="line">  smartypants: true</div></pre></td></tr></table></figure>
+<h3 id="你的第一篇文章"><a href="#你的第一篇文章" class="headerlink" title="你的第一篇文章"></a>你的第一篇文章</h3><blockquote>
 <p>输入命令行：</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &#34;&#20320;&#30340;&#25991;&#31456;&#21517;&#34;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new "你的文章名"</div></pre></td></tr></table></figure>
 <blockquote>
 <p>然后在你的存储hexo的文件下的source/_post文件夹里面就有会你的文章的初始化代码，你用sublime打开</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title: Github+node.js+hexo&#25645;&#24314;&#25105;&#30340;&#20010;&#20154;&#21338;&#23458;&#10;date: 2015-11-12 20:22:53&#10;tags:&#10;---</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">title: Github+node.js+hexo搭建我的个人博客</div><div class="line">date: 2015-11-12 20:22:53</div><div class="line">tags:</div><div class="line">---</div></pre></td></tr></table></figure>
 <blockquote>
 <p>会看到这些，tag是你的标签，这个你慢慢去倒腾吧，就是你文章的分类，具体的使用方法，在你选择的主题的github上面应该会有讲解。分割线下面就可以加入你用markdown写的文章了，然后保存。再在命令行输入：</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g&#10;hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
 <blockquote>
 <p>可能会有几分钟延时，然后你的博客上面就有你的文章了！搞定。</p>
 </blockquote>
-<h1 id="总结">总结</h1><blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
 <p>我觉得程序员是需要一个个人博客的。不说是为了装逼，起码可以记录你的程序人生。可以记录你的一步一步的成长。程序员当然不能用qq空间去写技术博客，不然要被喷死。其实还是可以自己去买一个域名然后和github的域名绑定的。其实我觉得没太大的必要了。由于也是刚买mac，之前也用的是windows，没用过linux，对于shell确实不太熟悉。然而用了它之后就想让windows有多远滚多远了。好了，开启自己的博客吧！</p>
 </blockquote>
 <p><strong>版权声明：本文为博主原创文章，未经博主允许不得转载。</strong></p>
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/11/06/java集合框架总结/" rel="next" title="java集合框架总结">
-                <i class="fa fa-chevron-left"></i> java集合框架总结
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/13/Android-Touch-System/" rel="prev" title="Android Touch System(一)">
-                Android Touch System(一) <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2015/11/12/Github-node-js-hexo搭建我的个人博客/"
-           data-title="Github+node.js+hexo搭建我的个人博客" data-url="http://yoursite.com/2015/11/12/Github-node-js-hexo搭建我的个人博客/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/13/Android-Touch-System/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境和工具"><span class="nav-number">1.1.</span> <span class="nav-text">环境和工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Node-js"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和配置Hexo"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装和配置Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更改主题"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">更改主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署到github，使用username-github-io"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">部署到github，使用username.github.io</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你的第一篇文章"><span class="nav-number">1.1.3.</span> <span class="nav-text">你的第一篇文章</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          Android Touch System(一)
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2015/11/06/java集合框架总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">java集合框架总结</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Github-node-js-hexo搭建我的个人博客" data-title="Github+node.js+hexo搭建我的个人博客" data-url="http://yoursite.com/2015/11/12/Github-node-js-hexo搭建我的个人博客/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

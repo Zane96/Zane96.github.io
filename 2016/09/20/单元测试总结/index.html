@@ -1,327 +1,256 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Zane's Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
-
-
-
-
-
-
-<meta name="description" content="单元测试小总结​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来">
+  <title>单元测试总结 | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="单元测试小总结​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单元测试总结">
 <meta property="og:url" content="http://yoursite.com/2016/09/20/单元测试总结/index.html">
-<meta property="og:site_name" content="Zane's Blog">
+<meta property="og:site_name" content="Zane&#39;s Blog">
 <meta property="og:description" content="单元测试小总结​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来">
 <meta property="og:updated_time" content="2016-10-26T13:52:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单元测试总结">
 <meta name="twitter:description" content="单元测试小总结​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2016/09/20/单元测试总结/"/>
-
-
-  <title> 单元测试总结 | Zane's Blog </title>
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
 
-  
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
 
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?cb28c7b1af22910846ab0156ab0d9f01";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Zane's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-单元测试总结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/20/单元测试总结/" class="article-date">
+  	<time datetime="2016-09-20T05:05:15.000Z" itemprop="datePublished">2016-09-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                单元测试总结
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      单元测试总结
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-20T13:05:15+08:00" content="2016-09-20">
-              2016-09-20
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/20/单元测试总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/20/单元测试总结/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <h2 id="单元测试小总结">单元测试小总结</h2><p>​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。</p>
-<h3 id="单元测试是什么">单元测试是什么</h3><p>​ 不关有单元测试，还有UI测试，集成测试等等。单元测试简单的来说就是来验证某个类里面的某个方法能不能传入一个参数然后返回一个我们预期的值，如果没有返回值就去验证函数中代码能不能正常按预期跑一遍。实际上是如何测试是个非常灵活的事情。常用的单元测试框架有：JUnit，Mockito，Robolectric，DaggerMock等等</p>
-<h3 id="最简单的示例">最简单的示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Add</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="单元测试小总结"><a href="#单元测试小总结" class="headerlink" title="单元测试小总结"></a>单元测试小总结</h2><p>​ 单元测试往往在产品赶着上线的情况下被忽视。然后单元测试往往会节约大量修改bug的时间。还有一点，单元测试能够验证你的代码的结构是否具有松耦性，因为高度耦合的代码是难以做单元测试的。所以代码中经常通过Dagger来做单元测试。另一点，可以发现老外的项目基本上每个项目都做过不同程度的单元测试，不论项目是大是小，然而中国人好像比较忽视这一点，从现在AS一打开都会给你建测试包都可以看出来老外是很重视单元测试的。</p>
+<h3 id="单元测试是什么"><a href="#单元测试是什么" class="headerlink" title="单元测试是什么"></a>单元测试是什么</h3><p>​ 不关有单元测试，还有UI测试，集成测试等等。单元测试简单的来说就是来验证某个类里面的某个方法能不能传入一个参数然后返回一个我们预期的值，如果没有返回值就去验证函数中代码能不能正常按预期跑一遍。实际上是如何测试是个非常灵活的事情。常用的单元测试框架有：JUnit，Mockito，Robolectric，DaggerMock等等</p>
+<h3 id="最简单的示例"><a href="#最简单的示例" class="headerlink" title="最简单的示例"></a>最简单的示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Add</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> num1 + num2;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>​ 对上述代码进行单元测试只需要最基本的JUnit框架就够了，没错，就是AS给你自动引入的JUnit。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">addTest</span> </span>&#123;</span><br><span class="line">  <span class="annotation">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAdd</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">      Add add = <span class="keyword">new</span> Add();</span><br><span class="line">    assertEquals(<span class="number">3</span>, add.sum(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">addTest</span> </span>&#123;</div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAdd</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</div><div class="line">      Add add = <span class="keyword">new</span> Add();</div><div class="line">    assertEquals(<span class="number">3</span>, add.sum(<span class="number">1</span>, <span class="number">2</span>));</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>​ 然后将直接control+sheft+R运行这个测试方法。看上面的代码当然是可以通过，所以控制台会直接通过，如果将预期值改为4，那么就会报错。</p>
 <p>​ 所以单元测试大概可以看成三部分：</p>
 <ul>
@@ -331,9 +260,9 @@
 </ul>
 <p>​ 也许这样的代码让你觉得单元测试毫无意义，但是在实际项目中，复杂的逻辑没有这么好写单元测试。首先MVP这样的模块化解耦构建的项目会对单元测试代码的书写轻松很多。总之：<strong>松耦合</strong></p>
 <p>​ <strong>JUnit</strong>还有很有的小使用技巧：比如@Before，@After，@Beforeclass，@Afterclass，fail（），assertXXXXXX（）等等，可以在我最下面的推荐的文章里面去深入学习。这里我们只做大概的介绍和总结。</p>
-<h3 id="用Mockito去做一些不可思议的事情">用Mockito去做一些不可思议的事情</h3><p>​ Mockito中有一个类很重要叫<strong>Mock</strong>。不知道听说过Mock数据没有，就是用自己模拟的数据去代替真实的数据，实际开发中，移动端和后台定义好json字段之后，移动端可以先用Mock数据代替真实数据，和后台一起进行开发。这里的Mock类一样道理，就是在单元测试中去模拟一个实例，然后代替需要被测试的代码中真实的对象。然后通过Mock出来的对象替换被测试代码中的对象，再使用Mockito进行验证对象的函数是否成功被调用。示例如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UserManager mUserManager = <span class="keyword">new</span> UserManager();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(String username, String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (username == <span class="keyword">null</span> || username.length() == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span> || password.length() &lt; <span class="number">6</span>) <span class="keyword">return</span>;</span><br><span class="line">        mUserManager.performLogin(username, password);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserManager</span><span class="params">(UserManager userManager)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mUserManager = userManager;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenterTest</span></span>&#123;</span><br><span class="line">  <span class="annotation">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLogin</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    UserManager mockUserManager = Mockito.mock(UserManager.class);</span><br><span class="line">    LoginPresenter loginPresenter = <span class="keyword">new</span> LoginPresenter();</span><br><span class="line">    loginPresenter.setUserManager(mockUserManager);</span><br><span class="line"></span><br><span class="line">    loginPresenter.login(<span class="string">"xiaochuang"</span>, <span class="string">"xiaochuang password"</span>);</span><br><span class="line"></span><br><span class="line">    Mockito.verify(mockUserManager).performLogin(<span class="string">"xiaochuang"</span>, <span class="string">"xiaochuang password"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="用Mockito去做一些不可思议的事情"><a href="#用Mockito去做一些不可思议的事情" class="headerlink" title="用Mockito去做一些不可思议的事情"></a>用Mockito去做一些不可思议的事情</h3><p>​ Mockito中有一个类很重要叫<strong>Mock</strong>。不知道听说过Mock数据没有，就是用自己模拟的数据去代替真实的数据，实际开发中，移动端和后台定义好json字段之后，移动端可以先用Mock数据代替真实数据，和后台一起进行开发。这里的Mock类一样道理，就是在单元测试中去模拟一个实例，然后代替需要被测试的代码中真实的对象。然后通过Mock出来的对象替换被测试代码中的对象，再使用Mockito进行验证对象的函数是否成功被调用。示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenter</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> UserManager mUserManager = <span class="keyword">new</span> UserManager();</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(String username, String password)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (username == <span class="keyword">null</span> || username.length() == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span> || password.length() &lt; <span class="number">6</span>) <span class="keyword">return</span>;</div><div class="line">        mUserManager.performLogin(username, password);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserManager</span><span class="params">(UserManager userManager)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mUserManager = userManager;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenterTest</span></span>&#123;</div><div class="line">  <span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLogin</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    UserManager mockUserManager = Mockito.mock(UserManager.class);</div><div class="line">    LoginPresenter loginPresenter = <span class="keyword">new</span> LoginPresenter();</div><div class="line">    loginPresenter.setUserManager(mockUserManager);</div><div class="line"></div><div class="line">    loginPresenter.login(<span class="string">"xiaochuang"</span>, <span class="string">"xiaochuang password"</span>);</div><div class="line"></div><div class="line">    Mockito.verify(mockUserManager).performLogin(<span class="string">"xiaochuang"</span>, <span class="string">"xiaochuang password"</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>大概步骤如下：</p>
 <ul>
 <li>Mock对象出来</li>
@@ -347,26 +276,26 @@
 <li>验证Mock对象的函数是否被调用</li>
 </ul>
 <p>具体的，，使用方法当然不再多说。</p>
-<h3 id="通过Robolectrie在JVM上直接加载Android类">通过Robolectrie在JVM上直接加载Android类</h3><p>​ 单元测试方便的就是不需要跑一遍项目，不需要打一堆Log，不需要balabala~，但是Android类是不能直接跑在JVM上的，只能在手机上的虚拟机上（ART）。所以如果单元测试中涉及到Android类，就通过Robolectrio来解决。我感觉他的思路就是类似动态代理一样的在代码跑的过程中用他自己的类来替换Android类。比如Activity就对应了ShadowActivity类。并且这些代理类还提供了更多的接口让开发者能够更方便的获得对象的状态。</p>
+<h3 id="通过Robolectrie在JVM上直接加载Android类"><a href="#通过Robolectrie在JVM上直接加载Android类" class="headerlink" title="通过Robolectrie在JVM上直接加载Android类"></a>通过Robolectrie在JVM上直接加载Android类</h3><p>​ 单元测试方便的就是不需要跑一遍项目，不需要打一堆Log，不需要balabala~，但是Android类是不能直接跑在JVM上的，只能在手机上的虚拟机上（ART）。所以如果单元测试中涉及到Android类，就通过Robolectrio来解决。我感觉他的思路就是类似动态代理一样的在代码跑的过程中用他自己的类来替换Android类。比如Activity就对应了ShadowActivity类。并且这些代理类还提供了更多的接口让开发者能够更方便的获得对象的状态。</p>
 <p>Ps：Robolectrie对于as插件的版本要求比较坑，我遇到一个版本bug，弄了一下午。。。</p>
-<h3 id="通过Dagger来优雅的进行依赖注入">通过Dagger来优雅的进行依赖注入</h3><p>​ <strong>Dagger</strong>的使用自然我不会在这里多说。我说说单元测试是如何使用Dagger的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Module</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginTestModule</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context context;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoginTestModule</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.context = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Context <span class="title">provideContext</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PasswordValidator <span class="title">providePasswordValidator</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PasswordValidator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">provideSharedPreferences</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PreferenceManager.getDefaultSharedPreferences(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ApiService <span class="title">provideApiService</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiService();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UsersManager <span class="title">provideUserManager</span><span class="params">(SharedPreferences sp, ApiService service)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UsersManager(sp, service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Provides</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LoginPresenter <span class="title">provideLoginPresenter</span><span class="params">(UsersManager manager, PasswordValidator passwordValidator)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LoginPresenter(manager, passwordValidator);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Component</span>(modules = &#123;LoginTestModule.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginTestComponent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity activity)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Inject</span></span><br><span class="line">    LoginPresenter loginPresenter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> EditText mUsername;</span><br><span class="line">    <span class="keyword">private</span> EditText mPassword;</span><br><span class="line">    <span class="keyword">private</span> Button mButton;</span><br><span class="line">    <span class="keyword">private</span> LinearLayoutManager layoutManager;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过一个holder来传入mock出来的mocule</span></span><br><span class="line">        LoginComponentHolder.getComponent().inject(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        mUsername = (EditText) findViewById(R.id.edit_name);</span><br><span class="line">        mPassword = (EditText) findViewById(R.id.edit_password);</span><br><span class="line">        mButton = (Button) findViewById(R.id.button);</span><br><span class="line"></span><br><span class="line">        mButton.setOnClickListener(v -&gt; &#123;</span><br><span class="line">            String username = mUsername.getText().toString();</span><br><span class="line">            String password = mPassword.getText().toString();</span><br><span class="line">            loginPresenter.login(username, password);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginComponentHolder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> LoginTestComponent component;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setComponent</span><span class="params">(LoginTestComponent component2)</span></span>&#123;</span><br><span class="line">        component = component2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LoginTestComponent <span class="title">getComponent</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> component;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过Dagger来优雅的进行依赖注入"><a href="#通过Dagger来优雅的进行依赖注入" class="headerlink" title="通过Dagger来优雅的进行依赖注入"></a>通过Dagger来优雅的进行依赖注入</h3><p>​ <strong>Dagger</strong>的使用自然我不会在这里多说。我说说单元测试是如何使用Dagger的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginTestModule</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Context context;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoginTestModule</span><span class="params">(Context context)</span></span>&#123;</div><div class="line">        <span class="keyword">this</span>.context = context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Context <span class="title">provideContext</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> PasswordValidator <span class="title">providePasswordValidator</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PasswordValidator();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> SharedPreferences <span class="title">provideSharedPreferences</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> PreferenceManager.getDefaultSharedPreferences(context);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ApiService <span class="title">provideApiService</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiService();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> UsersManager <span class="title">provideUserManager</span><span class="params">(SharedPreferences sp, ApiService service)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UsersManager(sp, service);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="function"><span class="keyword">public</span> LoginPresenter <span class="title">provideLoginPresenter</span><span class="params">(UsersManager manager, PasswordValidator passwordValidator)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LoginPresenter(manager, passwordValidator);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span>(modules = &#123;LoginTestModule.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginTestComponent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity activity)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Inject</span></div><div class="line">    LoginPresenter loginPresenter;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> EditText mUsername;</div><div class="line">    <span class="keyword">private</span> EditText mPassword;</div><div class="line">    <span class="keyword">private</span> Button mButton;</div><div class="line">    <span class="keyword">private</span> LinearLayoutManager layoutManager;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line"></div><div class="line">        <span class="comment">//通过一个holder来传入mock出来的mocule</span></div><div class="line">        LoginComponentHolder.getComponent().inject(<span class="keyword">this</span>);</div><div class="line"></div><div class="line">        mUsername = (EditText) findViewById(R.id.edit_name);</div><div class="line">        mPassword = (EditText) findViewById(R.id.edit_password);</div><div class="line">        mButton = (Button) findViewById(R.id.button);</div><div class="line"></div><div class="line">        mButton.setOnClickListener(v -&gt; &#123;</div><div class="line">            String username = mUsername.getText().toString();</div><div class="line">            String password = mPassword.getText().toString();</div><div class="line">            loginPresenter.login(username, password);</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginComponentHolder</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> LoginTestComponent component;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setComponent</span><span class="params">(LoginTestComponent component2)</span></span>&#123;</div><div class="line">        component = component2;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LoginTestComponent <span class="title">getComponent</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> component;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>上述代码中要测试的是Button点击之后presenter的login（）方法会被成功调用。loginPresenter是通过项目中使用Dagger简单注入进去的（<strong>注意是通过Field Injection inject进去的</strong>），并且我们用一个ComponentHolder来维护这个Module对应的Component。测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@RunWith</span>(RobolectricGradleTestRunner.class)</span><br><span class="line"><span class="annotation">@Config</span>(constants = BuildConfig.class, sdk = <span class="number">21</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenterTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoginTestModule mockModule;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//不能调用mock()因为dagger规定module的provide方法不能返回null</span></span><br><span class="line">        mockModule = Mockito.spy(<span class="keyword">new</span> LoginTestModule(RuntimeEnvironment.application));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMainActivityLogin</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        LoginPresenter loginPresenter = Mock(LoginPresenter.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//开始更改mockModule的方法行为,返回mock的loginPresenter到mockModule的dependency中去</span></span><br><span class="line">        Mockito.when(mockModule.provideLoginPresenter(Mockito.any(UsersManager.class),</span><br><span class="line">                Mockito.any(PasswordValidator.class))).thenReturn(loginPresenter);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//将这个module生成的component放到容器中去</span></span><br><span class="line">        LoginTestComponent component = DaggerLoginTestComponent.builder()</span><br><span class="line">                .loginTestModule(mockModule)</span><br><span class="line">                .build();</span><br><span class="line">        LoginComponentHolder.setComponent(component);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过Robolectric生成mock MainActivity</span></span><br><span class="line">        MainActivity mainActivity = Robolectric.setupActivity(MainActivity.class);</span><br><span class="line">        ((EditText)mainActivity.findViewById(R.id.edit_name)).setText(<span class="string">"zane"</span>);</span><br><span class="line">        ((EditText)mainActivity.findViewById(R.id.edit_password)).setText(<span class="string">"123"</span>);</span><br><span class="line">        Button mButton = (Button) mainActivity.findViewById(R.id.button);</span><br><span class="line">        mButton.performClick();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//验证</span></span><br><span class="line">        Mockito.verify(loginPresenter).login(<span class="string">"zane"</span>, <span class="string">"123"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(RobolectricGradleTestRunner.class)</div><div class="line"><span class="meta">@Config</span>(constants = BuildConfig.class, sdk = <span class="number">21</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenterTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> LoginTestModule mockModule;</div><div class="line"></div><div class="line">    <span class="meta">@Before</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="comment">//不能调用mock()因为dagger规定module的provide方法不能返回null</span></div><div class="line">        mockModule = Mockito.spy(<span class="keyword">new</span> LoginTestModule(RuntimeEnvironment.application));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMainActivityLogin</span><span class="params">()</span></span>&#123;</div><div class="line"></div><div class="line">        LoginPresenter loginPresenter = Mock(LoginPresenter.class);</div><div class="line"></div><div class="line">        <span class="comment">//开始更改mockModule的方法行为,返回mock的loginPresenter到mockModule的dependency中去</span></div><div class="line">        Mockito.when(mockModule.provideLoginPresenter(Mockito.any(UsersManager.class),</div><div class="line">                Mockito.any(PasswordValidator.class))).thenReturn(loginPresenter);</div><div class="line"></div><div class="line">        <span class="comment">//将这个module生成的component放到容器中去</span></div><div class="line">        LoginTestComponent component = DaggerLoginTestComponent.builder()</div><div class="line">                .loginTestModule(mockModule)</div><div class="line">                .build();</div><div class="line">        LoginComponentHolder.setComponent(component);</div><div class="line"></div><div class="line">        <span class="comment">//通过Robolectric生成mock MainActivity</span></div><div class="line">        MainActivity mainActivity = Robolectric.setupActivity(MainActivity.class);</div><div class="line">        ((EditText)mainActivity.findViewById(R.id.edit_name)).setText(<span class="string">"zane"</span>);</div><div class="line">        ((EditText)mainActivity.findViewById(R.id.edit_password)).setText(<span class="string">"123"</span>);</div><div class="line">        Button mButton = (Button) mainActivity.findViewById(R.id.button);</div><div class="line">        mButton.performClick();</div><div class="line"></div><div class="line">        <span class="comment">//验证</span></div><div class="line">        Mockito.verify(loginPresenter).login(<span class="string">"zane"</span>, <span class="string">"123"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>​ 大致的思路其实就是Mock对应的Module，然后通过Mockito来更改provide方法的行为（返回一个Mock对象，更改Module的Dependency），然后将Mock的Module（更改了Dependency行为）注入到ComponentHolder中。最终MainActivity中inject的时候，就会被注入一个Mock对象。</p>
 <p>​ 首先强调一点，不应该为了使用Dagger而使用Dagger。嗯，就是如果能不用Dagger，那就尽量不用。首先上面我强调了LoginPresenter是通过Field Inject的方式注入进去的，一般通过这种方式注入进去的，很难不通过更改Dagger依赖图去改变注入的依赖对象。但是如果LoginPresenter是通过Constructor Inject注入到依赖图的话，完全可以调用构造函数new一个对象出来，构造函数的参数都可以直接传进去，所以不用费大力气去修改依赖图了。</p>
-<h3 id="使用DaggerMock来简化代码">使用DaggerMock来简化代码</h3><p>​ 如果觉得上述通过Dagger来做单元测试代码还是很复杂，可以使用黑科技DaggerMock来简化你的代码。在使用这个框架之前必须学习一下JUnit的Rule。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Rule</span></span><br><span class="line">    <span class="keyword">public</span> DaggerMockRule daggerMockRule = <span class="keyword">new</span> DaggerMockRule(LoginTestComponent.class, <span class="keyword">new</span> LoginTestModule(RuntimeEnvironment.application))</span><br><span class="line">            .set(<span class="keyword">new</span> DaggerMockRule.ComponentSetter() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setComponent</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">                    LoginComponentHolder.setComponent((LoginTestComponent) o);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"> <span class="annotation">@Mock</span></span><br><span class="line"> LoginPresenter loginPresenter;</span><br></pre></td></tr></table></figure>
+<h3 id="使用DaggerMock来简化代码"><a href="#使用DaggerMock来简化代码" class="headerlink" title="使用DaggerMock来简化代码"></a>使用DaggerMock来简化代码</h3><p>​ 如果觉得上述通过Dagger来做单元测试代码还是很复杂，可以使用黑科技DaggerMock来简化你的代码。在使用这个框架之前必须学习一下JUnit的Rule。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Rule</span></div><div class="line">    <span class="keyword">public</span> DaggerMockRule daggerMockRule = <span class="keyword">new</span> DaggerMockRule(LoginTestComponent.class, <span class="keyword">new</span> LoginTestModule(RuntimeEnvironment.application))</div><div class="line">            .set(<span class="keyword">new</span> DaggerMockRule.ComponentSetter() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setComponent</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">                    LoginComponentHolder.setComponent((LoginTestComponent) o);</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line"> <span class="meta">@Mock</span></div><div class="line"> LoginPresenter loginPresenter;</div></pre></td></tr></table></figure>
 <p>就靠这些模版代码就可以轻松的将loginPresenter注入到被测试代码中。</p>
 <ul>
 <li>通过JUnit的Rule注解来修饰DaggerMockRule，然后告诉DaggerMock你想怎么build Component，使用什么Module，Component build了之后放到哪里。</li>
 <li>通过Mock注解修饰你需要修改的依赖对象</li>
 <li>框架会反射，再遍历Module中所有被@Provider修饰的函数，如果发现返回的对象类型是@Mock修饰的对象类型，那么就会进行Mock替换。</li>
 </ul>
-<h3 id="异步代码的单元测试">异步代码的单元测试</h3><p>​ 对于异步的单元测试，有两种解决办法</p>
+<h3 id="异步代码的单元测试"><a href="#异步代码的单元测试" class="headerlink" title="异步代码的单元测试"></a>异步代码的单元测试</h3><p>​ 对于异步的单元测试，有两种解决办法</p>
 <ul>
 <li>等待异步执行完，回调之后在进行比较</li>
 <li>将异步过程在测试代码中转换成同步过程</li>
@@ -383,345 +312,132 @@
 
       
     </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/09/16/Android系统安全学习（二）/" rel="next" title="Android系统安全学习（二）">
-                <i class="fa fa-chevron-left"></i> Android系统安全学习（二）
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/26/BitmapPool的设计与实践/" rel="prev" title="BitmapPool的设计与实践">
-                BitmapPool的设计与实践 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2016/09/20/单元测试总结/"
-           data-title="单元测试总结" data-url="http://yoursite.com/2016/09/20/单元测试总结/">
-      </div>
     
   </div>
-
-
-        </div>
-        
-          
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/me.jpg"
-               alt="Zane Xu" />
-          <p class="site-author-name" itemprop="name">Zane Xu</p>
-          <p class="site-description motion-element" itemprop="description">Talk is Cheap, Show me the Code</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-
-        </nav>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/26/BitmapPool的设计与实践/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
         
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/Zane96" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.weibo.com/2643215417" target="_blank" title="微博">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  微博
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/xu-zhi-75-83" target="_blank" title="知乎">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  知乎
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单元测试小总结"><span class="nav-number">1.</span> <span class="nav-text">单元测试小总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试是什么"><span class="nav-number">1.1.</span> <span class="nav-text">单元测试是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最简单的示例"><span class="nav-number">1.2.</span> <span class="nav-text">最简单的示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用Mockito去做一些不可思议的事情"><span class="nav-number">1.3.</span> <span class="nav-text">用Mockito去做一些不可思议的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Robolectrie在JVM上直接加载Android类"><span class="nav-number">1.4.</span> <span class="nav-text">通过Robolectrie在JVM上直接加载Android类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Dagger来优雅的进行依赖注入"><span class="nav-number">1.5.</span> <span class="nav-text">通过Dagger来优雅的进行依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用DaggerMock来简化代码"><span class="nav-number">1.6.</span> <span class="nav-text">使用DaggerMock来简化代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步代码的单元测试"><span class="nav-number">1.7.</span> <span class="nav-text">异步代码的单元测试</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          BitmapPool的设计与实践
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Zane Xu</span>
+  
+    <a href="/2016/09/16/Android系统安全学习（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android系统安全学习（二）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="单元测试总结" data-title="单元测试总结" data-url="http://yoursite.com/2016/09/20/单元测试总结/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
 </div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
+
+
+
 </div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zane"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  </div>
 </body>
 </html>

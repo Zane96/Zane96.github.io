@@ -30,8 +30,8 @@
 <meta property="og:image" content="http://yoursite.com/img/dalvik_16.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_17.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_18.png">
-<meta property="og:image" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/img/dalvik_19.png">
-<meta property="og:updated_time" content="2017-09-14T08:24:15.000Z">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_19.png">
+<meta property="og:updated_time" content="2017-09-14T08:28:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
 <meta name="twitter:description" content="未经博主同意，不得转载该篇文章 虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalv">
@@ -376,7 +376,7 @@
 </tbody>
 </table>
 <p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
-<p><img src="img/dalvik_19.png" alt=""></p>
+<p><img src="/img/dalvik_19.png" alt=""></p>
 <p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>
 <p>针对以上分析的三个点，我们可以在热修复中做出不同的技术方案：</p>
 <ul>

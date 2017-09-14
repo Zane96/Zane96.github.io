@@ -345,7 +345,7 @@
 </tbody>
 </table>
 <p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
-<p><img src="img/dalvik_19.png" alt=""></p>
+<p><img src="/img/dalvik_19.png" alt=""></p>
 <p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>
 <p>针对以上分析的三个点，我们可以在热修复中做出不同的技术方案：</p>
 <ul>

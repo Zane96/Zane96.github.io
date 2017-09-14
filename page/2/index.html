@@ -126,7 +126,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/android/" style="font-size: 10px;">android</a>
 					</div>
 				</section>
 				
@@ -209,6 +209,103 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Android-IPC系列（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/06/Android-IPC系列（二）/" class="article-date">
+  	<time datetime="2016-04-06T05:48:51.000Z" itemprop="datePublished">2016-04-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/06/Android-IPC系列（二）/">Android-IPC系列（二）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。<strong>虽然我学的很浅，但是我尽量保证自己写的都是对的！</strong> 来一波binder的最新认识总结吧！～</p>
+<p><a href="http://zane96.github.io/2016/03/19/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">Android_IPC系列(一)</a></p>
+<p>上一篇文章主要是介绍一些简单的linux知识，通过AIDL中的生成代码来理解binder实现跨进程的原理。</p>
+<p>任务：</p>
+<ol>
+<li>补充一些Linux知识。</li>
+<li>binder实现跨进程通信的实现流程是怎样的</li>
+<li>简单介绍binder机制</li>
+</ol>
+<hr>
+<h2 id="一些补充知识"><a href="#一些补充知识" class="headerlink" title="一些补充知识"></a>一些补充知识</h2><p>1.<strong>UserSpace, KernelSpace ,用户态，内核态</strong></p>
+<p>  用户空间和内核空间。内核空间是linux系统的核心，可以访问受保护资源和所有的硬件设备的权限。内核独立于应用程序，看起来是系统内部的一个应用。kernel有自己的保护措施，告知其他应用程序他拥有什么权限。所以在逻辑上，将kernal和应用程序抽离成两块空间。</p>
+<p>  当某个应用程序需要访问内核资源的时候，可以通过系统调用来接入内核。然后内核会来控制这个应用程序对资源的访问，防止这个程序破坏系统资源，保证安全。这时候就会称这个进程处于<strong>内核态</strong> 。当应用程序在跑自己的代码的时候，就称为<strong>用户态</strong>。</p>
+<p>2.<strong>Binder驱动</strong></p>
+<p>  Linux系统内部是支持socket，信号量等进程通信的，但是安卓系统在性能和安全两个方面设计了自己的进程通信方式：Binder。两个用户空间想要通信，必须通过内核空间来支持。所以安卓就是将binder驱动作为内核模块添加到Linux Kernel。Binder驱动运行在kernel空间，支持用户空间的通信，可以堪称一个桥梁，所有包含binder的数据包传输都会通过binder驱动来完成，无一例外！在binder驱动里面，binder的实体和引用是以节点（struct）的形式存在的，包括server的binder实体，clinet里面拥有的binder引用，内核的0号应用以及SM的binder实体（后两者后面会提到）。</p>
+<p>  驱动是Binder通信的核心，系统中所有的Binder实体以及每个实体在各个进程中的引用都登记在驱动中；驱动需要记录Binder引用-&gt;实体之间多对一的关系；为引用找到对应的实体；在某个进程中为实体创建或查找到对应的引用；记录Binder的归属地（位于哪个进程中）；通过管理Binder的强/弱引用创建/销毁Binder实体等等。</p>
+<p>3.<strong>ServiceManager, Binder,Clinet, Server</strong></p>
+<p>  在Binder的机制中，SM, Clinet, Server以及上面提到的Binder驱动是很重要的四个部分，而binder就可以看成是这四个部件之间沟通的管道。但是binder在每个部件里面的形态，功能是完全不同的。宏观来看，binder可以看成是安卓跨进程通信的方式，工具，协议。微观的来看，binder可以看成各个部件里面重要的结构，类，binder可以看成binder驱动里面的红黑树数据结构，binder可以看成进程之间传输的数据包。binder作为胶水，将不同的进程粘合在一起，模糊了进程隔离。</p>
+<p>  ServiceManager是独立于client, server的系统进程。是由zygote进程fork出来的。它在IPC通信中的作用是作为”通讯录”。所有的server里面的binder实体会先在SM里面注册自己的信息，key是binder的名字（独一无二），在AIDL的生成代码里面你会看到这个玩意:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> java.lang.String DESCRIPTOR =<span class="string">"com.example.zane.ipc_test.IBookManager"</span>;</div></pre></td></tr></table></figure>
+<p>value就是这个binder的引用，这样就把这个binder的信息保存下来了。也就是说client需要通过SM，以名字来去得到server的binder引用。然后通过这个引用去操作server端的binder。这里也体现了binder中面向对象的设计理念。clinet自己并不知道自己获得的这个binder引用是真的实体还是什么假的实体，它只会去拿着自己获得的引用去操作。并且server中binder实体的引用会在SM,和所有需要跟自己通信的clinet里面存在。在这里，你可以把引用看成指针，或者代理对象。</p>
+<p>  client和server就是客户端和服务端。</p>
+<p>  在服务端：如果你熟悉AIDL进行进程间通信的流程或者看过我上篇博客，你应该对binder的存在形式有所体会。首先是一个aidl类型的接口，定义了binder的所有功能函数。并且这些功能函数需要被编号，因为服务端是通过解析客户端传递过来的数据包中的函数编号来知道自己应该去调用什么函数。在Stub类中有这么几行代码(函数编号):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TRANSACTION_getBookList = (android.os.IBinder.FIRST_CALL_TRANSACTION + <span class="number">0</span>);</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TRANSACTION_addBook = (android.os.IBinder.FIRST_CALL_TRANSACTION + <span class="number">1</span>);</div></pre></td></tr></table></figure>
+<p>  我们知道Stub就是Binder在Server的实体，里面实现了很多函数，onTransact()就是来分析客户端的请求类型的函数，然后调用相应的函数，并且将返回结果放在数据包中返回给客户端。</p>
+<p>  在客户端：同样的，我们在客户端也需要去实现Binder，只不过这个binder是SM转发给我们的，如果客户端和服务端在同一个进程，那么就会返回binder实体，如果不在同一个进程就会返回binder的代理。由于binder代理和binder实体都是实现了AIDL接口的类。所以客户端看不出来这个binder是实体或是引用。如果你做过IPC通信，你会知道以上的过程是通过asInterface(IBiner binder)这个方法实现的。</p>
+<hr>
+<h2 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h2><p>  直接上一张我自己画的简介图！</p>
+<p><img src="/img/ipc2-1.png" alt="简介图"></p>
+<p>  可以很清楚的看出，binder驱动是整个流程的核心！</p>
+<p>  1.Server将自己的binder通过binder驱动在SM中进行注册。</p>
+<p>  2.binder驱动会建立一个binder实体的数据节点和实体的引用。</p>
+<p>  3.Binder驱动再把名字和引用打包发给SM。</p>
+<p>  4.Client通过binder驱动拿着他所需要的binder名字向SM请求binder。</p>
+<p>  5.SM在自己的查找表里面找到对应的引用之后再通过binder驱动返回给client。</p>
+<p><strong>所有的系统服务在SystemServer进程深沉之后就会被建立并且注册在ServiceManager里面，开发者也可以开发自定义的服务并且注册在ServiceManager里面成为系统级别的服务，前提是这个包含服务的应用必须是system用户并且带了system签名（系统安全），否则是不能随意注册的！</strong></p>
+<p>  好了，再来一张我在一位大牛博客里面截下来的图片，这个流程描述就更具体了：</p>
+<p><img src="/img/ipc2-2.png" alt="具体图"></p>
+<p>  其实就是多了binder驱动里面的一些数据结构节点和一个叫0号引用的东西。那么这个0号引用是什么呢？我们知道SM, Client, Server都是运行在三个不同的进程的。那么第一步Server要向SM注册自己binder的信息，那么这里已经涉及到了跨进程通信了。那么这个进程通信是怎么实现的呢？通过上图可以看到，所有的Client里面的0号引用都指向了SM里面的binder。也就是说SM和其他所有Server通信的过程都是SM先通过特殊的命令在biner驱动中建立了自己binder的实体节点，并且其他所有地方的0号引用都默认留给SM的binder实体引用。</p>
+<hr>
+<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>  上一篇文章讲的AIDL生成代码的分析，本来准备第二篇总结一下AIDL的使用。后来通过不断的学习觉得这篇文章讲的东西更值得总结！</p>
+<p>  总之，binder要学习的东西还是很多。比如binder协议，binder传输数据包类型，binder在驱动里面的数据结构，缓存和线程池管理等等…<strong>Binder在安全性，效率性都优于Linux系统默认支持的IPC通信方式,拥有面向对象的设计原理。</strong></p>
+<p><strong>未经博主同意，不得转载该篇文章</strong></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-Android-IPC系列（一）" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1043,132 +1140,6 @@ setData()方法的设计有点像接口回调，在holder的子类里面实现�
 <p>  MVP模式确实给项目维护带来了一些便捷，但是也发现，相对于小的项目会导致你的代码量迅速膨胀。所有很多人弄一些mvp的开发框架。确实我自己也想用这种新思路来倒腾一个。但是对于大型项目，这样的代码膨胀并不算什么，带来的好处绝对优于坏处。这次学习又巩固了一下我的设计模式。以一句话结尾：<strong>面对接口编程， 避免面对实现编程</strong></p>
 </blockquote>
 <p><strong>未经博主同意，不得转载该篇文章</strong></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-关于RecycleView显示异步加载图片乱序的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/" class="article-date">
-  	<time datetime="2015-11-26T14:41:45.000Z" itemprop="datePublished">2015-11-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/26/关于RecycleView显示异步加载图片乱序的问题/">关于RecycleView显示异步加载图片乱序的问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="关于RecycleView显示加载图片乱序的问题"><a href="#关于RecycleView显示加载图片乱序的问题" class="headerlink" title="关于RecycleView显示加载图片乱序的问题"></a>关于RecycleView显示加载图片乱序的问题</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>本来之前都在准备touch的第二篇博客。但是突然想起之前做的一个项目中和搭档一起遇到一个问题，就是recycleview的item中的imageview显示图片错位（网络加载图片）。当然。。当时在做项目，自然就是赶紧找解决办法呗，看了官方教程和郭神的博客，但是只看他们的教程还是没有很好的解决，因为我们的东西是有些item的imageview为空，而他们讲的都是所有item的imageview都有图片。不过最后也还是稀里糊涂的解决了哈哈。昨天自己写了一个demo,放在我的github嗒。通过源码和大神们的博客想总结一下这个问题。<a href="https://github.com/Zane-cqupt/BestBitmapDownload" target="_blank" rel="external">源码地址</a></p>
-</blockquote>
-<h2 id="关于这个问题"><a href="#关于这个问题" class="headerlink" title="关于这个问题"></a>关于这个问题</h2><blockquote>
-<p>如果大家看过郭神的博客或者自己遇到过，就会知道解决这个问题有三种方法，第一是给imageview设置tag，第二是我用到的，给AsyncTask和imageview双向添加弱引用，进行逻辑判断。第三当然就是用第三方库啰，比如volley的图片加载或者现在最牛逼的fresco！第三方库的控件之所以能解决这个问题，其实就是自己内部做了处理。虽然提倡<strong>不要造重复的轮子</strong> ,但是得知道轮子时怎么造出来的。而我们遇到的问题（有些item的imageview为空图）连第三方库都不能解决。通过看imageview的源码，很快也解决了这个问题。那么recycleview显示异步加载图片错位的原因是什么呢？</p>
-</blockquote>
-<p><img src="/img/4.1.png" alt="图解"></p>
-<blockquote>
-<p>RecycleView和ListView一样，每个item里面的控件<strong>都是复用的</strong> ！也就是说不可能你有10k个item系统就给你提供10k个imageview，要不然系统造就gg了。所以正是这个原因也导致了我们遇到的这个坑。系统真正提供给你的imageview可能只有显示的item多一点点～</p>
-</blockquote>
-<p><img src="/img/4.2.png" alt=""></p>
-<blockquote>
-<p>从这个图你就可以清楚的知道为什么会错乱了。首先<strong>itemA处于显示状态，然后隐藏，那么他的imageview被收回到recycleBin等待下一次被利用。并且这个imageview已经跟一个drawable关联了，这个drawable就是task请求的结果，task是否在被回收之前已经完成自己的使命并不确定。接下来itemB从隐藏变成了显示状态。那么itemA的那个imageview就可能会被系统拿去给itemB使用。一旦使用就会导致图片错乱。也就是说，，一个imageview就有了两个task，两个drawble…不错乱才怪了</strong> 。</p>
-</blockquote>
-<h2 id="解决它！"><a href="#解决它！" class="headerlink" title="解决它！"></a>解决它！</h2><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><blockquote>
-<p>既然是因为拿到的imageview包含一个task而导致错乱，那么我们取消它不就完了。确实就是这样。</p>
-</blockquote>
-<ol>
-<li><p>在每一个task里面放进它所对应的imageview弱引用(使系统想收回资源的时候大胆的收回)</p>
-<p>将imageview通过task的构造器在适配器里面把imageview传给task。</p>
-</li>
-<li><p>在每一个imageview里面放入它对应的task的弱引用。</p>
-<p>这个比较复杂。我需要用一个BitmapDrawable类来做桥梁。因为imageview和drawable的关联用set方法就ok了。在自定义的BitmapDrawable的子类的构造器里面我们传入默认的占位图和task引用。在子类里面进行弱引用包装。</p>
-</li>
-</ol>
-<blockquote>
-<p>双引用实现了之后，<strong>我们不管系统给我的imageview的task是否完成，都判断两个task的url是否相同。如果相同就可以不用管了，如果url都不相同还管你个屁，直接把imageview中带来的task给我取消了。哈哈，可能大家觉得这样就够了。说实话，我之前也是这么想的，可是如果只做到这一步，新显示的item还是会显示一段时间的imageview的drawable直到自己的task完成才会恢复正常。原因就是传进来的imageview的task在传进来之前就可能已经完成了。这个弯一定要绕过去！</strong>思路有了，我们开始看代码吧！</p>
-<p>直接上适配器的代码了</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by Zane on 15/11/25.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RecycleViewAdapter</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">Adapter</span>&lt;<span class="title">RecycleViewAdapter</span>.<span class="title">MyViewHolder</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//图片缓存LruCache</span></div><div class="line">    <span class="keyword">private</span> LruCache&lt;String, BitmapDrawable&gt; mLrucache;</div><div class="line">    <span class="keyword">private</span> LayoutInflater layoutInflater;</div><div class="line">    <span class="keyword">private</span> Context context;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RecycleViewAdapter</span><span class="params">(Context context)</span></span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.context = context;</div><div class="line">        layoutInflater = LayoutInflater.from(context);</div><div class="line">        <span class="keyword">int</span> maxSize = (<span class="keyword">int</span>) Runtime.getRuntime().maxMemory();</div><div class="line">        <span class="keyword">int</span> cacheSize = maxSize / <span class="number">8</span>;</div><div class="line">        mLrucache = <span class="keyword">new</span> LruCache&lt;String, BitmapDrawable&gt;(cacheSize)&#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">sizeOf</span><span class="params">(String key, BitmapDrawable value)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> value.getBitmap().getByteCount();</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> MyViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup parent, <span class="keyword">int</span> viewType)</span> </span>&#123;</div><div class="line">        View view = layoutInflater.inflate(R.layout.item_recycleview, parent, <span class="keyword">false</span>);</div><div class="line">        MyViewHolder holder = <span class="keyword">new</span> MyViewHolder(view);</div><div class="line">        <span class="keyword">return</span> holder;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>我用到了Lrucache进行图片缓存。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(MyViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">    String url;</div><div class="line"></div><div class="line">    <span class="comment">//if(position != 1) &#123;</span></div><div class="line">        url = Images.imageUrls[position];</div><div class="line">        BitmapDrawable drawable = getBitmapFromMemoryCache(url);</div><div class="line">        <span class="keyword">if</span>(drawable != <span class="keyword">null</span>)&#123;</div><div class="line">            holder.imageView.setImageDrawable(drawable);</div><div class="line">        &#125;<span class="keyword">else</span> &#123;</div><div class="line">            loadBitmap(url, holder.imageView);</div><div class="line">        &#125;</div><div class="line">    <span class="comment">//&#125;</span></div><div class="line">    <span class="comment">//else &#123;</span></div><div class="line">    <span class="comment">//    holder.imageView.setImageResource(R.drawable.ic_launcher);</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemCount</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> Images.imageUrls.length;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>先判断缓存里面是否有存储的图像，提高效率。可以看到我上面代码的注释，那是为了测试后面某个item的imageview为空的情况。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//添加imageview的弱引用</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BitmapDownloadTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Void</span>, <span class="title">BitmapDrawable</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> ImageView imageView;</div><div class="line">    <span class="keyword">private</span> WeakReference&lt;ImageView&gt; imageViewWeakReference;</div><div class="line">    <span class="keyword">public</span> String url;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BitmapDownloadTask</span><span class="params">(ImageView imageView)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.imageView = imageView;</div><div class="line">        imageViewWeakReference = <span class="keyword">new</span> WeakReference&lt;ImageView&gt;(imageView);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> BitmapDrawable <span class="title">doInBackground</span><span class="params">(String... params)</span> </span>&#123;</div><div class="line"></div><div class="line">        url = params[<span class="number">0</span>];</div><div class="line">        Bitmap bitmap = downloadBitmap(url);</div><div class="line">        BitmapDrawable bitmapDrawable = <span class="keyword">new</span> BitmapDrawable(context.getResources(), bitmap);</div><div class="line">        addBitmapToMemoryCache(url, bitmapDrawable);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> bitmapDrawable;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(BitmapDrawable bitmapDrawable)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">if</span>(isCancelled())&#123;</div><div class="line">            bitmapDrawable = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">      <span class="comment">//第二次判断，如果iamgeview里面的task跟这个item根据适配器传进来的正确url启动的task不相同，就不显示图片</span></div><div class="line">        <span class="keyword">if</span>(imageViewWeakReference != <span class="keyword">null</span> &amp;&amp; bitmapDrawable != <span class="keyword">null</span>)&#123;</div><div class="line">            ImageView imageView = imageViewWeakReference.get();</div><div class="line">            BitmapDownloadTask task = getBitmapWorkerTask(imageView);</div><div class="line">            <span class="keyword">if</span>(<span class="keyword">this</span> == task &amp;&amp; imageView != <span class="keyword">null</span>)&#123;</div><div class="line">                imageView.setImageDrawable(bitmapDrawable);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//imageView.setImageDrawable(bitmapDrawable);</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> Bitmap <span class="title">downloadBitmap</span><span class="params">(String imageUrl)</span> </span>&#123;</div><div class="line">        Bitmap bitmap = <span class="keyword">null</span>;</div><div class="line">        HttpURLConnection con = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            URL url = <span class="keyword">new</span> URL(imageUrl);</div><div class="line">            con = (HttpURLConnection) url.openConnection();</div><div class="line">            con.setConnectTimeout(<span class="number">5</span> * <span class="number">1000</span>);</div><div class="line">            con.setReadTimeout(<span class="number">10</span> * <span class="number">1000</span>);</div><div class="line">            bitmap = BitmapFactory.decodeStream(con.getInputStream());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (con != <span class="keyword">null</span>) &#123;</div><div class="line">                con.disconnect();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> bitmap;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这里面onPostExecute()方法进行的判断是我们的逻辑判断的第二步。我们取出imageview对应的task跟“正规军task”进行比较，如果为空或者不相等的话，阻止imageview设置上一次task完成之后得到的drawable。注意，这些都是在item的”正规军task”里面执行的哦，别绕昏了！</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//用来根据传进来的imageview获得对应的drawable,再获得对应的task</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> BitmapDownloadTask <span class="title">getBitmapWorkerTask</span><span class="params">(ImageView imageView)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (imageView != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">final</span> Drawable drawable = imageView.getDrawable();</div><div class="line">            <span class="keyword">if</span> (drawable <span class="keyword">instanceof</span> AsyncDrawable) &#123;</div><div class="line">                <span class="keyword">final</span> AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;</div><div class="line">                <span class="keyword">return</span> asyncDrawable.getBitmapTask();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这段代码就是根据imageview获得对应task的方法了。之前说到，我是把BitmapDrawable作为绑定的桥梁。所以先获得drawable然后再获得task。</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//添加task的弱引用</span></div><div class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncDrawable</span> <span class="keyword">extends</span> <span class="title">BitmapDrawable</span></span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">private</span> WeakReference&lt;BitmapDownloadTask&gt; taskWeakReference;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">AsyncDrawable</span><span class="params">(Resources res, Bitmap bitmap</span></span></div><div class="line">                                    , BitmapDownloadTask task) &#123;</div><div class="line">            <span class="keyword">super</span>(res, bitmap);</div><div class="line">            taskWeakReference = <span class="keyword">new</span> WeakReference&lt;BitmapDownloadTask&gt;(task);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> BitmapDownloadTask <span class="title">getBitmapTask</span><span class="params">()</span></span>&#123;</div><div class="line">            <span class="keyword">return</span> taskWeakReference.get();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这个就是桥梁啰。代码很简单～</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//将drawable与imageview绑定</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadBitmap</span><span class="params">(String url, ImageView imageView)</span></span>&#123;</div><div class="line">        Bitmap mLoadingBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);</div><div class="line">        <span class="keyword">if</span> (cancelBeforeTask(url, imageView))&#123;</div><div class="line">            BitmapDownloadTask task = <span class="keyword">new</span> BitmapDownloadTask(imageView);</div><div class="line">            AsyncDrawable drawable = <span class="keyword">new</span> AsyncDrawable(context.getResources(), mLoadingBitmap, task);</div><div class="line">            <span class="comment">//!!!!</span></div><div class="line">            imageView.setImageDrawable(drawable);</div><div class="line">            task.execute(url);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>这个方法就是用来根据适配器给我的url启动一次“正规军task”的方法了～<strong>if (cancelBeforeTask(url, imageView))</strong>这里就是我做的第一次判断。如果返回true那么就启动正规军 task.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//用来进行第一步的判断，如果imageview对应的task的url跟传进去的url不同，那么取消上一次task</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">cancelBeforeTask</span><span class="params">(String url, ImageView imageView)</span></span>&#123;</div><div class="line"></div><div class="line">        BitmapDownloadTask task = getBitmapWorkerTask(imageView);</div><div class="line"></div><div class="line">        <span class="keyword">if</span>(task != <span class="keyword">null</span>)&#123;</div><div class="line">            String imgUrl = task.url;</div><div class="line">            <span class="keyword">if</span> (imgUrl != url || imgUrl == <span class="string">""</span>)&#123;</div><div class="line">                task.cancel(<span class="keyword">true</span>);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>如果系统给我的imageview的task的url跟适配器给我的正规url不同，那么表示两个task启动的图片都不同，所以取消上一次的task然后返回true。</p>
-</blockquote>
-<h2 id="结果呢？"><a href="#结果呢？" class="headerlink" title="结果呢？"></a>结果呢？</h2><p><img src="/img/4.3.png" alt="结果"></p>
-<blockquote>
-<p>特么的，当然是没问题的啦！可是！！！如果我现在第二个item设置为空图，就又会出现问题了！</p>
-</blockquote>
-<p>我改一下代码使第二张图不为空，效果如下：</p>
-<p><img src="/img/4.4.png" alt=""></p>
-<p>然后我滑动一下屏幕，效果如下：</p>
-<p><img src="/img/4.5.png" alt=""></p>
-<blockquote>
-<p>卧槽。。对，这就是我们当初遇到的问题。如何解决呢？很简单，如果为空那就给它一个永久的占位图就可以了。</p>
-</blockquote>
-<p><img src="/img/4.6.png" alt="like this!"></p>
-<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><blockquote>
-<p>说实话有些东西不必弄的太深，分享最近的一些感想：给你一大堆材料，让你搭建一个高楼。材料如何生产质量更好，你不必太关心。材料质量怎样，你需要去关心。而如何把这栋房子搭建的更牢固，怎么搭建用料最少，复用性更高，耦合度更低，才是最需要去关心的。有时候房子的构建不好，会出现不稳固，不健壮，甚至地基不稳（内存泄露？）。实在可怕——做项目有感而发。  但是这种问题，并且是工作中遇到的问题，还是值得去探究并解决的。如何找到解决问题，也是面试官考察你的很重要的一点。</p>
-</blockquote>
 
       
     </div>

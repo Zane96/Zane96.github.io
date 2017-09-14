@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Dalvik类加载机制以及unexpectedDEX的异常避免 | Zane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/index.html">
+<meta property="og:site_name" content="Zane&#39;s Blog">
+<meta property="og:description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_1.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_2.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_3.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_4.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_5.png">
+<meta property="og:image" content="http://yoursite.com/img/davlik_6.png">
+<meta property="og:image" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/img/dalvik_18.png">
+<meta property="og:updated_time" content="2017-09-14T07:47:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
+<meta name="twitter:description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+<meta name="twitter:image" content="http://yoursite.com/img/dalvik_1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Zane Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/android">android</a></li>
+				        
+							<li><a href="/tags/java">java</a></li>
+				        
+							<li><a href="/tags/web">web</a></li>
+				        
+							<li><a href="/tags/python">python</a></li>
+				        
+							<li><a href="/tags/sql">sql</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+					        
+								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+					        
+								<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/android/" style="font-size: 10px;">android</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://kermit95.github.io/">王凯的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">原谅我这一生不羁放纵爱自由，爱编程，爱生活。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Zane Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars2.githubusercontent.com/Zane96" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Zane Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">爱编程，爱生活，不羁放纵爱自由</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/android">android</a></li>
+		        
+					<li><a href="/tags/java">java</a></li>
+		        
+					<li><a href="/tags/web">web</a></li>
+		        
+					<li><a href="/tags/python">python</a></li>
+		        
+					<li><a href="/tags/sql">sql</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/Zane96" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/2643215417" title="weibo">weibo</a>
+			        
+						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/xu-zhi-75-83" title="zhihu">zhihu</a>
+			        
+						<a class="email" target="_blank" href="/zanebot96@gmail.com" title="email">email</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Dalvik类加载机制以及unexpectedDEX的异常避免" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/" class="article-date">
+  	<time datetime="2017-09-14T07:45:14.000Z" itemprop="datePublished">2017-09-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Dalvik类加载机制以及unexpectedDEX的异常避免
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="虚拟机概要"><a href="#虚拟机概要" class="headerlink" title="虚拟机概要"></a>虚拟机概要</h2><p>​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。</p>
+<p>​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。</p>
+<p>​ 至于art和dalvik，JIT和AOT的区别，优化，不是本文的重点。传送门：<a href="https://source.android.com/devices/tech/dalvik/?hl=zh-cn" target="_blank" rel="external">ART 和 Dalvik</a></p>
+<h2 id="类加载整体流程"><a href="#类加载整体流程" class="headerlink" title="类加载整体流程"></a>类加载整体流程</h2><ul>
+<li>对dex文件进行验证并优化，并产出Odex文件</li>
+<li>对Odex文件进行解析，产出DexFile数据结构，即将文件形式的数据转换成内存中虚拟机可达的数据（如果研究过android的ClassLoader源码，肯定对DexFile不陌生）</li>
+<li>对指定的类进行加载，在DexFile中提取对应类的字节码，产出ClassObject数据结构</li>
+</ul>
+<h2 id="Dex文件的优化"><a href="#Dex文件的优化" class="headerlink" title="Dex文件的优化"></a>Dex文件的优化</h2><h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>​ Dalivk中，dex的优化使用的是dexopt，将dex文件优化为Odex文件，最终提交给下一步的加载过程。而不是像art的dex2aot一样，dex2aot是直接将全部的dex文件编译为native code存储。Odex文件的本质只是在原dex文件的基础上进行优化，并生成.Odex文件进行存储，以提高dalvik虚拟机运行的高效性和安全性。需要注意的是整个dex的优化过程都是在一个新进程中进行的。</p>
+<h3 id="重要的优化点如下："><a href="#重要的优化点如下：" class="headerlink" title="重要的优化点如下："></a>重要的优化点如下：</h3><ul>
+<li>建立dex的类索引表——使虚拟机快速find dex中某个类的地址</li>
+<li>寄存器的内存映射——减少odex-&gt;DexFile的内存映射操作</li>
+<li>添加依赖库信息——添加dex需要使用的本地函数库</li>
+<li>dex中字节码的替换——比如类似编译中的内联优化</li>
+</ul>
+<h3 id="Dex和Odex文件结构对比图"><a href="#Dex和Odex文件结构对比图" class="headerlink" title="Dex和Odex文件结构对比图"></a>Dex和Odex文件结构对比图</h3><p><img src="/img/dalvik_1.png" alt=""></p>
+<p>Dalvik由于是采用JIT及时编译，因此App在第一次被打开的时候会进行dexopt操作而导致启动较慢。</p>
+<h3 id="函数执行流程"><a href="#函数执行流程" class="headerlink" title="函数执行流程"></a>函数执行流程</h3><p>PackageManagerService是用来管理应用安装，卸载，优化等工作的系统服务。和PMS的各种操作最终会通过Java层的Installer—&gt;InstallerConnection—&gt;Socket通信到native的installd.c服务（这个套路在黑域中也有用到）。</p>
+<p>InstallerConnection.connect()：</p>
+<p><img src="/img/dalvik_2.png" alt=""></p>
+<p>InstallerConnection.dexopt()：</p>
+<p><img src="/img/dalvik_3.png" alt=""></p>
+<p>最终会调用到dalvik/dexopt/OptMain.cpp</p>
+<p><img src="/img/dalvik_4.png" alt=""></p>
+<h2 id="Dex文件的解析"><a href="#Dex文件的解析" class="headerlink" title="Dex文件的解析"></a>Dex文件的解析</h2><p>​ 虚拟机需要访问到可读的Dex数据来进行类加载。因此我们需要将dex文件解析成DexFile的内存中的数据结构。其解析过程实则是将DexFile数据结构中的各个成员变量与Dex文件的各个数据部分相关联。</p>
+<p>DexFile的结构体：</p>
+<p><img src="/img/dalvik_5.png" alt=""></p>
+<p>​ 需要注意的是这一步是在Dex文件优化之后，所以从这里开始提到的Dex文件都是Odex文件。具体的解析过程不叙述。接下来的过程就是要从DexFile中加载指定的类，并将其装入虚拟机的运行时环境中。</p>
+<h2 id="运行时数据装载"><a href="#运行时数据装载" class="headerlink" title="运行时数据装载"></a>运行时数据装载</h2><p>​ 到这里，我们需要抽象出另一个数据结构——ClassObject。我们到这里可以梳理一下流程：</p>
+<p><img src="/img/davlik_6.png" alt=""></p>
+<p>​ 至于ClassObject的数据结构，特别的长，有兴趣的同学可以自己去源码看看。位置在<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 重点！类加载Java到Native，揭秘unexpectedDEX异常</div><div class="line"></div><div class="line">到这里，我们可以来一次从Java层的类加载到Native层的类加载调用流程整个分析了。如果不熟悉Android Java层类加载机制的可以看这篇博客：[Android动态类记载](http://www.jianshu.com/p/a620e368389a)</div><div class="line"></div><div class="line">首先，众所周知，DexClassLoder和PathClassLoder是我们见的比较多的类。区别就在于前者可以加载任意路径下的.jar或者.apk，而后者只能加载默认路径下的dex文件，即/data/dalvik-cache。然后两者都继承自BaseDexClassLoader。那这个区别的原因是什么呢？其实很简单：</div><div class="line"></div><div class="line">![](/img/dalvik_7.png)</div><div class="line"></div><div class="line">![](/img/dalvik_8.png)</div><div class="line"></div><div class="line">不用解释都知道了，后者的构造函数不能设置Odex文件的路径，因此一般用作系统类（其实最终是BootClassLoader加载的）和应用类。前者可以动态的设置Odex路径，所以经常在插件化中被使用。</div><div class="line"></div><div class="line">两者其实就是一个空壳，真正的加载函数都是调用自BaseDexClassLoader的父类ClassLoader的loadClass函数：</div><div class="line"></div><div class="line">![](/img/dalvik_9.png)</div><div class="line"></div><div class="line">可以看到，先调用了findLoadedClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_10.png)</div><div class="line"></div><div class="line">先判断虚拟机是否已经加载了这个class，如果加载了就会直接返回。这也是为什么dex插桩流派的热修复必须要应用重启才能修复，因为一旦虚拟机加载了某个类，就不会重新再加载。</div><div class="line"></div><div class="line">再看到后面，先调用了parent的loadClass()函数，如果为空才会调用自己的findClass()函数。对，没错！优雅的双亲委派机制（责任链）以及模版方法的设计模式。Android建议我们不要重写loadClass()方法，去重写findClass()方法，就是为了遵循这个机制和生态。因此我们继续跟踪BaseDexClassLoader的findClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_11.png)</div><div class="line"></div><div class="line">看到会调用DexPathList的findClass()方法，而这个DexList其实内部维护着一个DexFile的集合。继续跟踪：</div><div class="line"></div><div class="line">![](/img/dalvik_12.png)</div><div class="line"></div><div class="line">可以看到，就是简单的遍历DexFile集合，然后去轮询Class。其实熟悉热修复的同学看到这里可以说是很轻松的，因为Q空的插桩，微信的全量替换等之热修复技术都是在这块做文章。所以继续追踪DexFile中去，这个其实就是前文提到的了：</div><div class="line"></div><div class="line">![](/img/dalvik_13.png)</div><div class="line"></div><div class="line">额，其实没什么内容，但是敏感的察觉到，我们要进入到逼气十足的Native层了！defineClassNative(name, loader, cookie);。如果你的手上有Dalvik的源码，可以和我一起深入进去。这个函数在vm\native\dalivk_system_DexFile.cpp中的Dalvik_dalvik_system_DexFile_defineClass函数里。酷酷的。。：</div><div class="line"></div><div class="line">![](/img/dalvik_13.png)</div><div class="line"></div><div class="line">这里只截取了部分，其实很简单先调用dvmGetRawDexFileDex或者dvmGetJarFileDex（如果是jar包）方法去给指向DexFile的指针赋值（其实DexFile是DvmDex的一个成员变量），然后将这个指针传递进dvmDefineClass()函数，而这个函数最终调用了findClassNoInit()函数：</div><div class="line"></div><div class="line">![](/img/dalvik_14.png)</div><div class="line"></div><div class="line">findClassNoInit()方法是重头戏，里面先判断是否已经加载，如果没有加载会继续进行加载，通过dexFindClass()方法，返回一个DexClassDef数据结构，这个数据结构是为了方便快速定位类在Dex中的位置，然后最终通过loadClassFromDex()方法给ClassObject指针赋值：</div><div class="line"></div><div class="line">![](/img/dalvik_15.png)</div><div class="line"></div><div class="line">而loadClassFromDex()方法的源码看起来比较乏味，直接总结一下：</div><div class="line"></div><div class="line">+ 为ClassObject申请内存</div><div class="line">+ 设置字段信息</div><div class="line">+ 为超类建立索引</div><div class="line">+ 加载类接口</div><div class="line">+ 加载类字段</div><div class="line">+ 加载类方法</div><div class="line"></div><div class="line">自此，我们仅仅完成了类加载的加载阶段。类加载实际上还有很多步骤。后面会对ClassObject进行进一步的加工，后面紧接着调用了dvmLinkClass()方法进行Prepare and resolve，主要将符号引用转换成为直接引用，在其中会进一步调用dvmResolveClass()方法，而这个方法实际上是在解析当前被加载类的父类以及接口：</div><div class="line"></div><div class="line">![](/img/dalvik_16.png)</div><div class="line"></div><div class="line">这里只截取了解析父类的部分，接口部分类似。可以看到，加载完了之后，就会将这个符号引用转换为直接引用，并对GC可见。而这个dvmResolveClass()方法就是unexpected DEX异常触发的地方，先来看两段dvmResolveClass()方法的注释：</div><div class="line"></div><div class="line">&gt;  \* Because the DexTypeId is associated with the referring class&apos; DEX file,</div><div class="line">&gt;</div><div class="line">&gt;  \* we may have to resolve the same class more than once if it&apos;s referred</div><div class="line">&gt;</div><div class="line">&gt;  \* to from classes in multiple DEX files.  This is a necessary property for</div><div class="line">&gt;</div><div class="line">&gt;  \* DEX files associated with different class loaders.</div><div class="line"></div><div class="line">大意就是被引用的类可能是别的Dex文件里的，所以我们可能会从不同的Dex文件中重复解析一个类。表明Dalvik会使用一种机制来避免这种现象。</div><div class="line"></div><div class="line">&gt;  \* &quot;fromUnverifiedConstant&quot; should only be set if this call is the direct</div><div class="line">&gt;</div><div class="line">&gt;  \* result of executing a &quot;const-class&quot; or &quot;instance-of&quot; instruction, which</div><div class="line">&gt;</div><div class="line">&gt;  \* use class constants not resolved by the bytecode verifier.</div><div class="line"></div><div class="line">大意就是如果我们通过&quot;const-class&quot;（通过类型索引获取一个类的引用赋值给寄存器，比如直接引用XX.class） 或 &quot;instance-of&quot;（判断寄存器中对象的引用是否是指定类型）（均为两者Dalvik虚拟机的指令）指令去引用一个类，那么fromUnverifiedConstant变量会被set为True。表明这个变量在后续代码中很重要。继续下去：</div><div class="line"></div><div class="line">![](/img/dalvik_17.png)</div><div class="line"></div><div class="line">很好，终于看到了</div><div class="line"></div><div class="line">```c++</div><div class="line">dvmThrowIllegalAccessError(</div><div class="line">                    &quot;Class ref in pre-verified class resolved to unexpected &quot;</div><div class="line">                    &quot;implementation&quot;);</div></pre></td></tr></table></figure></p>
+<p>并且很清晰的看到了触发unexpectedDEX异常的四个条件：</p>
+<ul>
+<li>fromUnverifiedConstant为False</li>
+<li>被解析的类，设置了CLASS_ISPREVERIFIED</li>
+<li>referrer-&gt;pDvmDex != resClassCheck-&gt;pDvmDex</li>
+<li>被引用类的类加载器不是Null</li>
+</ul>
+<p>我们重点看前三个条件：</p>
+<table>
+<thead>
+<tr>
+<th>fromUnverifiedConstant</th>
+<th>如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLASS_ISPREVERIFIED</td>
+<td>在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态</td>
+</tr>
+<tr>
+<td>pDvmDex</td>
+<td>如果被解析类和被引用类不在同一个Dex文件中就会触发异常</td>
+</tr>
+</tbody>
+</table>
+<p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
+<p><img src="img/dalvik_18.png" alt=""></p>
+<p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>
+<p>针对以上分析的三个点，我们可以在热修复中做出不同的技术方案：</p>
+<ul>
+<li>我的前东家手Q的QFix：通过native修改fromUnverifiedConstant变量</li>
+<li>QQ空间：通过给每一个类引入一个单独Dex中的类来避免CLASS_ISPREVERIFIED被设置</li>
+<li>微信Tinker：通过全量Dex替换来避免pDvmDex不同</li>
+</ul>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>最近刚离职回学校，买了好几本新书准备啃一啃，充实一下自己的技术栈。近几天在研究Dalvik的源码和机制，发现很多以前看似虚无缥缈的东西，其实都在源码可以一探究竟，这种感觉真是太棒了。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/10/26/BitmapPool的设计与实践/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">BitmapPool的设计与实践</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Dalvik类加载机制以及unexpectedDEX的异常避免" data-title="Dalvik类加载机制以及unexpectedDEX的异常避免" data-url="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Zane Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

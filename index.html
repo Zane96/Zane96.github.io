@@ -126,7 +126,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/android/" style="font-size: 10px;">android</a>
 					</div>
 				</section>
 				
@@ -209,6 +209,127 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Dalvik类加载机制以及unexpectedDEX的异常避免" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/" class="article-date">
+  	<time datetime="2017-09-14T07:45:14.000Z" itemprop="datePublished">2017-09-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/">Dalvik类加载机制以及unexpectedDEX的异常避免</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="虚拟机概要"><a href="#虚拟机概要" class="headerlink" title="虚拟机概要"></a>虚拟机概要</h2><p>​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。</p>
+<p>​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。</p>
+<p>​ 至于art和dalvik，JIT和AOT的区别，优化，不是本文的重点。传送门：<a href="https://source.android.com/devices/tech/dalvik/?hl=zh-cn" target="_blank" rel="external">ART 和 Dalvik</a></p>
+<h2 id="类加载整体流程"><a href="#类加载整体流程" class="headerlink" title="类加载整体流程"></a>类加载整体流程</h2><ul>
+<li>对dex文件进行验证并优化，并产出Odex文件</li>
+<li>对Odex文件进行解析，产出DexFile数据结构，即将文件形式的数据转换成内存中虚拟机可达的数据（如果研究过android的ClassLoader源码，肯定对DexFile不陌生）</li>
+<li>对指定的类进行加载，在DexFile中提取对应类的字节码，产出ClassObject数据结构</li>
+</ul>
+<h2 id="Dex文件的优化"><a href="#Dex文件的优化" class="headerlink" title="Dex文件的优化"></a>Dex文件的优化</h2><h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>​ Dalivk中，dex的优化使用的是dexopt，将dex文件优化为Odex文件，最终提交给下一步的加载过程。而不是像art的dex2aot一样，dex2aot是直接将全部的dex文件编译为native code存储。Odex文件的本质只是在原dex文件的基础上进行优化，并生成.Odex文件进行存储，以提高dalvik虚拟机运行的高效性和安全性。需要注意的是整个dex的优化过程都是在一个新进程中进行的。</p>
+<h3 id="重要的优化点如下："><a href="#重要的优化点如下：" class="headerlink" title="重要的优化点如下："></a>重要的优化点如下：</h3><ul>
+<li>建立dex的类索引表——使虚拟机快速find dex中某个类的地址</li>
+<li>寄存器的内存映射——减少odex-&gt;DexFile的内存映射操作</li>
+<li>添加依赖库信息——添加dex需要使用的本地函数库</li>
+<li>dex中字节码的替换——比如类似编译中的内联优化</li>
+</ul>
+<h3 id="Dex和Odex文件结构对比图"><a href="#Dex和Odex文件结构对比图" class="headerlink" title="Dex和Odex文件结构对比图"></a>Dex和Odex文件结构对比图</h3><p><img src="/img/dalvik_1.png" alt=""></p>
+<p>Dalvik由于是采用JIT及时编译，因此App在第一次被打开的时候会进行dexopt操作而导致启动较慢。</p>
+<h3 id="函数执行流程"><a href="#函数执行流程" class="headerlink" title="函数执行流程"></a>函数执行流程</h3><p>PackageManagerService是用来管理应用安装，卸载，优化等工作的系统服务。和PMS的各种操作最终会通过Java层的Installer—&gt;InstallerConnection—&gt;Socket通信到native的installd.c服务（这个套路在黑域中也有用到）。</p>
+<p>InstallerConnection.connect()：</p>
+<p><img src="/img/dalvik_2.png" alt=""></p>
+<p>InstallerConnection.dexopt()：</p>
+<p><img src="/img/dalvik_3.png" alt=""></p>
+<p>最终会调用到dalvik/dexopt/OptMain.cpp</p>
+<p><img src="/img/dalvik_4.png" alt=""></p>
+<h2 id="Dex文件的解析"><a href="#Dex文件的解析" class="headerlink" title="Dex文件的解析"></a>Dex文件的解析</h2><p>​ 虚拟机需要访问到可读的Dex数据来进行类加载。因此我们需要将dex文件解析成DexFile的内存中的数据结构。其解析过程实则是将DexFile数据结构中的各个成员变量与Dex文件的各个数据部分相关联。</p>
+<p>DexFile的结构体：</p>
+<p><img src="/img/dalvik_5.png" alt=""></p>
+<p>​ 需要注意的是这一步是在Dex文件优化之后，所以从这里开始提到的Dex文件都是Odex文件。具体的解析过程不叙述。接下来的过程就是要从DexFile中加载指定的类，并将其装入虚拟机的运行时环境中。</p>
+<h2 id="运行时数据装载"><a href="#运行时数据装载" class="headerlink" title="运行时数据装载"></a>运行时数据装载</h2><p>​ 到这里，我们需要抽象出另一个数据结构——ClassObject。我们到这里可以梳理一下流程：</p>
+<p><img src="/img/davlik_6.png" alt=""></p>
+<p>​ 至于ClassObject的数据结构，特别的长，有兴趣的同学可以自己去源码看看。位置在<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 重点！类加载Java到Native，揭秘unexpectedDEX异常</div><div class="line"></div><div class="line">到这里，我们可以来一次从Java层的类加载到Native层的类加载调用流程整个分析了。如果不熟悉Android Java层类加载机制的可以看这篇博客：[Android动态类记载](http://www.jianshu.com/p/a620e368389a)</div><div class="line"></div><div class="line">首先，众所周知，DexClassLoder和PathClassLoder是我们见的比较多的类。区别就在于前者可以加载任意路径下的.jar或者.apk，而后者只能加载默认路径下的dex文件，即/data/dalvik-cache。然后两者都继承自BaseDexClassLoader。那这个区别的原因是什么呢？其实很简单：</div><div class="line"></div><div class="line">![](/img/dalvik_7.png)</div><div class="line"></div><div class="line">![](/img/dalvik_8.png)</div><div class="line"></div><div class="line">不用解释都知道了，后者的构造函数不能设置Odex文件的路径，因此一般用作系统类（其实最终是BootClassLoader加载的）和应用类。前者可以动态的设置Odex路径，所以经常在插件化中被使用。</div><div class="line"></div><div class="line">两者其实就是一个空壳，真正的加载函数都是调用自BaseDexClassLoader的父类ClassLoader的loadClass函数：</div><div class="line"></div><div class="line">![](/img/dalvik_9.png)</div><div class="line"></div><div class="line">可以看到，先调用了findLoadedClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_10.png)</div><div class="line"></div><div class="line">先判断虚拟机是否已经加载了这个class，如果加载了就会直接返回。这也是为什么dex插桩流派的热修复必须要应用重启才能修复，因为一旦虚拟机加载了某个类，就不会重新再加载。</div><div class="line"></div><div class="line">再看到后面，先调用了parent的loadClass()函数，如果为空才会调用自己的findClass()函数。对，没错！优雅的双亲委派机制（责任链）以及模版方法的设计模式。Android建议我们不要重写loadClass()方法，去重写findClass()方法，就是为了遵循这个机制和生态。因此我们继续跟踪BaseDexClassLoader的findClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_11.png)</div><div class="line"></div><div class="line">看到会调用DexPathList的findClass()方法，而这个DexList其实内部维护着一个DexFile的集合。继续跟踪：</div><div class="line"></div><div class="line">![](/img/dalvik_12.png)</div><div class="line"></div><div class="line">可以看到，就是简单的遍历DexFile集合，然后去轮询Class。其实熟悉热修复的同学看到这里可以说是很轻松的，因为Q空的插桩，微信的全量替换等之热修复技术都是在这块做文章。所以继续追踪DexFile中去，这个其实就是前文提到的了：</div><div class="line"></div><div class="line">![](/img/dalvik_13.png)</div><div class="line"></div><div class="line">额，其实没什么内容，但是敏感的察觉到，我们要进入到逼气十足的Native层了！defineClassNative(name, loader, cookie);。如果你的手上有Dalvik的源码，可以和我一起深入进去。这个函数在vm\native\dalivk_system_DexFile.cpp中的Dalvik_dalvik_system_DexFile_defineClass函数里。酷酷的。。：</div><div class="line"></div><div class="line">![](/img/dalvik_13.png)</div><div class="line"></div><div class="line">这里只截取了部分，其实很简单先调用dvmGetRawDexFileDex或者dvmGetJarFileDex（如果是jar包）方法去给指向DexFile的指针赋值（其实DexFile是DvmDex的一个成员变量），然后将这个指针传递进dvmDefineClass()函数，而这个函数最终调用了findClassNoInit()函数：</div><div class="line"></div><div class="line">![](/img/dalvik_14.png)</div><div class="line"></div><div class="line">findClassNoInit()方法是重头戏，里面先判断是否已经加载，如果没有加载会继续进行加载，通过dexFindClass()方法，返回一个DexClassDef数据结构，这个数据结构是为了方便快速定位类在Dex中的位置，然后最终通过loadClassFromDex()方法给ClassObject指针赋值：</div><div class="line"></div><div class="line">![](/img/dalvik_15.png)</div><div class="line"></div><div class="line">而loadClassFromDex()方法的源码看起来比较乏味，直接总结一下：</div><div class="line"></div><div class="line">+ 为ClassObject申请内存</div><div class="line">+ 设置字段信息</div><div class="line">+ 为超类建立索引</div><div class="line">+ 加载类接口</div><div class="line">+ 加载类字段</div><div class="line">+ 加载类方法</div><div class="line"></div><div class="line">自此，我们仅仅完成了类加载的加载阶段。类加载实际上还有很多步骤。后面会对ClassObject进行进一步的加工，后面紧接着调用了dvmLinkClass()方法进行Prepare and resolve，主要将符号引用转换成为直接引用，在其中会进一步调用dvmResolveClass()方法，而这个方法实际上是在解析当前被加载类的父类以及接口：</div><div class="line"></div><div class="line">![](/img/dalvik_16.png)</div><div class="line"></div><div class="line">这里只截取了解析父类的部分，接口部分类似。可以看到，加载完了之后，就会将这个符号引用转换为直接引用，并对GC可见。而这个dvmResolveClass()方法就是unexpected DEX异常触发的地方，先来看两段dvmResolveClass()方法的注释：</div><div class="line"></div><div class="line">&gt;  \* Because the DexTypeId is associated with the referring class&apos; DEX file,</div><div class="line">&gt;</div><div class="line">&gt;  \* we may have to resolve the same class more than once if it&apos;s referred</div><div class="line">&gt;</div><div class="line">&gt;  \* to from classes in multiple DEX files.  This is a necessary property for</div><div class="line">&gt;</div><div class="line">&gt;  \* DEX files associated with different class loaders.</div><div class="line"></div><div class="line">大意就是被引用的类可能是别的Dex文件里的，所以我们可能会从不同的Dex文件中重复解析一个类。表明Dalvik会使用一种机制来避免这种现象。</div><div class="line"></div><div class="line">&gt;  \* &quot;fromUnverifiedConstant&quot; should only be set if this call is the direct</div><div class="line">&gt;</div><div class="line">&gt;  \* result of executing a &quot;const-class&quot; or &quot;instance-of&quot; instruction, which</div><div class="line">&gt;</div><div class="line">&gt;  \* use class constants not resolved by the bytecode verifier.</div><div class="line"></div><div class="line">大意就是如果我们通过&quot;const-class&quot;（通过类型索引获取一个类的引用赋值给寄存器，比如直接引用XX.class） 或 &quot;instance-of&quot;（判断寄存器中对象的引用是否是指定类型）（均为两者Dalvik虚拟机的指令）指令去引用一个类，那么fromUnverifiedConstant变量会被set为True。表明这个变量在后续代码中很重要。继续下去：</div><div class="line"></div><div class="line">![](/img/dalvik_17.png)</div><div class="line"></div><div class="line">很好，终于看到了</div><div class="line"></div><div class="line">```c++</div><div class="line">dvmThrowIllegalAccessError(</div><div class="line">                    &quot;Class ref in pre-verified class resolved to unexpected &quot;</div><div class="line">                    &quot;implementation&quot;);</div></pre></td></tr></table></figure></p>
+<p>并且很清晰的看到了触发unexpectedDEX异常的四个条件：</p>
+<ul>
+<li>fromUnverifiedConstant为False</li>
+<li>被解析的类，设置了CLASS_ISPREVERIFIED</li>
+<li>referrer-&gt;pDvmDex != resClassCheck-&gt;pDvmDex</li>
+<li>被引用类的类加载器不是Null</li>
+</ul>
+<p>我们重点看前三个条件：</p>
+<table>
+<thead>
+<tr>
+<th>fromUnverifiedConstant</th>
+<th>如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLASS_ISPREVERIFIED</td>
+<td>在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态</td>
+</tr>
+<tr>
+<td>pDvmDex</td>
+<td>如果被解析类和被引用类不在同一个Dex文件中就会触发异常</td>
+</tr>
+</tbody>
+</table>
+<p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
+<p><img src="img/dalvik_18.png" alt=""></p>
+<p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>
+<p>针对以上分析的三个点，我们可以在热修复中做出不同的技术方案：</p>
+<ul>
+<li>我的前东家手Q的QFix：通过native修改fromUnverifiedConstant变量</li>
+<li>QQ空间：通过给每一个类引入一个单独Dex中的类来避免CLASS_ISPREVERIFIED被设置</li>
+<li>微信Tinker：通过全量Dex替换来避免pDvmDex不同</li>
+</ul>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>最近刚离职回学校，买了好几本新书准备啃一啃，充实一下自己的技术栈。近几天在研究Dalvik的源码和机制，发现很多以前看似虚无缥缈的东西，其实都在源码可以一探究竟，这种感觉真是太棒了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-BitmapPool的设计与实践" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1352,103 +1473,6 @@
 <p><strong>完成整个过程调用</strong> ！！！！</p>
 <h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>​ 系统源码看起来确实感觉自己置身茫茫大海一样，特别是要去找一些不理解的问题的时候。比如到底是被启动的activity的ActivityRecord实例先添加进去还是在实例创建了之后才添加进去，这个问题我看源码着了一天才还没有什么结果，后来在别人的帮助和查阅老罗的资料才找到问题所在。挺不错的一次过程，确实细节不必死扣，但是有些基本问题不懂的话还是应该去探究一下。</p>
 <p><strong>版权声明：本文为博主原创文章，未经博主允许不得转载。</strong></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Android-IPC系列（二）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/06/Android-IPC系列（二）/" class="article-date">
-  	<time datetime="2016-04-06T05:48:51.000Z" itemprop="datePublished">2016-04-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/06/Android-IPC系列（二）/">Android-IPC系列（二）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>  写完IPC的第一篇我就有点后悔了。。因为binder的水太深了，老罗写binder写了十几万字。如果深入学习会大量涉及到系统层的知识，甚至SM,Binder驱动都是用c语言写的。。最近也是看了很多大牛关于binder的文章，可以说对binder的认识又提升了一步。<strong>虽然我学的很浅，但是我尽量保证自己写的都是对的！</strong> 来一波binder的最新认识总结吧！～</p>
-<p><a href="http://zane96.github.io/2016/03/19/Android-IPC%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">Android_IPC系列(一)</a></p>
-<p>上一篇文章主要是介绍一些简单的linux知识，通过AIDL中的生成代码来理解binder实现跨进程的原理。</p>
-<p>任务：</p>
-<ol>
-<li>补充一些Linux知识。</li>
-<li>binder实现跨进程通信的实现流程是怎样的</li>
-<li>简单介绍binder机制</li>
-</ol>
-<hr>
-<h2 id="一些补充知识"><a href="#一些补充知识" class="headerlink" title="一些补充知识"></a>一些补充知识</h2><p>1.<strong>UserSpace, KernelSpace ,用户态，内核态</strong></p>
-<p>  用户空间和内核空间。内核空间是linux系统的核心，可以访问受保护资源和所有的硬件设备的权限。内核独立于应用程序，看起来是系统内部的一个应用。kernel有自己的保护措施，告知其他应用程序他拥有什么权限。所以在逻辑上，将kernal和应用程序抽离成两块空间。</p>
-<p>  当某个应用程序需要访问内核资源的时候，可以通过系统调用来接入内核。然后内核会来控制这个应用程序对资源的访问，防止这个程序破坏系统资源，保证安全。这时候就会称这个进程处于<strong>内核态</strong> 。当应用程序在跑自己的代码的时候，就称为<strong>用户态</strong>。</p>
-<p>2.<strong>Binder驱动</strong></p>
-<p>  Linux系统内部是支持socket，信号量等进程通信的，但是安卓系统在性能和安全两个方面设计了自己的进程通信方式：Binder。两个用户空间想要通信，必须通过内核空间来支持。所以安卓就是将binder驱动作为内核模块添加到Linux Kernel。Binder驱动运行在kernel空间，支持用户空间的通信，可以堪称一个桥梁，所有包含binder的数据包传输都会通过binder驱动来完成，无一例外！在binder驱动里面，binder的实体和引用是以节点（struct）的形式存在的，包括server的binder实体，clinet里面拥有的binder引用，内核的0号应用以及SM的binder实体（后两者后面会提到）。</p>
-<p>  驱动是Binder通信的核心，系统中所有的Binder实体以及每个实体在各个进程中的引用都登记在驱动中；驱动需要记录Binder引用-&gt;实体之间多对一的关系；为引用找到对应的实体；在某个进程中为实体创建或查找到对应的引用；记录Binder的归属地（位于哪个进程中）；通过管理Binder的强/弱引用创建/销毁Binder实体等等。</p>
-<p>3.<strong>ServiceManager, Binder,Clinet, Server</strong></p>
-<p>  在Binder的机制中，SM, Clinet, Server以及上面提到的Binder驱动是很重要的四个部分，而binder就可以看成是这四个部件之间沟通的管道。但是binder在每个部件里面的形态，功能是完全不同的。宏观来看，binder可以看成是安卓跨进程通信的方式，工具，协议。微观的来看，binder可以看成各个部件里面重要的结构，类，binder可以看成binder驱动里面的红黑树数据结构，binder可以看成进程之间传输的数据包。binder作为胶水，将不同的进程粘合在一起，模糊了进程隔离。</p>
-<p>  ServiceManager是独立于client, server的系统进程。是由zygote进程fork出来的。它在IPC通信中的作用是作为”通讯录”。所有的server里面的binder实体会先在SM里面注册自己的信息，key是binder的名字（独一无二），在AIDL的生成代码里面你会看到这个玩意:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> java.lang.String DESCRIPTOR =<span class="string">"com.example.zane.ipc_test.IBookManager"</span>;</div></pre></td></tr></table></figure>
-<p>value就是这个binder的引用，这样就把这个binder的信息保存下来了。也就是说client需要通过SM，以名字来去得到server的binder引用。然后通过这个引用去操作server端的binder。这里也体现了binder中面向对象的设计理念。clinet自己并不知道自己获得的这个binder引用是真的实体还是什么假的实体，它只会去拿着自己获得的引用去操作。并且server中binder实体的引用会在SM,和所有需要跟自己通信的clinet里面存在。在这里，你可以把引用看成指针，或者代理对象。</p>
-<p>  client和server就是客户端和服务端。</p>
-<p>  在服务端：如果你熟悉AIDL进行进程间通信的流程或者看过我上篇博客，你应该对binder的存在形式有所体会。首先是一个aidl类型的接口，定义了binder的所有功能函数。并且这些功能函数需要被编号，因为服务端是通过解析客户端传递过来的数据包中的函数编号来知道自己应该去调用什么函数。在Stub类中有这么几行代码(函数编号):</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TRANSACTION_getBookList = (android.os.IBinder.FIRST_CALL_TRANSACTION + <span class="number">0</span>);</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TRANSACTION_addBook = (android.os.IBinder.FIRST_CALL_TRANSACTION + <span class="number">1</span>);</div></pre></td></tr></table></figure>
-<p>  我们知道Stub就是Binder在Server的实体，里面实现了很多函数，onTransact()就是来分析客户端的请求类型的函数，然后调用相应的函数，并且将返回结果放在数据包中返回给客户端。</p>
-<p>  在客户端：同样的，我们在客户端也需要去实现Binder，只不过这个binder是SM转发给我们的，如果客户端和服务端在同一个进程，那么就会返回binder实体，如果不在同一个进程就会返回binder的代理。由于binder代理和binder实体都是实现了AIDL接口的类。所以客户端看不出来这个binder是实体或是引用。如果你做过IPC通信，你会知道以上的过程是通过asInterface(IBiner binder)这个方法实现的。</p>
-<hr>
-<h2 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h2><p>  直接上一张我自己画的简介图！</p>
-<p><img src="/img/ipc2-1.png" alt="简介图"></p>
-<p>  可以很清楚的看出，binder驱动是整个流程的核心！</p>
-<p>  1.Server将自己的binder通过binder驱动在SM中进行注册。</p>
-<p>  2.binder驱动会建立一个binder实体的数据节点和实体的引用。</p>
-<p>  3.Binder驱动再把名字和引用打包发给SM。</p>
-<p>  4.Client通过binder驱动拿着他所需要的binder名字向SM请求binder。</p>
-<p>  5.SM在自己的查找表里面找到对应的引用之后再通过binder驱动返回给client。</p>
-<p><strong>所有的系统服务在SystemServer进程深沉之后就会被建立并且注册在ServiceManager里面，开发者也可以开发自定义的服务并且注册在ServiceManager里面成为系统级别的服务，前提是这个包含服务的应用必须是system用户并且带了system签名（系统安全），否则是不能随意注册的！</strong></p>
-<p>  好了，再来一张我在一位大牛博客里面截下来的图片，这个流程描述就更具体了：</p>
-<p><img src="/img/ipc2-2.png" alt="具体图"></p>
-<p>  其实就是多了binder驱动里面的一些数据结构节点和一个叫0号引用的东西。那么这个0号引用是什么呢？我们知道SM, Client, Server都是运行在三个不同的进程的。那么第一步Server要向SM注册自己binder的信息，那么这里已经涉及到了跨进程通信了。那么这个进程通信是怎么实现的呢？通过上图可以看到，所有的Client里面的0号引用都指向了SM里面的binder。也就是说SM和其他所有Server通信的过程都是SM先通过特殊的命令在biner驱动中建立了自己binder的实体节点，并且其他所有地方的0号引用都默认留给SM的binder实体引用。</p>
-<hr>
-<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>  上一篇文章讲的AIDL生成代码的分析，本来准备第二篇总结一下AIDL的使用。后来通过不断的学习觉得这篇文章讲的东西更值得总结！</p>
-<p>  总之，binder要学习的东西还是很多。比如binder协议，binder传输数据包类型，binder在驱动里面的数据结构，缓存和线程池管理等等…<strong>Binder在安全性，效率性都优于Linux系统默认支持的IPC通信方式,拥有面向对象的设计原理。</strong></p>
-<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 
       
     </div>

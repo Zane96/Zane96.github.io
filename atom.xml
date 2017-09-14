@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-14T08:21:37.000Z</updated>
+  <updated>2017-09-14T08:24:15.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/14/Dalvik%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%E4%BB%A5%E5%8F%8AunexpectedDEX%E7%9A%84%E5%BC%82%E5%B8%B8%E9%81%BF%E5%85%8D/"/>
     <id>http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/</id>
     <published>2017-09-14T07:45:14.000Z</published>
-    <updated>2017-09-14T08:21:37.000Z</updated>
+    <updated>2017-09-14T08:24:15.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>未经博主同意，不得转载该篇文章</strong></p>
 <h2 id="虚拟机概要"><a href="#虚拟机概要" class="headerlink" title="虚拟机概要"></a>虚拟机概要</h2><p>​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。</p>
@@ -112,7 +112,24 @@
 <li>被引用类的类加载器不是Null</li>
 </ul>
 <p>我们重点看前三个条件：</p>
-<p>| fromUnverifiedConstant | 如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False |<br>| CLASS_ISPREVERIFIED    | 在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态 |<br>| pDvmDex                | 如果被解析类和被引用类不在同一个Dex文件中就会触发异常             |</p>
+<table>
+<thead>
+<tr>
+<th>fromUnverifiedConstant</th>
+<th>如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLASS_ISPREVERIFIED</td>
+<td>在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态</td>
+</tr>
+<tr>
+<td>pDvmDex</td>
+<td>如果被解析类和被引用类不在同一个Dex文件中就会触发异常</td>
+</tr>
+</tbody>
+</table>
 <p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
 <p><img src="img/dalvik_19.png" alt=""></p>
 <p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>

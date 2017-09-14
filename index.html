@@ -326,7 +326,24 @@
 <li>被引用类的类加载器不是Null</li>
 </ul>
 <p>我们重点看前三个条件：</p>
-<p>| fromUnverifiedConstant | 如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False |<br>| CLASS_ISPREVERIFIED    | 在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态 |<br>| pDvmDex                | 如果被解析类和被引用类不在同一个Dex文件中就会触发异常             |</p>
+<table>
+<thead>
+<tr>
+<th>fromUnverifiedConstant</th>
+<th>如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLASS_ISPREVERIFIED</td>
+<td>在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态</td>
+</tr>
+<tr>
+<td>pDvmDex</td>
+<td>如果被解析类和被引用类不在同一个Dex文件中就会触发异常</td>
+</tr>
+</tbody>
+</table>
 <p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
 <p><img src="img/dalvik_19.png" alt=""></p>
 <p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>

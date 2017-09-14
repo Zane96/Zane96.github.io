@@ -5,13 +5,13 @@
   
   <title>Dalvik类加载机制以及unexpectedDEX的异常避免 | Zane&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+  <meta name="description" content="未经博主同意，不得转载该篇文章 虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalv">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
 <meta property="og:url" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/index.html">
 <meta property="og:site_name" content="Zane&#39;s Blog">
-<meta property="og:description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+<meta property="og:description" content="未经博主同意，不得转载该篇文章 虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalv">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_1.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_2.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_3.png">
@@ -31,10 +31,10 @@
 <meta property="og:image" content="http://yoursite.com/img/dalvik_17.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_18.png">
 <meta property="og:image" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/img/dalvik_19.png">
-<meta property="og:updated_time" content="2017-09-14T08:12:01.000Z">
+<meta property="og:updated_time" content="2017-09-14T08:21:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
-<meta name="twitter:description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
+<meta name="twitter:description" content="未经博主同意，不得转载该篇文章 虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalv">
 <meta name="twitter:image" content="http://yoursite.com/img/dalvik_1.png">
   
     <link rel="alternative" href="/atom.xml" title="Zane&#39;s Blog" type="application/atom+xml">
@@ -267,7 +267,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="虚拟机概要"><a href="#虚拟机概要" class="headerlink" title="虚拟机概要"></a>虚拟机概要</h2><p>​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。</p>
+        <p><strong>未经博主同意，不得转载该篇文章</strong></p>
+<h2 id="虚拟机概要"><a href="#虚拟机概要" class="headerlink" title="虚拟机概要"></a>虚拟机概要</h2><p>​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。</p>
 <p>​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。</p>
 <p>​ 至于art和dalvik，JIT和AOT的区别，优化，不是本文的重点。传送门：<a href="https://source.android.com/devices/tech/dalvik/?hl=zh-cn" target="_blank" rel="external">ART 和 Dalvik</a></p>
 <h2 id="类加载整体流程"><a href="#类加载整体流程" class="headerlink" title="类加载整体流程"></a>类加载整体流程</h2><ul>
@@ -338,7 +339,7 @@
 <p> * to from classes in multiple DEX files.  This is a necessary property for</p>
 <p> * DEX files associated with different class loaders.</p>
 </blockquote>
-<p>大意就是被引用的类可能是别的Dex文件里的，所以我们可能会从不同的Dex文件中重复解析一个类。表明Dalvik会使用一种机制来避免这种现象。</p>
+<p>大意就是被引用的类可能是别的Dex文件里的，所以我们可能会因为某个类被另一个Dex文件中的类给引用而导致重复解析这个类。表明Dalvik会使用一种机制来避免这种现象，后面会提到。</p>
 <blockquote>
 <p> * “fromUnverifiedConstant” should only be set if this call is the direct</p>
 <p> * result of executing a “const-class” or “instance-of” instruction, which</p>
@@ -356,24 +357,7 @@
 <li>被引用类的类加载器不是Null</li>
 </ul>
 <p>我们重点看前三个条件：</p>
-<table>
-<thead>
-<tr>
-<th>fromUnverifiedConstant</th>
-<th>如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CLASS_ISPREVERIFIED</td>
-<td>在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态</td>
-</tr>
-<tr>
-<td>pDvmDex</td>
-<td>如果被解析类和被引用类不在同一个Dex文件中就会触发异常</td>
-</tr>
-</tbody>
-</table>
+<p>| fromUnverifiedConstant | 如果变量是被”const-class” or “instance-of”指令加载进来就是True否则为False |<br>| CLASS_ISPREVERIFIED    | 在Dex优化过程中引用其他Dex文件的类，被加载类不会设置该状态，否则会设置该状态 |<br>| pDvmDex                | 如果被解析类和被引用类不在同一个Dex文件中就会触发异常             |</p>
 <p>我们重点看一下CLASS_ISPREVERIFIED被设置的代码。前文有提到Dex文件的优化是在dalvik/dexopt/OptMain.cpp的extractAndProcessZip()作为入口开始的。通过我一步步的跟踪，最终在dalvik\vm\analysis\DexPrepare.cpp中的verifyAndOptimizeClasses()函数找到了设置的逻辑：</p>
 <p><img src="img/dalvik_19.png" alt=""></p>
 <p>而这个函数的目的就是验证并优化Dex文件中的所有类，也正是在这里的验证过程，可能会给类打上CLASS_ISPREVERIFIED的Flag。</p>

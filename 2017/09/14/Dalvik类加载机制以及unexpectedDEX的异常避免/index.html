@@ -18,8 +18,20 @@
 <meta property="og:image" content="http://yoursite.com/img/dalvik_4.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_5.png">
 <meta property="og:image" content="http://yoursite.com/img/dalvik_6.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_7.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_8.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_9.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_10.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_11.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_12.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_13.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_14.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_15.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_16.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_17.png">
+<meta property="og:image" content="http://yoursite.com/img/dalvik_18.png">
 <meta property="og:image" content="http://yoursite.com/2017/09/14/Dalvik类加载机制以及unexpectedDEX的异常避免/img/dalvik_19.png">
-<meta property="og:updated_time" content="2017-09-14T08:09:56.000Z">
+<meta property="og:updated_time" content="2017-09-14T08:12:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dalvik类加载机制以及unexpectedDEX的异常避免">
 <meta name="twitter:description" content="虚拟机概要​ Android在5.0之前使用的是dalvik虚拟机，使用的是纯JIT编译。在android4.4提出了art虚拟机，使用的是AOT编译，并在android5.0完全取代dalvik。但是在android7.0采用了JIT，AOT，解释的混合编译模式。 ​ 不论研究什么，都要从最原始的，最基础的东西都是看起。这里只说明dalvik的部分，涉及到dalvik虚拟机的源码。 ​ 至于ar">
@@ -285,7 +297,57 @@
 <p>​ 需要注意的是这一步是在Dex文件优化之后，所以从这里开始提到的Dex文件都是Odex文件。具体的解析过程不叙述。接下来的过程就是要从DexFile中加载指定的类，并将其装入虚拟机的运行时环境中。</p>
 <h2 id="运行时数据装载"><a href="#运行时数据装载" class="headerlink" title="运行时数据装载"></a>运行时数据装载</h2><p>​ 到这里，我们需要抽象出另一个数据结构——ClassObject。我们到这里可以梳理一下流程：</p>
 <p><img src="/img/dalvik_6.png" alt=""></p>
-<p>​ 至于ClassObject的数据结构，特别的长，有兴趣的同学可以自己去源码看看。位置在<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 重点！类加载Java到Native，揭秘unexpectedDEX异常</div><div class="line"></div><div class="line">到这里，我们可以来一次从Java层的类加载到Native层的类加载调用流程整个分析了。如果不熟悉Android Java层类加载机制的可以看这篇博客：[Android动态类记载](http://www.jianshu.com/p/a620e368389a)</div><div class="line"></div><div class="line">首先，众所周知，DexClassLoder和PathClassLoder是我们见的比较多的类。区别就在于前者可以加载任意路径下的.jar或者.apk，而后者只能加载默认路径下的dex文件，即/data/dalvik-cache。然后两者都继承自BaseDexClassLoader。那这个区别的原因是什么呢？其实很简单：</div><div class="line"></div><div class="line">![](/img/dalvik_7.png)</div><div class="line"></div><div class="line">![](/img/dalvik_8.png)</div><div class="line"></div><div class="line">不用解释都知道了，后者的构造函数不能设置Odex文件的路径，因此一般用作系统类（其实最终是BootClassLoader加载的）和应用类。前者可以动态的设置Odex路径，所以经常在插件化中被使用。</div><div class="line"></div><div class="line">两者其实就是一个空壳，真正的加载函数都是调用自BaseDexClassLoader的父类ClassLoader的loadClass函数：</div><div class="line"></div><div class="line">![](/img/dalvik_9.png)</div><div class="line"></div><div class="line">可以看到，先调用了findLoadedClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_10.png)</div><div class="line"></div><div class="line">先判断虚拟机是否已经加载了这个class，如果加载了就会直接返回。这也是为什么dex插桩流派的热修复必须要应用重启才能修复，因为一旦虚拟机加载了某个类，就不会重新再加载。</div><div class="line"></div><div class="line">再看到后面，先调用了parent的loadClass()函数，如果为空才会调用自己的findClass()函数。对，没错！优雅的双亲委派机制（责任链）以及模版方法的设计模式。Android建议我们不要重写loadClass()方法，去重写findClass()方法，就是为了遵循这个机制和生态。因此我们继续跟踪BaseDexClassLoader的findClass()方法：</div><div class="line"></div><div class="line">![](/img/dalvik_11.png)</div><div class="line"></div><div class="line">看到会调用DexPathList的findClass()方法，而这个DexList其实内部维护着一个DexFile的集合。继续跟踪：</div><div class="line"></div><div class="line">![](/img/dalvik_12.png)</div><div class="line"></div><div class="line">可以看到，就是简单的遍历DexFile集合，然后去轮询Class。其实熟悉热修复的同学看到这里可以说是很轻松的，因为Q空的插桩，微信的全量替换等之热修复技术都是在这块做文章。所以继续追踪DexFile中去，这个其实就是前文提到的了：</div><div class="line"></div><div class="line">![](/img/dalvik_13.png)</div><div class="line"></div><div class="line">额，其实没什么内容，但是敏感的察觉到，我们要进入到逼气十足的Native层了！defineClassNative(name, loader, cookie);。如果你的手上有Dalvik的源码，可以和我一起深入进去。这个函数在vm\native\dalivk_system_DexFile.cpp中的Dalvik_dalvik_system_DexFile_defineClass函数里。酷酷的。。：</div><div class="line"></div><div class="line">![](/img/dalvik_14.png)</div><div class="line"></div><div class="line">这里只截取了部分，其实很简单先调用dvmGetRawDexFileDex或者dvmGetJarFileDex（如果是jar包）方法去给指向DexFile的指针赋值（其实DexFile是DvmDex的一个成员变量），然后将这个指针传递进dvmDefineClass()函数，而这个函数最终调用了findClassNoInit()函数：</div><div class="line"></div><div class="line">![](/img/dalvik_15.png)</div><div class="line"></div><div class="line">findClassNoInit()方法是重头戏，里面先判断是否已经加载，如果没有加载会继续进行加载，通过dexFindClass()方法，返回一个DexClassDef数据结构，这个数据结构是为了方便快速定位类在Dex中的位置，然后最终通过loadClassFromDex()方法给ClassObject指针赋值：</div><div class="line"></div><div class="line">![](/img/dalvik_16.png)</div><div class="line"></div><div class="line">而loadClassFromDex()方法的源码看起来比较乏味，直接总结一下：</div><div class="line"></div><div class="line">+ 为ClassObject申请内存</div><div class="line">+ 设置字段信息</div><div class="line">+ 为超类建立索引</div><div class="line">+ 加载类接口</div><div class="line">+ 加载类字段</div><div class="line">+ 加载类方法</div><div class="line"></div><div class="line">自此，我们仅仅完成了类加载的加载阶段。类加载实际上还有很多步骤。后面会对ClassObject进行进一步的加工，后面紧接着调用了dvmLinkClass()方法进行Prepare and resolve，主要将符号引用转换成为直接引用，在其中会进一步调用dvmResolveClass()方法，而这个方法实际上是在解析当前被加载类的父类以及接口：</div><div class="line"></div><div class="line">![](/img/dalvik_17.png)</div><div class="line"></div><div class="line">这里只截取了解析父类的部分，接口部分类似。可以看到，加载完了之后，就会将这个符号引用转换为直接引用，并对GC可见。而这个dvmResolveClass()方法就是unexpected DEX异常触发的地方，先来看两段dvmResolveClass()方法的注释：</div><div class="line"></div><div class="line">&gt;  \* Because the DexTypeId is associated with the referring class&apos; DEX file,</div><div class="line">&gt;</div><div class="line">&gt;  \* we may have to resolve the same class more than once if it&apos;s referred</div><div class="line">&gt;</div><div class="line">&gt;  \* to from classes in multiple DEX files.  This is a necessary property for</div><div class="line">&gt;</div><div class="line">&gt;  \* DEX files associated with different class loaders.</div><div class="line"></div><div class="line">大意就是被引用的类可能是别的Dex文件里的，所以我们可能会从不同的Dex文件中重复解析一个类。表明Dalvik会使用一种机制来避免这种现象。</div><div class="line"></div><div class="line">&gt;  \* &quot;fromUnverifiedConstant&quot; should only be set if this call is the direct</div><div class="line">&gt;</div><div class="line">&gt;  \* result of executing a &quot;const-class&quot; or &quot;instance-of&quot; instruction, which</div><div class="line">&gt;</div><div class="line">&gt;  \* use class constants not resolved by the bytecode verifier.</div><div class="line"></div><div class="line">大意就是如果我们通过&quot;const-class&quot;（通过类型索引获取一个类的引用赋值给寄存器，比如直接引用XX.class） 或 &quot;instance-of&quot;（判断寄存器中对象的引用是否是指定类型）（均为两者Dalvik虚拟机的指令）指令去引用一个类，那么fromUnverifiedConstant变量会被set为True。表明这个变量在后续代码中很重要。继续下去：</div><div class="line"></div><div class="line">![](/img/dalvik_18.png)</div><div class="line"></div><div class="line">很好，终于看到了</div><div class="line"></div><div class="line">```c++</div><div class="line">dvmThrowIllegalAccessError(</div><div class="line">                    &quot;Class ref in pre-verified class resolved to unexpected &quot;</div><div class="line">                    &quot;implementation&quot;);</div></pre></td></tr></table></figure></p>
+<p>​ 至于ClassObject的数据结构，特别的长，有兴趣的同学可以自己去源码看看。位置在 dalvik\vm\native\oo\Object.h中。</p>
+<h2 id="重点！类加载Java到Native，揭秘unexpectedDEX异常"><a href="#重点！类加载Java到Native，揭秘unexpectedDEX异常" class="headerlink" title="重点！类加载Java到Native，揭秘unexpectedDEX异常"></a>重点！类加载Java到Native，揭秘unexpectedDEX异常</h2><p>到这里，我们可以来一次从Java层的类加载到Native层的类加载调用流程整个分析了。如果不熟悉Android Java层类加载机制的可以看这篇博客：<a href="http://www.jianshu.com/p/a620e368389a" target="_blank" rel="external">Android动态类记载</a></p>
+<p>首先，众所周知，DexClassLoder和PathClassLoder是我们见的比较多的类。区别就在于前者可以加载任意路径下的.jar或者.apk，而后者只能加载默认路径下的dex文件，即/data/dalvik-cache。然后两者都继承自BaseDexClassLoader。那这个区别的原因是什么呢？其实很简单：</p>
+<p><img src="/img/dalvik_7.png" alt=""></p>
+<p><img src="/img/dalvik_8.png" alt=""></p>
+<p>不用解释都知道了，后者的构造函数不能设置Odex文件的路径，因此一般用作系统类（其实最终是BootClassLoader加载的）和应用类。前者可以动态的设置Odex路径，所以经常在插件化中被使用。</p>
+<p>两者其实就是一个空壳，真正的加载函数都是调用自BaseDexClassLoader的父类ClassLoader的loadClass函数：</p>
+<p><img src="/img/dalvik_9.png" alt=""></p>
+<p>可以看到，先调用了findLoadedClass()方法：</p>
+<p><img src="/img/dalvik_10.png" alt=""></p>
+<p>先判断虚拟机是否已经加载了这个class，如果加载了就会直接返回。这也是为什么dex插桩流派的热修复必须要应用重启才能修复，因为一旦虚拟机加载了某个类，就不会重新再加载。</p>
+<p>再看到后面，先调用了parent的loadClass()函数，如果为空才会调用自己的findClass()函数。对，没错！优雅的双亲委派机制（责任链）以及模版方法的设计模式。Android建议我们不要重写loadClass()方法，去重写findClass()方法，就是为了遵循这个机制和生态。因此我们继续跟踪BaseDexClassLoader的findClass()方法：</p>
+<p><img src="/img/dalvik_11.png" alt=""></p>
+<p>看到会调用DexPathList的findClass()方法，而这个DexList其实内部维护着一个DexFile的集合。继续跟踪：</p>
+<p><img src="/img/dalvik_12.png" alt=""></p>
+<p>可以看到，就是简单的遍历DexFile集合，然后去轮询Class。其实熟悉热修复的同学看到这里可以说是很轻松的，因为Q空的插桩，微信的全量替换等之热修复技术都是在这块做文章。所以继续追踪DexFile中去，这个其实就是前文提到的了：</p>
+<p><img src="/img/dalvik_13.png" alt=""></p>
+<p>额，其实没什么内容，但是敏感的察觉到，我们要进入到逼气十足的Native层了！defineClassNative(name, loader, cookie);。如果你的手上有Dalvik的源码，可以和我一起深入进去。这个函数在vm\native\dalivk_system_DexFile.cpp中的Dalvik_dalvik_system_DexFile_defineClass函数里。酷酷的。。：</p>
+<p><img src="/img/dalvik_14.png" alt=""></p>
+<p>这里只截取了部分，其实很简单先调用dvmGetRawDexFileDex或者dvmGetJarFileDex（如果是jar包）方法去给指向DexFile的指针赋值（其实DexFile是DvmDex的一个成员变量），然后将这个指针传递进dvmDefineClass()函数，而这个函数最终调用了findClassNoInit()函数：</p>
+<p><img src="/img/dalvik_15.png" alt=""></p>
+<p>findClassNoInit()方法是重头戏，里面先判断是否已经加载，如果没有加载会继续进行加载，通过dexFindClass()方法，返回一个DexClassDef数据结构，这个数据结构是为了方便快速定位类在Dex中的位置，然后最终通过loadClassFromDex()方法给ClassObject指针赋值：</p>
+<p><img src="/img/dalvik_16.png" alt=""></p>
+<p>而loadClassFromDex()方法的源码看起来比较乏味，直接总结一下：</p>
+<ul>
+<li>为ClassObject申请内存</li>
+<li>设置字段信息</li>
+<li>为超类建立索引</li>
+<li>加载类接口</li>
+<li>加载类字段</li>
+<li>加载类方法</li>
+</ul>
+<p>自此，我们仅仅完成了类加载的加载阶段。类加载实际上还有很多步骤。后面会对ClassObject进行进一步的加工，后面紧接着调用了dvmLinkClass()方法进行Prepare and resolve，主要将符号引用转换成为直接引用，在其中会进一步调用dvmResolveClass()方法，而这个方法实际上是在解析当前被加载类的父类以及接口：</p>
+<p><img src="/img/dalvik_17.png" alt=""></p>
+<p>这里只截取了解析父类的部分，接口部分类似。可以看到，加载完了之后，就会将这个符号引用转换为直接引用，并对GC可见。而这个dvmResolveClass()方法就是unexpected DEX异常触发的地方，先来看两段dvmResolveClass()方法的注释：</p>
+<blockquote>
+<p> * Because the DexTypeId is associated with the referring class’ DEX file,</p>
+<p> * we may have to resolve the same class more than once if it’s referred</p>
+<p> * to from classes in multiple DEX files.  This is a necessary property for</p>
+<p> * DEX files associated with different class loaders.</p>
+</blockquote>
+<p>大意就是被引用的类可能是别的Dex文件里的，所以我们可能会从不同的Dex文件中重复解析一个类。表明Dalvik会使用一种机制来避免这种现象。</p>
+<blockquote>
+<p> * “fromUnverifiedConstant” should only be set if this call is the direct</p>
+<p> * result of executing a “const-class” or “instance-of” instruction, which</p>
+<p> * use class constants not resolved by the bytecode verifier.</p>
+</blockquote>
+<p>大意就是如果我们通过”const-class”（通过类型索引获取一个类的引用赋值给寄存器，比如直接引用XX.class） 或 “instance-of”（判断寄存器中对象的引用是否是指定类型）（均为两者Dalvik虚拟机的指令）指令去引用一个类，那么fromUnverifiedConstant变量会被set为True。表明这个变量在后续代码中很重要。继续下去：</p>
+<p><img src="/img/dalvik_18.png" alt=""></p>
+<p>很好，终于看到了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dvmThrowIllegalAccessError(</div><div class="line">                    <span class="string">"Class ref in pre-verified class resolved to unexpected "</span></div><div class="line">                    <span class="string">"implementation"</span>);</div></pre></td></tr></table></figure>
 <p>并且很清晰的看到了触发unexpectedDEX异常的四个条件：</p>
 <ul>
 <li>fromUnverifiedConstant为False</li>
